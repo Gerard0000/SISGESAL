@@ -1,0 +1,22 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.12.35527.113 d17.12
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SISGESAL.Web", "SISGESAL.Web\SISGESAL.Web.csproj", "{3795BC54-6A27-4145-8C02-7234784C88DB}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{3795BC54-6A27-4145-8C02-7234784C88DB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3795BC54-6A27-4145-8C02-7234784C88DB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3795BC54-6A27-4145-8C02-7234784C88DB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3795BC54-6A27-4145-8C02-7234784C88DB}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
