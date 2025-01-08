@@ -1,0 +1,68 @@
+﻿@model SISGESAL.web.Models.LoginViewModel
+@{
+    ViewData["Title"] = "Login";
+}
+
+<br>
+<br>
+<br>
+<div class="row">
+    <div class="col-md-4 offset-md-4">
+        <form method="post">
+
+            <div class="form-group text-center">
+                <p><img src="~/Imagenes/PODERJUDICIAL.png" height="220" width="270"></p>
+            </div>
+
+            <div class="form-group">
+                <b><label asp-for="Username">USUARIO</label></b> <b style="color:red">(*)</b>
+                <br>
+
+                <input asp-for="Username" title="USUARIO" class="form-control" style="text-transform: lowercase" />
+                <b><span asp-validation-for="Username" class="text-danger"></span></b>
+            </div>
+
+            <br>
+
+            <script src="~/lib/jquery-validation/dist/jquery.validate.js"></script>
+
+            <div class="form-group">
+                <b><label asp-for="Password">CONTRASEÑA</label></b> <b style="color:red">(*)</b>
+                <br>
+                <input asp-for="Password" type="password" title="CONTRASEÑA" class="form-control" />
+                <b><span asp-validation-for="Password" class="text-danger"></span></b>
+            </div>
+
+            @*             <div class="form-group">
+                <div class="form-check">
+                    <input asp-for="RememberMe" type="checkbox" class="form-check-input" />
+                    <label asp-for="RememberMe" class="form-check-label">Recuerdame?</label>
+                </div>
+                <span asp-validation-for="RememberMe" class="text-warning"></span>
+            </div> *@
+
+            <br>
+
+            <div class="form-group">
+                <input type="submit" title="INICIAR SESIÓN" value="Iniciar Sesión" class="btn btn-success col-md-12" />
+            </div>
+            <b><div asp-validation-summary="ModelOnly" class="text-danger"></div></b>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+
+        <script>
+            $('#vercontraseña').on('mousedown', function () {
+                $('#contraseña').attr("type", "text");
+            });
+
+            $('#vercontraseña').on('mouseup mouseleave', function () {
+                $('#contraseña').attr("type", "password");
+            });
+        </script>
+    }
+}

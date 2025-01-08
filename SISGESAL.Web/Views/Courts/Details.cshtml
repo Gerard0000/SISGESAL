@@ -1,0 +1,105 @@
+﻿@model SISGESAL.web.Data.Entities.Court
+
+@{
+    ViewData["Title"] = "Details";
+    Layout = "~/Views/Shared/_AdminLTE.cshtml";
+}
+
+@if (TempData["AlertMessageCreate"] != null)
+{
+    <div class="alert alert-success">
+        <strong>@TempData["AlertMessageCreate"]</strong>
+        <button type="button" class="close cm-strong" data-dismiss="alert">
+            <span>&times;</span>
+        </button>
+    </div>
+}
+@if (TempData["AlertMessageEdit"] != null)
+{
+    <div class="alert alert-warning">
+        <strong>@TempData["AlertMessageEdit"]</strong>
+        <button type="button" class="close cm-strong" data-dismiss="alert">
+            <span>&times;</span>
+        </button>
+    </div>
+}
+@if (TempData["AlertMessageDelete"] != null)
+{
+    <div class="alert alert-danger">
+        <strong>@TempData["AlertMessageDelete"]</strong>
+        <button type="button" class="close cm-strong" data-dismiss="alert">
+            <span>&times;</span>
+        </button>
+    </div>
+}
+
+<h1><b>DETALLES</b></h1>
+
+<div>
+    <h3><b>Juzgado o Tribunal: </b><b class="text-red">@Html.DisplayFor(model => model.Name)</b></h3>
+    <h4><b>Municipio: </b><b class="text-red">@Html.DisplayFor(model => model.Municipality.Name)</b></h4>
+    <h5><b>Departamento: </b><b class="text-red">@Html.DisplayFor(model => model.Municipality.Department.Name)</b></h5>
+    <hr />
+    <div class="card">
+        <div class="card-body">
+            <dl class="row">
+                <dt class="col-sm-2">
+                    @Html.DisplayNameFor(model => model.Name)
+                </dt>
+                <dd class="col-sm-10">
+                    @Html.DisplayFor(model => model.Name)
+                </dd>
+
+                <dt class="col-sm-2">
+                    @Html.DisplayNameFor(model => model.Municipality.Name)
+                </dt>
+                <dd class="col-sm-10">
+                    @Html.DisplayFor(model => model.Municipality.Name)
+                </dd>
+
+                <dt class="col-sm-2">
+                    @Html.DisplayNameFor(model => model.Municipality.Department.Name)
+                </dt>
+                <dd class="col-sm-10">
+                    @Html.DisplayFor(model => model.Municipality.Department.Name)
+                </dd>
+
+
+                <dt class="col-sm-2">
+                    @Html.DisplayNameFor(model => model.Observation)
+                </dt>
+                <dd class="col-sm-10">
+                    @Html.DisplayFor(model => model.Observation)
+                </dd>
+                <dt class="col-sm-2">
+                    @Html.DisplayNameFor(model => model.CreationDate)
+                </dt>
+                <dd class="col-sm-10">
+                    @Html.DisplayFor(model => model.CreationDate)
+                </dd>
+                <dt class="col-sm-2">
+                    @Html.DisplayNameFor(model => model.Creator)
+                </dt>
+                <dd class="col-sm-10">
+                    @Html.DisplayFor(model => model.Creator)
+                </dd>
+                <dt class="col-sm-2">
+                    @Html.DisplayNameFor(model => model.ModificationDate)
+                </dt>
+                <dd class="col-sm-10">
+                    @Html.DisplayFor(model => model.ModificationDate)
+                </dd>
+                <dt class="col-sm-2">
+                    @Html.DisplayNameFor(model => model.Modifier)
+                </dt>
+                <dd class="col-sm-10">
+                    @Html.DisplayFor(model => model.Modifier)
+                </dd>
+            </dl>
+            <div>
+                <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-warning">Editar Juzgado o Tribunal</a>
+                <a href="/Municipalities/Details/@Model.Municipality.Id" class="btn btn-dark" title="Regresar">Regresar</a>
+            </div>
+        </div>
+    </div>
+</div>

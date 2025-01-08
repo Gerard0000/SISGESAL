@@ -1,4 +1,4 @@
-namespace SISGESAL.Web.Models
+namespace SISGESAL.web.Models
 {
     public class ErrorViewModel
     {
