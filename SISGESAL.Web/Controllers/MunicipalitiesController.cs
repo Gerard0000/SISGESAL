@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using SISGESAL.web.Data;
 using SISGESAL.web.Data.Entities;
@@ -7,6 +8,7 @@ using System.Security.Claims;
 
 namespace SISGESAL.web.Controllers
 {
+    [Authorize(Roles = "Manager")]
     public class MunicipalitiesController : Controller
     {
         private readonly DataContext _dataContext;

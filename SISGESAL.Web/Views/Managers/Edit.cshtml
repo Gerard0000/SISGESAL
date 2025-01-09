@@ -1,0 +1,80 @@
+﻿@model SISGESAL.web.Models.EditUserViewModel
+@{
+    ViewData["Title"] = "Edit";
+    Layout = "~/Views/Shared/_AdminLTE.cshtml";
+}
+
+<hr />
+<h1><b>EDITAR</b></h1>
+<hr />
+<h4><b>ADMINISTRADOR: </b><b class="text-red">@Html.DisplayFor(model => model.UserName)</b></h4>
+<hr />
+<div class="card">
+    <div class="card-body">
+        <div class="row">
+            <div class="col-md-12">
+                <form asp-action="Edit">
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                    <div class="row"><label style="color:red"><b>@ViewBag.DuplicateMessage</b></label></div>
+
+                    <input type="hidden" asp-for="Id" />
+                    <input type="hidden" asp-for="Creator" />
+                    <input type="hidden" asp-for="CreationDate" />
+
+                    <div class="form-group">
+                        <label asp-for="FullName" class="control-label">Nombre Completo <b style="color:red">(*)</b></label>
+                        <input asp-for="FullName" class="form-control" style="text-transform: uppercase" />
+                        <b><span asp-validation-for="FullName" class="text-danger"></span></b>
+                    </div>
+
+                    <div class="form-group">
+                        <label asp-for="CourtId" class="control-label">Juzgado o Tribunal al que Pertenece <b style="color:red">(*)</b></label>
+                        <select asp-for="CourtId" asp-items="Model.Courts" class="form-control"></select>
+                        <b><span asp-validation-for="CourtId" class="text-danger"></span></b>
+                    </div>
+
+                    <div class="form-group">
+                        <label asp-for="DNI" class="control-label">DNI <b style="color:red">(*)</b></label>
+                        <input asp-for="DNI" class="form-control" onKeypress="if (event.keyCode < 48 || event.keyCode > 57) event.returnValue = false;" />
+                        <b><span asp-validation-for="DNI" class="text-danger"></span></b>
+                    </div>
+
+                    <div class="form-group">
+                        <label asp-for="Occupation" class="control-label">Cargo <b style="color:red">(*)</b></label>
+                        <input asp-for="Occupation" class="form-control" style="text-transform: uppercase" />
+                        <b><span asp-validation-for="Occupation" class="text-danger"></span></b>
+                    </div>
+
+                    <div class="form-group">
+                        <label asp-for="Email" class="control-label">Email <b style="color:red">(*)</b></label>
+                        <input asp-for="Email" class="form-control" type="email" style="text-transform: lowercase" maxlength="97" />
+                        <b><span asp-validation-for="Email" class="text-danger"></span></b>
+                    </div>
+
+                    <div class="form-group">
+                        <label asp-for="PhoneNumber" class="control-label">Número Teléfonico</label>
+                        <input asp-for="PhoneNumber" class="form-control" onKeypress="if (event.keyCode < 48 || event.keyCode > 57) event.returnValue = false;" maxlength="8" />
+                        <b><span asp-validation-for="PhoneNumber" class="text-danger"></span></b>
+                    </div>
+
+                    <div class="form-group">
+                        <label asp-for="Observation" class="control-label"></label>
+                        <textarea asp-for="Observation" class="form-control" style="text-transform: uppercase" rows="3"></textarea>
+                        <b><span asp-validation-for="Observation" class="text-danger"></span></b>
+                    </div>
+
+                    <div class="form-group">
+                        <input type="submit" value="Guardar" class="btn btn-success" />
+                        <a asp-action="Index" class="btn btn-dark">Regresar</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<hr />
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

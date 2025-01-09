@@ -4,50 +4,65 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewData["Title"] - SISGESAL.web</title>
-    <script type="importmap"></script>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/SISGESAL.web.styles.css" asp-append-version="true" />
 </head>
-<body>
-    <header>
-        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
-            <div class="container-fluid">
-                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">SISGESAL.web</a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
-                        aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
-                    <ul class="navbar-nav flex-grow-1">
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Almacens" asp-action="Index">Almacenes</a>
-                        </li>
-                    </ul>
-                </div>
-            </div>
-        </nav>
-    </header>
+@* DESABILITAR RETROSESO TODO *@
+<body class="hold-transition login-page" onload="deshabilitaRetroceso();">
     <div class="container">
-        <main role="main" class="pb-3">
+        <main role="main" class="pb-6">
             @RenderBody()
         </main>
     </div>
 
-    <footer class="border-top footer text-muted">
+    @*     <footer class="border-top footer text-muted">
         <div class="container">
-            &copy; 2024 - SISGESAL.web - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+            &copy; 2024 - SRIAGRALNOTIFICACIONES2024.web - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
         </div>
-    </footer>
+    </footer> *@
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
+
+    @* DESABILITAR EL RETROCESO TODO*@
+    @*     <script type="text/javascript">
+        function deshabilitaRetroceso() {
+            window.location.hash = "no-back-button";
+            window.location.hash = "Again-No-back-button" //chrome
+            window.onhashchange = function () { window.location.hash = "no-back-button"; }
+        }
+    </script> *@
+
+    <!-- Usuario Activo -->
+    <script>
+        const usuarioAutenticado = '@User.Identity!.IsAuthenticated' === 'True';
+        const cantidadSegundosDeslogueo = 300 * 1000;
+        const urlResetearCookie = '@Url.Action("ResetearCookie", "Home")';
+        const cantidadSegundoRefrescarCookie = 300 * 1000;
+        if (usuarioAutenticado) {
+            function timerInactivo() {
+                let timer;
+                document.onmousemove = resetearTimer;
+                document.onkeypress = resetearTimer;
+                function resetearTimer() {
+                    clearTimeout(timer);
+                    timer = setTimeout(logout, cantidadSegundoDeslogueo)
+                }
+                function logout() {
+                    const formularioLogout = document.getElementById('form-logout');
+                    formularioLogout.submit();
+                }
+            }
+            setInterval(resetearCookie, cantidadSegundosRefrescarCookie);
+            async function resetearCookieAuth() {
+                await fetch(urlResetearCookie, {
+                    method: 'GET'
+                });
+            }
+        }
+    </script>
+
     @await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>

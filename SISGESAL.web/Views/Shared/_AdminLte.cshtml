@@ -1,56 +1,395 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>@ViewData["Title"] - SISGESAL.web</title>
-    <script type="importmap"></script>
-    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
-    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
-    <link rel="stylesheet" href="~/SISGESAL.web.styles.css" asp-append-version="true" />
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Sistema Notificaciones SGPJ</title>
+
+    <!-- Google Font: Source Sans Pro -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
+
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="~/ArchivosAdminLTE/plugins/fontawesome-free/css/all.min.css">
+
+    <!-- IonIcons -->
+    <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
+
+    <!-- Theme style -->
+    <link rel="stylesheet" href="~/ArchivosAdminLTE/dist/css/adminlte.min.css">
+
+    <!-- Bootstrap CSS only -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css">
+
+    <!-- datatable -->
+    <link href="https://cdn.datatables.net/1.13.1/css/jquery.dataTables.min.css" rel="stylesheet">
+    <link href="https://cdn.datatables.net/responsive/2.4.0/css/responsive.dataTables.min.css" rel="stylesheet">
+    <link href="https://cdn.datatables.net/datetime/1.2.0/css/dataTables.dateTime.min.css" rel="stylesheet">
+    <link href="https://cdn.datatables.net/buttons/2.2.3/css/buttons.dataTables.min.css" rel="stylesheet">
+    <link href="https://cdn.datatables.net/select/1.4.0/css/select.dataTables.min.css" rel="stylesheet">
+
+
+    @*     <link href="https://cdn.datatables.net/2.1.5/css/dataTables.dataTables.css" rel=stylesheet">
+    <link href="https://cdn.datatables.net/buttons/3.1.2/css/buttons.dataTables.css" rel=stylesheet"> *@
+
+
 </head>
-<body>
-    <header>
-        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
-            <div class="container-fluid">
-                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">SISGESAL.web</a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
-                        aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
-                    <ul class="navbar-nav flex-grow-1">
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Almacens" asp-action="Index">Almacenes</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Departments" asp-action="Index">Departamentos</a>
-                        </li>
-                    </ul>
-                </div>
-            </div>
+<body class="hold-transition sidebar-mini layout-fixed layout-navbar-fixed">
+
+    <div class="wrapper">
+        <!-- Navbar -->
+        <nav class="main-header navbar navbar-expand navbar-secondary navbar-secondary">
+            <!-- Left navbar links -->
+            <ul class="navbar-nav">
+                <li class="nav-item">
+                    <a class="nav-link text-light" title="MENU" data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars"></i></a>
+                </li>
+                <li class="nav-item d-none d-sm-inline-block">
+                </li>
+            </ul>
+
+            <!-- SEARCH FORM -->
+            <form class="form-inline ml-3">
+            </form>
+
+            <!-- Right navbar links -->
+            <ul class="navbar-nav ml-auto">
+
+                @if (User.Identity.IsAuthenticated && User.IsInRole("Manager"))
+                {
+                    <li class="nav-item dropdown">
+                        <a class="nav-link disabled text-light" title="USUARIO: @User.Identity.Name">
+                            USUARIO: <b class="text-dark" title="USUARIO: @User.Identity.Name">@User.Identity.Name</b>
+                        </a>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link text-light" title="CAMBIAR CONTRASEÑA" href="@Url.Action("ChangePassword","Account")">
+                            CAMBIAR CONTRASEÑA
+                        </a>
+                    </li>
+                }
+
+                @if (User.Identity.IsAuthenticated && User.IsInRole("Customer"))
+                {
+                    <li class="nav-item dropdown">
+                        <a class="nav-link disabled text-light" title="USUARIO: @User.Identity.Name">
+                            USUARIO: <b class="text-dark" title="USUARIO: @User.Identity.Name">@User.Identity.Name</b>
+                        </a>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link text-light" title="CAMBIAR CONTRASEÑA" href="@Url.Action("ChangePassword","Account")">
+                            CAMBIAR CONTRASEÑA
+                        </a>
+                    </li>
+                }
+
+                <li class="nav-item dropdown">
+                    <a class="nav-link text-light" id="form-logout" title="CERRAR SESIÓN" href="@Url.Action("Logout","Account")">
+                        CERRAR SESIÓN
+                    </a>
+                </li>
+            </ul>
         </nav>
-    </header>
-    <div class="container">
-        <main role="main" class="pb-3">
-            @RenderBody()
-        </main>
+
+        <!-- /.navbar -->
+        <!-- Main Sidebar Container -->
+        <aside class="main-sidebar sidebar-light-primary elevation-4 navbar-secondary">
+            <!-- Brand Logo -->
+            <a class="brand-link navbar-secondary">
+                <img src="~/ArchivosAdminLTE/dist/img/ADMINLTELOGO.png" alt="AdminLTE Logo" class="brand-image img-circle elevation-0" style="opacity: .8" title="NOTIFICACIONES SGPJ">
+                <span class="brand-text font-weight-dark text-light" title="NOTIFICACIONES">NOTIFICACIONES</span>
+            </a>
+
+            <!-- Sidebar -->
+            <div class="sidebar">
+                <!-- Sidebar user panel (optional) -->
+                <!-- Sidebar Menu -->
+                <nav class="mt-2">
+                    <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
+                        <!-- Add icons to the links using the .nav-icon class with font-awesome or any other icon font library -->
+                        @if (User.Identity.IsAuthenticated && User.IsInRole("Admin"))
+                        {
+
+                            <li class="nav-item">
+                                <a href="/Home/Index" class="nav-link text-light" title="INICIO">
+                                    <i class="nav-icon far fa-circle text-light"></i>
+                                    <p>
+                                        INICIO
+                                    </p>
+                                </a>
+                            </li>
+
+                            <li class="nav-item">
+                                <a href="/Expedients/Index" class="nav-link text-light" title="EXPEDIENTES">
+                                    <i class="nav-icon far fa-circle text-light"></i>
+                                    <p>
+                                        EXPEDIENTES
+                                    </p>
+                                </a>
+                            </li>
+
+                            <li class="nav-item">
+                                <a href="/Lawyers/Index" class="nav-link text-light" title="ABOGADOS">
+                                    <i class="nav-icon far fa-circle text-light"></i>
+                                    <p>
+                                        ABOGADOS
+                                    </p>
+                                </a>
+                            </li>
+
+                            <li class="nav-item">
+                                <a href="/Managers/Index" class="nav-link text-light" title="ADMINISTRADORES">
+                                    <i class="nav-icon far fa-circle text-light"></i>
+                                    <p>
+                                        ADMINISTRADORES
+                                    </p>
+                                </a>
+                            </li>
+
+                            <li class="nav-item">
+                                <a href="/Customers/Index" class="nav-link text-light" title="USUARIOS">
+                                    <i class="nav-icon far fa-circle text-light"></i>
+                                    <p>
+                                        USUARIOS
+                                    </p>
+                                </a>
+                            </li>
+
+                            <li class="nav-item">
+                                <a href="/Departments/Index" class="nav-link text-light" title="DEPARTAMENTOS">
+                                    <i class="nav-icon far fa-circle text-light"></i>
+                                    <p>
+                                        DEPART. MUNIC. JUZG. JUECES Y SECRETARIOS
+                                    </p>
+                                </a>
+                            </li>
+
+                            <li class="nav-item">
+                                <a href="/ResolutionTypes/Index" class="nav-link text-light" title="TIPOS DE RESOLUCIONES">
+                                    <i class="nav-icon far fa-circle text-light"></i>
+                                    <p>
+                                        TIPOS DE RESOLUCIONES
+                                    </p>
+                                </a>
+                            </li>
+
+                            <li class="nav-item">
+                                <a href="/Representatives/Index" class="nav-link text-light" title="TIPOS DE REPRESENTANTES">
+                                    <i class="nav-icon far fa-circle text-light"></i>
+                                    <p>
+                                        TIPOS DE REPRESENTANTES
+                                    </p>
+                                </a>
+                            </li>
+
+                            <li class="nav-item">
+                                <a href="/States/Index" class="nav-link text-light" title="ESTADOS DE NOTIFICACIONES">
+                                    <i class="nav-icon far fa-circle text-light"></i>
+                                    <p>
+                                        ESTADOS DE NOTIFICACIONES
+                                    </p>
+                                </a>
+                            </li>
+
+                            <li class="nav-item">
+                                <a href="/NotificationForms/Index" class="nav-link text-light" title="FORMAS DE NOTIFICACIÓN">
+                                    <i class="nav-icon far fa-circle text-light"></i>
+                                    <p>
+                                        FORMAS DE NOTIFICACIÓN
+                                    </p>
+                                </a>
+                            </li>
+
+                            <li class="nav-item">
+                                <a href="/ExpedientStates/Index" class="nav-link text-light" title="ESTADOS DE EXPEDIENTES">
+                                    <i class="nav-icon far fa-circle text-light"></i>
+                                    <p>
+                                        ESTADOS DE EXPEDIENTES
+                                    </p>
+                                </a>
+                            </li>
+
+                        }
+
+                        @if (User.Identity.IsAuthenticated && User.IsInRole("User"))
+                        {
+
+                            <li class="nav-item">
+                                <a href="/Home/Index" class="nav-link text-light" title="INICIO">
+                                    <i class="nav-icon far fa-circle text-light"></i>
+                                    <p>
+                                        INICIO
+                                    </p>
+                                </a>
+                            </li>
+
+                            <li class="nav-item">
+                                <a href="/Notifications/Create" class="nav-link text-light" title="REGISTRAR NOTIFICACIÓN">
+                                    <i class="nav-icon far fa-circle text-light"></i>
+                                    <p>
+                                        AGREGAR NOTIFICACIÓN
+                                    </p>
+                                </a>
+                            </li>
+
+                            <li class="nav-item">
+                                <a href="/Notifications/Index" class="nav-link text-light" title="NOTIFICACIONES">
+                                    <i class="nav-icon far fa-circle text-light"></i>
+                                    <p>
+                                        REGISTRO DE NOTIFICACIONES
+                                    </p>
+                                </a>
+                            </li>
+
+                            <li class="nav-item">
+                                <a href="/Notifications/Statistics" class="nav-link text-light" title="ESTADÍSTICA NOTIFICACIÓN">
+                                    <i class="nav-icon far fa-circle text-light"></i>
+                                    <p>
+                                        ESTADÍSTICAS NOTIFICACIÓN
+                                    </p>
+                                </a>
+                            </li>
+                        }
+
+                    </ul>
+                </nav>
+                <!-- /.sidebar-menu -->
+            </div>
+            <!-- /.sidebar -->
+        </aside>
+        <!-- Content Wrapper. Contains page content -->
+        <div class="content-wrapper">
+            <section class="content">
+                <div class="container-fluid">
+
+                    @RenderBody()
+
+                    <!-- /.row (main row) -->
+                </div><!-- /.container-fluid -->
+            </section>
+            <!-- /.content -->
+        </div>
+
+
+        <!-- /.content-wrapper -->
+        <footer class="main-footer navbar-secondary">
+            <strong><a>Poder Judicial</a> 2024</strong>
+            <!--<div class="float-right d-none d-sm-inline-block">
+                <b>Version</b> 1.0.0
+            </div>-->
+        </footer>
+
+        <!-- Control Sidebar -->
+        <aside class="control-sidebar control-sidebar-dark">
+            <!-- Control sidebar content goes here -->
+        </aside>
+        <!-- /.control-sidebar -->
     </div>
 
-    <footer class="border-top footer text-muted">
-        <div class="container">
-            &copy; 2024 - SISGESAL.web - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
-        </div>
-    </footer>
-    <script src="~/lib/jquery/dist/jquery.min.js"></script>
-    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="~/js/site.js" asp-append-version="true"></script>
     @await RenderSectionAsync("Scripts", required: false)
+
+    <!-- ./wrapper -->
+    <!-- REQUIRED SCRIPTS -->
+    <!-- IconAwesome -->
+    <script src="https://kit.fontawesome.com/002b47a391.js"></script>
+
+    <!-- jQuery -->
+    <script src="https://code.jquery.com/jquery-3.6.1.min.js"></script>
+
+    <!-- Mask -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.inputmask/3.3.4/jquery.inputmask.bundle.min.js"></script>
+
+    <!-- Bootstrap JavaScript Bundle with Popper -->
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.min.js"></script>
+
+    <!-- sweet alert 2 -->
+    <script src="_content/CurrieTechnologies.Razor.SweetAlert2/sweetAlert2.min.js"></script>
+    @*     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script> *@
+
+    <!-- AdminLTE -->
+    <script src="~/ArchivosAdminLTE/dist/js/adminlte.js"></script>
+
+    <!-- Chart -->
+    <script src="~/ArchivosAdminLTE/plugins/chart.js/Chart.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <!-- AdminLTE for demo purposes -->
+    <!--<script src="~/ArchivosAdminLTE/dist/js/demo.js"></script> ->
+
+    <!-- AdminLTE dashboard demo (This is only for demo purposes) -->
+    <script src="~/ArchivosAdminLTE/dist/js/pages/dashboard3.js"></script>
+
+    <!-- Controles datatable -->
+    @*     <script src="~/ArchivosAdminLte\plugins\datatables-buttons\js\dataTables.buttons.min.js"></script>
+
+    <script src="https://code.jquery.com/jquery-3.7.1.js"></script>
+    @*     <script src="~/ArchivosAdminLte\plugins\datatables-buttons\js\buttons.bootstrap4.min.js"></script> *@
+
+    <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+    <script src="https://cdn.datatables.net/1.13.1/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/2.2.3/js/dataTables.buttons.min.js"></script>
+    <script src="https://cdn.datatables.net/select/1.4.0/js/dataTables.select.min.js"></script>
+    <script src="https://cdn.datatables.net/datetime/1.2.0/js/dataTables.dateTime.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/pdfmake.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/vfs_fonts.js"></script>
+    <script src="https://cdn.datatables.net/buttons/2.2.3/js/buttons.html5.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/2.2.3/js/buttons.print.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/2.2.3/js/buttons.colVis.min.js"></script>
+    <script src="https://cdn.datatables.net/plug-ins/1.10.15/i18n/Spanish.json"></script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/dayjs/1.11.5/dayjs.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/dayjs/1.11.5/plugin/utc.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/dayjs/1.11.5/plugin/customParseFormat.min.js"></script>
+
+    @*<script src="https://cdn.datatables.net/plug-ins/1.13.1/i18n/es-MX.json"></script>*@
+
+    <script src="https://cdn.datatables.net/plug-ins/1.13.1/dataRender/datetime.js"></script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.2/moment.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.19.4/locale/es.js"></script>
+    <script src="https://cdn.datatables.net/plug-ins/1.10.20/sorting/datetime-moment.js"></script>
+
+    @*<script src="https://cdnjs.cloudflare.com/ajax/libs/luxon/2.3.1/luxon.min.js"></script>*@
+
+    <script src="https://cdn.datatables.net/1.12.1/js/dataTables.bootstrap5.min.js"></script>
+    <script src="https://cdn.datatables.net/responsive/2.4.0/js/dataTables.responsive.min.js"></script>
+
+    <!-- Ionicons -->
+
+    <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
+    <script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
+
+    <!-- Usuario Activo -->
+    <script>
+        const usuarioAutenticado = '@User.Identity!.IsAuthenticated' === 'True';
+        const cantidadSegundosDeslogueo = 180 * 1000;
+        const urlResetearCookie = '@Url.Action("ResetearCookie", "Home")';
+        const cantidadSegundoRefrescarCookie = 180 * 1000;
+        if (usuarioAutenticado) {
+            function timerInactivo() {
+                let timer;
+                document.onmousemove = resetearTimer;
+                document.onkeypress = resetearTimer;
+                function resetearTimer() {
+                    clearTimeout(timer);
+                    timer = setTimeout(logout, cantidadSegundoDeslogueo)
+                }
+                function logout() {
+                    const formularioLogout = document.getElementById('form-logout');
+                    formularioLogout.submit();
+                }
+            }
+            setInterval(resetearCookie, cantidadSegundosRefrescarCookie);
+            async function resetearCookieAuth() {
+                await fetch(urlResetearCookie, {
+                    method: 'GET'
+                });
+            }
+        }
+    </script>
+
 </body>
 </html>
