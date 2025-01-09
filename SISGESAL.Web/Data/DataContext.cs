@@ -4,7 +4,6 @@ using SISGESAL.web.Data.Entities;
 
 namespace SISGESAL.web.Data
 {
-
     public class DataContext : IdentityDbContext<User>
     {
         public DataContext(DbContextOptions<DataContext> options) : base(options)
@@ -13,9 +12,9 @@ namespace SISGESAL.web.Data
 
         //CREAMOS LA PROPIEDAD DE TIPO DBSET DE LAS TABLAS
         public DbSet<Manager> Managers { get; set; }
+
         public DbSet<Customer> Customers { get; set; }
 
-        public DbSet<Almacen>? Almacens { get; set; }
         public DbSet<Department> Departments { get; set; }
         public DbSet<Municipality> Municipalities { get; set; }
         public DbSet<Court> Courts { get; set; }
