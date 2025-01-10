@@ -6,14 +6,7 @@
 }
 
 <!-- Font Awesome Icons -->
-@* <link rel="stylesheet" href="~/ArchivosAdminLTE/plugins/fontawesome-free/css/all.min.css"> *@
-
-<!-- datatable -->
-@* <link rel="stylesheet" href="~/DataTable/css/buttons.dataTables.min.css">
-<link rel="stylesheet" href="~/DataTable/css/dataTables.dateTime.min.css">
-<link rel="stylesheet" href="~/DataTable/css/jquery.dataTables.min.css">
-<link rel="stylesheet" href="~/DataTable/css/responsive.dataTables.min.css">
-<link rel="stylesheet" href="~/DataTable/css/select.dataTables.min.css"> *@
+<link rel="stylesheet" href="~/ArchivosAdminLTE/plugins/fontawesome-free/css/all.min.css">
 
 @if (TempData["AlertMessageCreate"] != null)
 {
@@ -96,7 +89,6 @@
                 </dd>
             </dl>
             <div>
-                <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-warning">Editar Departamento</a>
                 <a asp-action="Index" class="btn btn-dark">Regresar</a>
             </div>
         </div>
@@ -108,9 +100,6 @@
     <div class="card">
         <div class="card-body">
             <h4><b class="text-purple">NO HAY MUNICIPIOS REGISTRADOS</b></h4>
-            <div>
-                <a href="/Municipalities/Create/@Model.Id" class="btn btn-primary">Crear Municipio</a>
-            </div>
             <br>
         </div>
     </div>
@@ -122,9 +111,7 @@ else
             <h5 style="text-align:center;"><b>MUNICIPIOS DEL DEPARTAMENTO @Model.Name</b></h5>
         </div>
         <div class="card-body">
-            <div>@* 
-                <a asp-action="CreateMunicipality" asp-route-id="@Model.Id" class="btn btn-primary">Crear Municipio</a> *@
-                <a href="/Municipalities/Create/@Model.Id" class="btn btn-primary">Crear Municipio</a>
+            <div>
             </div>
             <br>
             <div style="text-align: center;">
@@ -164,8 +151,6 @@ else
                                 </td>
                                 <td>
                                     <a href="/Municipalities/Details/@item.Id" class="btn btn-info fa fa-solid fa-list-alt" title="DETALLE Y JUZGADOS"></a>
-                                    <a href="/Municipalities/Edit/@item.Id" class="btn btn-warning fa fa-solid fa-edit" title="EDITAR"></a>
-                                    <a href="/Municipalities/Delete/@item.Id" class="btn btn-danger fa fa-solid fa-trash" title="ELIMINAR"></a>
                                 </td>
                             </tr>
                         }
@@ -183,63 +168,4 @@ else
     @{
         await Html.RenderPartialAsync("_ValidationScriptsPartial");
     }
-@*     <script src="~/datatable/js/bootstrap.bundle.min.js"></script>
-    <script src="~/datatable/js/buttons.bootstrap5.js"></script>
-    <script src="~/datatable/js/buttons.datatables.js"></script>
-    <script src="~/datatable/js/buttons.html5.min.js"></script>
-    <script src="~/datatable/js/buttons.print.min.js"></script>
-    <script src="~/datatable/js/datatables.bootstrap5.js"></script>
-    <script src="~/datatable/js/datatables.buttons.js"></script>
-    <script src="~/datatable/js/datatables.js"></script>
-    <script src="~/datatable/js/jquery-3.7.1.js"></script>
-    <script src="~/datatable/js/jszip.min.js"></script>
-    <script src="~/datatable/js/paratablas.js"></script>
-    <script src="~/datatable/js/pdfmake.min.js"></script>
-    <script src="~/datatable/js/vfs_fonts.js"></script>
-
-    <script>
-        $(document).ready(function () {
-            $('#tabla').DataTable({
-                "language": {
-                    "url": "//cdn.datatables.net/plug-ins/1.10.15/i18n/Spanish.json"
-                },
-                //responsive: true,
-                dom: '<"pt-2 row" <"col-xl"l><"col-x"B><"col-xl"f> >rtip',
-                buttons: [
-
-                    {
-                        extend: 'copy',
-                        text: ' Copiar',
-                        className: 'btn btn-info fa fa-solid fa-copy'
-                    },
-                    {
-                        extend: 'print',
-                        text: ' Imprimir',
-                        className: 'btn btn-secondary fa fa-solid fa-print'
-                    },
-                    {
-                        extend: 'pdfHtml5',
-                        text: ' PDF',
-                        className: 'btn btn-danger fa fa-solid fa-file',
-                        orientation: 'portrait',
-                        pageSize: 'FOLIO',
-                        // customize: function (doc) {
-                        //     doc.content.splice(1, 0, {
-                        //         margin: [0, 0, 0, 12],
-                        //         alignment: 'center',
-                        //         image: '~/Imagenes/PODERJUDICIAL.png',
-                        //         width: 95,
-                        //         height: 40
-                        //     });
-                        // }
-                    },
-                    {
-                        extend: 'excel',
-                        text: ' Excel',
-                        className: 'btn btn-success fa fa-solid fa-file'
-                    }
-                ]
-            });
-        });
-    </script> *@
 }

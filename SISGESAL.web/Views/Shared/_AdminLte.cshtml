@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Sistema Notificaciones SGPJ</title>
+    <title>SISGESAL</title>
 
     <!-- Google Font: Source Sans Pro -->
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
@@ -95,8 +95,8 @@
         <aside class="main-sidebar sidebar-light-primary elevation-4 navbar-secondary">
             <!-- Brand Logo -->
             <a class="brand-link navbar-secondary">
-                <img src="~/ArchivosAdminLTE/dist/img/ADMINLTELOGO.png" alt="AdminLTE Logo" class="brand-image img-circle elevation-0" style="opacity: .8" title="NOTIFICACIONES SGPJ">
-                <span class="brand-text font-weight-dark text-light" title="NOTIFICACIONES">NOTIFICACIONES</span>
+                <img src="~/ArchivosAdminLTE/dist/img/ADMINLTELOGO.png" alt="AdminLTE Logo" class="brand-image img-circle elevation-0" style="opacity: .8" title="SISGESAL">
+                <span class="brand-text font-weight-dark text-light" title="SISGESAL">SISGESAL</span>
             </a>
 
             <!-- Sidebar -->
@@ -106,7 +106,7 @@
                 <nav class="mt-2">
                     <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
                         <!-- Add icons to the links using the .nav-icon class with font-awesome or any other icon font library -->
-                        @if (User.Identity.IsAuthenticated && User.IsInRole("Admin"))
+                        @if (User.Identity.IsAuthenticated && User.IsInRole("Manager"))
                         {
 
                             <li class="nav-item">
@@ -119,19 +119,10 @@
                             </li>
 
                             <li class="nav-item">
-                                <a href="/Expedients/Index" class="nav-link text-light" title="EXPEDIENTES">
+                                <a href="/Departments/Index" class="nav-link text-light" title="DEPARTAMENTOS">
                                     <i class="nav-icon far fa-circle text-light"></i>
                                     <p>
-                                        EXPEDIENTES
-                                    </p>
-                                </a>
-                            </li>
-
-                            <li class="nav-item">
-                                <a href="/Lawyers/Index" class="nav-link text-light" title="ABOGADOS">
-                                    <i class="nav-icon far fa-circle text-light"></i>
-                                    <p>
-                                        ABOGADOS
+                                        DEPART. MUNIC. JUZG. JUECES Y SECRETARIOS
                                     </p>
                                 </a>
                             </li>
@@ -154,11 +145,20 @@
                                 </a>
                             </li>
 
-                            <li class="nav-item">
-                                <a href="/Departments/Index" class="nav-link text-light" title="DEPARTAMENTOS">
+@*                             <li class="nav-item">
+                                <a href="/Expedients/Index" class="nav-link text-light" title="EXPEDIENTES">
                                     <i class="nav-icon far fa-circle text-light"></i>
                                     <p>
-                                        DEPART. MUNIC. JUZG. JUECES Y SECRETARIOS
+                                        EXPEDIENTES
+                                    </p>
+                                </a>
+                            </li>
+
+                            <li class="nav-item">
+                                <a href="/Lawyers/Index" class="nav-link text-light" title="ABOGADOS">
+                                    <i class="nav-icon far fa-circle text-light"></i>
+                                    <p>
+                                        ABOGADOS
                                     </p>
                                 </a>
                             </li>
@@ -206,11 +206,11 @@
                                         ESTADOS DE EXPEDIENTES
                                     </p>
                                 </a>
-                            </li>
+                            </li> *@
 
                         }
 
-                        @if (User.Identity.IsAuthenticated && User.IsInRole("User"))
+                        @if (User.Identity.IsAuthenticated && User.IsInRole("Customer"))
                         {
 
                             <li class="nav-item">
@@ -272,7 +272,7 @@
 
         <!-- /.content-wrapper -->
         <footer class="main-footer navbar-secondary">
-            <strong><a>Poder Judicial</a> 2024</strong>
+            <strong><a>Poder Judicial</a> 2025</strong>
             <!--<div class="float-right d-none d-sm-inline-block">
                 <b>Version</b> 1.0.0
             </div>-->
