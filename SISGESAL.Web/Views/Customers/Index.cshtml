@@ -1,4 +1,4 @@
-﻿@model IEnumerable<SISGESAL.web.Data.Entities.Manager>
+﻿@model IEnumerable<SISGESAL.web.Data.Entities.Customer>
 
 <!-- Font Awesome Icons -->
 <link rel="stylesheet" href="~/ArchivosAdminLTE/plugins/fontawesome-free/css/all.min.css">
@@ -16,7 +16,6 @@
 }
 
 <br />
-
 @if (TempData["AlertMessageCreate"] != null)
 {
     <div class="alert alert-success">
@@ -57,13 +56,13 @@
 <div class="row">
     <div class="col-lg-7">
         <p class="text-center">
-            <h1 align="center"><b>ADMINISTRADORES</b></h1>
+            <h1 align="center"><b>USUARIOS</b></h1>
         </p>
     </div>
     <div class="col-lg-5">
         <p class="text-center">
             <br />
-            <a asp-action="Create" class="btn btn-primary col-md-6"><b>CREAR NUEVO ADMINISTRADOR</b></a>
+                <a asp-action="Create" class="btn btn-primary col-md-6"><b>CREAR NUEVO USUARIO</b></a>
         </p>
     </div>
 </div>
@@ -77,7 +76,7 @@
                 <div class="small-box bg-success">
                     <div class="inner">
                         <h3 align="center">@ViewBag.Indexcount2</h3>
-                        <p align="center">Administradores Activos</p>
+                        <p align="center">Usuarios Activos</p>
                     </div>
                 </div>
             </div>
@@ -85,7 +84,7 @@
                 <div class="small-box bg-danger">
                     <div class="inner">
                         <h3 align="center">@ViewBag.Indexcount3</h3>
-                        <p align="center">Administradores Bloqueados</p>
+                        <p align="center">Usuarios Bloqueados</p>
                     </div>
                 </div>
             </div>
@@ -93,7 +92,7 @@
                 <div class="small-box bg-info">
                     <div class="inner">
                         <h3 align="center">@ViewBag.Indexcount</h3>
-                        <p align="center">Total de Administradores</p>
+                        <p align="center">Total de Usuarios</p>
                     </div>
                 </div>
             </div>
@@ -104,7 +103,7 @@
 <!-- USUARIOS ACTIVOS -->
 <div class="card">
     <div class="card-header bg-success">
-        <h5 style="text-align:center;"><b>ADMINISTRADORES ACTIVOS</b></h5>
+        <h5 style="text-align:center;"><b>USUARIOS ACTIVOS</b></h5>
     </div>
     <div class="card-body" style="text-align: center;">
         <table id="tabla" class="table table-bordered table-striped" style="width:100%">
@@ -170,7 +169,7 @@
 <!-- USUARIOS BLOQUEADOS -->
 <div class="card">
     <div class="card-header bg-danger">
-        <h5 style="text-align:center;"><b>ADMINISTRADORES BLOQUEADOS</b></h5>
+        <h5 style="text-align:center;"><b>USUARIOS BLOQUEADOS</b></h5>
     </div>
     <div class="card-body" style="text-align: center;">
         <table id="tabla2" class="table table-bordered table-striped" style="width:100%">
@@ -236,7 +235,7 @@
 <!-- TODOS LOS ADMINISTRADORES -->
 <div class="card">
     <div class="card-header bg-info">
-        <h5 style="text-align:center;"><b>TODOS LOS ADMINISTRADORES</b></h5>
+        <h5 style="text-align:center;"><b>TODOS LOS USUARIOS</b></h5>
     </div>
     <div class="card-body" style="text-align: center;">
         <table id="tabla3" class="table table-bordered table-striped" style="width:100%">
@@ -319,141 +318,141 @@
     <script src="~/archivosadminlte/plugins/pdfmake/pdfmake.min.js"></script>
     <script src="~/archivosadminlte/plugins/pdfmake/vfs_fonts.js"></script>
 
-    <script>
-        $(document).ready(function () {
-            $('#tabla').DataTable({
-                "language": {
-                    "url": "//cdn.datatables.net/plug-ins/1.10.15/i18n/Spanish.json"
-                },
-                //responsive: true,
-                dom: '<"pt-2 row" <"col-xl"l><"col-x"B><"col-xl"f> >rtip',
-                buttons: [
+        <script>
+            $(document).ready(function () {
+                $('#tabla').DataTable({
+                    "language": {
+                        "url": "//cdn.datatables.net/plug-ins/1.10.15/i18n/Spanish.json"
+                    },
+                    //responsive: true,
+                    dom: '<"pt-2 row" <"col-xl"l><"col-x"B><"col-xl"f> >rtip',
+                    buttons: [
 
-                    {
-                        extend: 'copy',
-                        text: ' Copiar',
-                        className: 'btn btn-info fa fa-solid fa-copy'
-                    },
-                    {
-                        extend: 'print',
-                        text: ' Imprimir',
-                        className: 'btn btn-secondary fa fa-solid fa-print'
-                    },
-                    {
-                        extend: 'pdfHtml5',
-                        text: ' PDF',
-                        className: 'btn btn-danger fa fa-solid fa-file',
-                        orientation: 'portrait',
-                        pageSize: 'FOLIO',
-                        // customize: function (doc) {
-                        //     doc.content.splice(1, 0, {
-                        //         margin: [0, 0, 0, 12],
-                        //         alignment: 'center',
-                        //         image: '~/Imagenes/PODERJUDICIAL.png',
-                        //         width: 95,
-                        //         height: 40
-                        //     });
-                        // }
-                    },
-                    {
-                        extend: 'excel',
-                        text: ' Excel',
-                        className: 'btn btn-success fa fa-solid fa-file'
-                    }
-                ]
+                        {
+                            extend: 'copy',
+                            text: ' Copiar',
+                            className: 'btn btn-info fa fa-solid fa-copy'
+                        },
+                        {
+                            extend: 'print',
+                            text: ' Imprimir',
+                            className: 'btn btn-secondary fa fa-solid fa-print'
+                        },
+                        {
+                            extend: 'pdfHtml5',
+                            text: ' PDF',
+                            className: 'btn btn-danger fa fa-solid fa-file',
+                            orientation: 'portrait',
+                            pageSize: 'FOLIO',
+                            // customize: function (doc) {
+                            //     doc.content.splice(1, 0, {
+                            //         margin: [0, 0, 0, 12],
+                            //         alignment: 'center',
+                            //         image: '~/Imagenes/PODERJUDICIAL.png',
+                            //         width: 95,
+                            //         height: 40
+                            //     });
+                            // }
+                        },
+                        {
+                            extend: 'excel',
+                            text: ' Excel',
+                            className: 'btn btn-success fa fa-solid fa-file'
+                        }
+                    ]
+                });
             });
-        });
-    </script>
+        </script>
 
-    <script>
-        $(document).ready(function () {
-            $('#tabla2').DataTable({
-                "language": {
-                    "url": "//cdn.datatables.net/plug-ins/1.10.15/i18n/Spanish.json"
-                },
-                //responsive: true,
-                dom: '<"pt-2 row" <"col-xl"l><"col-x"B><"col-xl"f> >rtip',
-                buttons: [
+            <script>
+            $(document).ready(function () {
+                $('#tabla2').DataTable({
+                    "language": {
+                        "url": "//cdn.datatables.net/plug-ins/1.10.15/i18n/Spanish.json"
+                    },
+                    //responsive: true,
+                    dom: '<"pt-2 row" <"col-xl"l><"col-x"B><"col-xl"f> >rtip',
+                    buttons: [
 
-                    {
-                        extend: 'copy',
-                        text: ' Copiar',
-                        className: 'btn btn-info fa fa-solid fa-copy'
-                    },
-                    {
-                        extend: 'print',
-                        text: ' Imprimir',
-                        className: 'btn btn-secondary fa fa-solid fa-print'
-                    },
-                    {
-                        extend: 'pdfHtml5',
-                        text: ' PDF',
-                        className: 'btn btn-danger fa fa-solid fa-file',
-                        orientation: 'portrait',
-                        pageSize: 'FOLIO',
-                        // customize: function (doc) {
-                        //     doc.content.splice(1, 0, {
-                        //         margin: [0, 0, 0, 12],
-                        //         alignment: 'center',
-                        //         image: '~/Imagenes/PODERJUDICIAL.png',
-                        //         width: 95,
-                        //         height: 40
-                        //     });
-                        // }
-                    },
-                    {
-                        extend: 'excel',
-                        text: ' Excel',
-                        className: 'btn btn-success fa fa-solid fa-file'
-                    }
-                ]
+                        {
+                            extend: 'copy',
+                            text: ' Copiar',
+                            className: 'btn btn-info fa fa-solid fa-copy'
+                        },
+                        {
+                            extend: 'print',
+                            text: ' Imprimir',
+                            className: 'btn btn-secondary fa fa-solid fa-print'
+                        },
+                        {
+                            extend: 'pdfHtml5',
+                            text: ' PDF',
+                            className: 'btn btn-danger fa fa-solid fa-file',
+                            orientation: 'portrait',
+                            pageSize: 'FOLIO',
+                            // customize: function (doc) {
+                            //     doc.content.splice(1, 0, {
+                            //         margin: [0, 0, 0, 12],
+                            //         alignment: 'center',
+                            //         image: '~/Imagenes/PODERJUDICIAL.png',
+                            //         width: 95,
+                            //         height: 40
+                            //     });
+                            // }
+                        },
+                        {
+                            extend: 'excel',
+                            text: ' Excel',
+                            className: 'btn btn-success fa fa-solid fa-file'
+                        }
+                    ]
+                });
             });
-        });
-    </script>
+        </script>
 
-    <script>
-        $(document).ready(function () {
-            $('#tabla3').DataTable({
-                "language": {
-                    "url": "//cdn.datatables.net/plug-ins/1.10.15/i18n/Spanish.json"
-                },
-                //responsive: true,
-                dom: '<"pt-2 row" <"col-xl"l><"col-x"B><"col-xl"f> >rtip',
-                buttons: [
+        <script>
+            $(document).ready(function () {
+                $('#tabla3').DataTable({
+                    "language": {
+                        "url": "//cdn.datatables.net/plug-ins/1.10.15/i18n/Spanish.json"
+                    },
+                    //responsive: true,
+                    dom: '<"pt-2 row" <"col-xl"l><"col-x"B><"col-xl"f> >rtip',
+                    buttons: [
 
-                    {
-                        extend: 'copy',
-                        text: ' Copiar',
-                        className: 'btn btn-info fa fa-solid fa-copy'
-                    },
-                    {
-                        extend: 'print',
-                        text: ' Imprimir',
-                        className: 'btn btn-secondary fa fa-solid fa-print'
-                    },
-                    {
-                        extend: 'pdfHtml5',
-                        text: ' PDF',
-                        className: 'btn btn-danger fa fa-solid fa-file',
-                        orientation: 'portrait',
-                        pageSize: 'FOLIO',
-                        // customize: function (doc) {
-                        //     doc.content.splice(1, 0, {
-                        //         margin: [0, 0, 0, 12],
-                        //         alignment: 'center',
-                        //         image: '~/Imagenes/PODERJUDICIAL.png',
-                        //         width: 95,
-                        //         height: 40
-                        //     });
-                        // }
-                    },
-                    {
-                        extend: 'excel',
-                        text: ' Excel',
-                        className: 'btn btn-success fa fa-solid fa-file'
-                    }
-                ]
+                        {
+                            extend: 'copy',
+                            text: ' Copiar',
+                            className: 'btn btn-info fa fa-solid fa-copy'
+                        },
+                        {
+                            extend: 'print',
+                            text: ' Imprimir',
+                            className: 'btn btn-secondary fa fa-solid fa-print'
+                        },
+                        {
+                            extend: 'pdfHtml5',
+                            text: ' PDF',
+                            className: 'btn btn-danger fa fa-solid fa-file',
+                            orientation: 'portrait',
+                            pageSize: 'FOLIO',
+                            // customize: function (doc) {
+                            //     doc.content.splice(1, 0, {
+                            //         margin: [0, 0, 0, 12],
+                            //         alignment: 'center',
+                            //         image: '~/Imagenes/PODERJUDICIAL.png',
+                            //         width: 95,
+                            //         height: 40
+                            //     });
+                            // }
+                        },
+                        {
+                            extend: 'excel',
+                            text: ' Excel',
+                            className: 'btn btn-success fa fa-solid fa-file'
+                        }
+                    ]
+                });
             });
-        });
-    </script>
+        </script>
 }

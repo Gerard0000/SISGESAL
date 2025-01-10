@@ -38,6 +38,9 @@ internal class Program
         //INYECTAMOS EL USERHELPER
         builder.Services.AddScoped<IUserHelper, UserHelper>();
 
+        //INYECTAMOS EL ICOMBOSHELPER PARA UTILIZAR LAS DROPDOWNLIST O COMBOBOX
+        builder.Services.AddScoped<ICombosHelper, CombosHelper>();
+
         //INYECTAMOS EL NOTAUTHORIZED
         builder.Services.ConfigureApplicationCookie(options =>
         {
@@ -82,7 +85,6 @@ internal class Program
             //pattern: "{controller=Home}/{action=Index}/{id?}");
             pattern: "{controller=Account}/{action=Login}/{id?}")
             .WithStaticAssets();
-
 
         app.Run();
     }

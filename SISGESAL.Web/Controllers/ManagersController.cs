@@ -197,7 +197,7 @@ namespace SISGESAL.web.Controllers
 
             var model = new EditUserViewModel
             {
-                UserName = manager.User.UserName,
+                UserName = manager?.User?.UserName,
                 FullName = manager.User.FullName,
                 DNI = manager.User.DNI,
                 Occupation = manager.User.Occupation,
@@ -205,6 +205,8 @@ namespace SISGESAL.web.Controllers
                 PhoneNumber = manager.User.PhoneNumber,
                 Observation = manager.User.Observation,
                 Court = manager.User.Court,
+                CreationDate = manager.User.CreationDate,
+                Creator = manager.User.Creator,
 
                 //CourtId = manager.User.Court.Id,
 
