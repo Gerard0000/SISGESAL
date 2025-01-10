@@ -11,6 +11,10 @@ namespace SISGESAL.web.Helpers
 
         IEnumerable<SelectListItem> GetComboCourts();
 
+        //IEnumerable<SelectListItem> GetComboUserWithNoDepot();
+
+        //IEnumerable<SelectListItem> GetComboDepotWithNoUser();
+
         //probar dropdownlist
         //IEnumerable<SelectListItem> GetComboMunicipalities(int departmentId);
 

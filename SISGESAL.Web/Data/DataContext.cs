@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using SISGESAL.web.Data.Entities;
+using SISGESAL.web.Models;
 
 namespace SISGESAL.web.Data
 {
@@ -19,6 +20,8 @@ namespace SISGESAL.web.Data
         public DbSet<Municipality> Municipalities { get; set; }
         public DbSet<Court> Courts { get; set; }
 
+        public DbSet<Depot> Depots { get; set; }
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
@@ -33,6 +36,12 @@ namespace SISGESAL.web.Data
             modelBuilder.Entity<Municipality>().HasIndex(x => x.CodMunHn).IsUnique();
 
             modelBuilder.Entity<Court>().HasIndex(x => x.Name).IsUnique();
+
+            modelBuilder.Entity<Depot>().HasIndex(x => x.Name).IsUnique();
+            modelBuilder.Entity<Depot>().HasIndex(x => x.User).IsUnique();
         }
+
+        public DbSet<SISGESAL.web.Data.Entities.Depot> Depot { get; set; } = default!;
+        public DbSet<SISGESAL.web.Models.DepotViewModel> DepotViewModel { get; set; } = default!;
     }
 }

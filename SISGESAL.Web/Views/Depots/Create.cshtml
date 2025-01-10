@@ -1,0 +1,44 @@
+﻿@model SISGESAL.web.Models.DepotViewModel
+
+@{
+    ViewData["Title"] = "Create";
+    Layout = "~/Views/Shared/_AdminLTE.cshtml";
+}
+
+<br />
+<h1><b>CREAR ALMACÉN</b></h1>
+<hr />
+<div class="card">
+    <div class="card-body">
+        <div class="row">
+            <div class="col-md-12">
+                <form asp-action="Create">
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+                    <div class="form-group">
+                        <label asp-for="Name" class="control-label"></label>
+                        <input asp-for="Name" class="form-control" />
+                        <span asp-validation-for="Name" class="text-danger"></span>
+                    </div>
+
+                    <div class="form-group">
+                        <label asp-for="Observation" class="control-label"></label>
+                        <input asp-for="Observation" class="form-control" />
+                        <span asp-validation-for="Observation" class="text-danger"></span>
+                    </div>
+
+                    <div class="form-group">
+                        <input type="submit" value="Guardar" class="btn btn-success" />
+                        <a class="btn btn-dark" title="Regresar" href="@Url.Action("Index","Depots")">Regresar</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

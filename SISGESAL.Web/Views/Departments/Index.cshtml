@@ -9,33 +9,6 @@
 }
 
 <br />
-@if (TempData["AlertMessageCreate"] != null)
-{
-    <div class="alert alert-success">
-        <strong>@TempData["AlertMessageCreate"]</strong>
-        <button type="button" class="close cm-strong" data-dismiss="alert">
-            <span>&times;</span>
-        </button>
-    </div>
-}
-@if (TempData["AlertMessageEdit"] != null)
-{
-    <div class="alert alert-warning">
-        <strong>@TempData["AlertMessageEdit"]</strong>
-        <button type="button" class="close cm-strong" data-dismiss="alert">
-            <span>&times;</span>
-        </button>
-    </div>
-}
-@if (TempData["AlertMessageDelete"] != null)
-{
-    <div class="alert alert-danger">
-        <strong>@TempData["AlertMessageDelete"]</strong>
-        <button type="button" class="close cm-strong" data-dismiss="alert">
-            <span>&times;</span>
-        </button>
-    </div>
-}
 
 <div class="row">
     <div class="col-lg-12">
