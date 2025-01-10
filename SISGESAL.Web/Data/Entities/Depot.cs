@@ -37,8 +37,5 @@ namespace SISGESAL.web.Data.Entities
 
         [Display(Name = "Fecha de Modificación")]
         public DateTime DateLocalModification => ModificationDate.ToLocalTime();
-
-        [Display(Name = "Usuario a Asignar el Álmacen")]
-        public User? User { get; set; }
     }
 }

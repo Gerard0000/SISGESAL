@@ -1,61 +1,70 @@
-﻿@model SISGESAL.web.Data.Entities.Depot
+﻿@model SRIAGRALNOTIFICACIONES2024.web.Data.Entities.Depot
 
 @{
     ViewData["Title"] = "Details";
     Layout = "~/Views/Shared/_AdminLTE.cshtml";
 }
 
-<h1>Details</h1>
+<!-- Font Awesome Icons -->
+<link rel="stylesheet" href="~/ArchivosAdminLTE/plugins/fontawesome-free/css/all.min.css">
+
+<br />
+<h1><b>DETALLES</b></h1>
 
 <div>
-    <h4>Depot</h4>
+    <h4><b>Almacén: </b><b class="text-red">@Html.DisplayFor(model => model.Name)</b></h4>
     <hr />
-    <dl class="row">
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Name)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Name)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Status)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Status)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Observation)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Observation)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.CreationDate)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.CreationDate)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Creator)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Creator)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.ModificationDate)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.ModificationDate)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Modifier)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Modifier)
-        </dd>
-    </dl>
+    <div class="card">
+        <div class="card-body">
+            <dl class="row">
+                <dt class="col-sm-2">
+                    @Html.DisplayNameFor(model => model.Name)
+                </dt>
+                <dd class="col-sm-10">
+                    @Html.DisplayFor(model => model.Name)
+                </dd>
+                <dt class="col-sm-2">
+                    @Html.DisplayNameFor(model => model.Observation)
+                </dt>
+                <dd class="col-sm-10">
+                    @Html.DisplayFor(model => model.Observation)
+                </dd>
+                <dt class="col-sm-2">
+                    @Html.DisplayNameFor(model => model.CreationDate)
+                </dt>
+                <dd class="col-sm-10">
+                    @Html.DisplayFor(model => model.CreationDate)
+                </dd>
+                <dt class="col-sm-2">
+                    @Html.DisplayNameFor(model => model.Creator)
+                </dt>
+                <dd class="col-sm-10">
+                    @Html.DisplayFor(model => model.Creator)
+                </dd>
+                <dt class="col-sm-2">
+                    @Html.DisplayNameFor(model => model.ModificationDate)
+                </dt>
+                <dd class="col-sm-10">
+                    @Html.DisplayFor(model => model.ModificationDate)
+                </dd>
+                <dt class="col-sm-2">
+                    @Html.DisplayNameFor(model => model.Modifier)
+                </dt>
+                <dd class="col-sm-10">
+                    @Html.DisplayFor(model => model.Modifier)
+                </dd>
+            </dl>
+            <div>
+                <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-warning">Editar Departamento</a>
+                <a asp-action="Index" class="btn btn-dark">Regresar</a>
+            </div>
+        </div>
+    </div>
 </div>
-<div>
-    <a asp-action="Edit" asp-route-id="@Model.Id">Edit</a> |
-    <a asp-action="Index">Back to List</a>
-</div>
+
+@section Scripts
+{
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

@@ -38,7 +38,6 @@ namespace SISGESAL.web.Data
             modelBuilder.Entity<Court>().HasIndex(x => x.Name).IsUnique();
 
             modelBuilder.Entity<Depot>().HasIndex(x => x.Name).IsUnique();
-            modelBuilder.Entity<Depot>().HasIndex(x => x.User).IsUnique();
         }
 
         public DbSet<SISGESAL.web.Data.Entities.Depot> Depot { get; set; } = default!;
