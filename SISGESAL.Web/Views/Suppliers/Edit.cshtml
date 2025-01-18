@@ -1,0 +1,53 @@
+﻿@model SISGESAL.web.Data.Entities.Supplier
+
+@{
+    ViewData["Title"] = "Edit";
+    Layout = "~/Views/Shared/_AdminLTE.cshtml";
+}
+
+<hr />
+<h1><b>EDITAR PROVEEDOR</b></h1>
+
+<hr />
+<div class="card">
+    <div class="card-body">
+        <div class="row">
+            <div class="col-md-12">
+                <form asp-action="Edit">
+
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                    <div><b><label style="color:red">@ViewBag.DuplicateMessage</label></b></div>
+
+                    <input type="hidden" asp-for="Id" />
+                    <input type="hidden" asp-for="Status" />
+                    <input type="hidden" asp-for="CreationDate" />
+                    <input type="hidden" asp-for="Creator" />
+
+                    <div class="form-group">
+                        <label asp-for="Name" class="control-label">Nombre del Proveedor <b style="color:red">(*)</b></label>
+                        <input asp-for="Name" class="form-control" style="text-transform: uppercase" />
+                        <b><span asp-validation-for="Name" class="text-danger"></span></b>
+                    </div>
+
+                    <div class="form-group">
+                        <label asp-for="Observation" class="control-label"></label>
+                        <textarea asp-for="Observation" class="form-control" style="text-transform: uppercase" rows="3"></textarea>
+                        <b><span asp-validation-for="Observation" class="text-danger"></span></b>
+                    </div>
+
+                    <div class="form-group">
+                        <input type="submit" value="Guardar" class="btn btn-success" />
+                        <a asp-action="Index" class="btn btn-dark">Regresar</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<hr />
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

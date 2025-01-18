@@ -1,0 +1,77 @@
+﻿@model SISGESAL.web.Data.Entities.Gender
+
+@{
+    ViewData["Title"] = "Details";
+    Layout = "~/Views/Shared/_AdminLTE.cshtml";
+}
+
+<!-- Font Awesome Icons -->
+<link rel="stylesheet" href="~/ArchivosAdminLTE/plugins/fontawesome-free/css/all.min.css">
+
+<h1><b>DETALLES</b></h1>
+
+<div>
+    <h4><b>Persona: </b><b class="text-red">@Html.DisplayFor(model => model.Name)</b></h4>
+    <h5><b>Tipo de Persona: </b><b class="text-red">@Html.DisplayFor(model => model.KindofPeople.Name)</b></h5>
+    <hr />
+    <div class="card">
+        <div class="card-body">
+            <dl class="row">
+                <dt class="col-sm-2">
+                    @Html.DisplayNameFor(model => model.Name)
+                </dt>
+                <dd class="col-sm-10">
+                    @Html.DisplayFor(model => model.Name)
+                </dd>
+                <dt class="col-sm-2">
+                    @Html.DisplayNameFor(model => model.KindofPeople.Name)
+                </dt>
+                <dd class="col-sm-10">
+                    @Html.DisplayFor(model => model.KindofPeople.Name)
+                </dd>
+                <dt class="col-sm-2">
+                    @Html.DisplayNameFor(model => model.Observation)
+                </dt>
+                <dd class="col-sm-10">
+                    @Html.DisplayFor(model => model.Observation)
+                </dd>
+                <dt class="col-sm-2">
+                    @Html.DisplayNameFor(model => model.CreationDate)
+                </dt>
+                <dd class="col-sm-10">
+                    @Html.DisplayFor(model => model.CreationDate)
+                </dd>
+                <dt class="col-sm-2">
+                    @Html.DisplayNameFor(model => model.Creator)
+                </dt>
+                <dd class="col-sm-10">
+                    @Html.DisplayFor(model => model.Creator)
+                </dd>
+                <dt class="col-sm-2">
+                    @Html.DisplayNameFor(model => model.ModificationDate)
+                </dt>
+                <dd class="col-sm-10">
+                    @Html.DisplayFor(model => model.ModificationDate)
+                </dd>
+                <dt class="col-sm-2">
+                    @Html.DisplayNameFor(model => model.Modifier)
+                </dt>
+                <dd class="col-sm-10">
+                    @Html.DisplayFor(model => model.Modifier)
+                </dd>
+            </dl>
+            <div>
+                <a href="/KindofPeoples/Details/@Model.KindofPeople.Id" class="btn btn-dark" title="Regresar">Regresar</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<hr />
+
+@section Scripts
+{
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

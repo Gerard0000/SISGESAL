@@ -13,7 +13,6 @@ namespace SISGESAL.web.Data
 
         //CREAMOS LA PROPIEDAD DE TIPO DBSET DE LAS TABLAS
         public DbSet<Manager> Managers { get; set; }
-
         public DbSet<Customer> Customers { get; set; }
 
         public DbSet<Department> Departments { get; set; }
@@ -21,6 +20,15 @@ namespace SISGESAL.web.Data
         public DbSet<Court> Courts { get; set; }
 
         public DbSet<Depot> Depots { get; set; }
+
+        public DbSet<Supplier> Suppliers { get; set; }
+        public DbSet<KindofArticle> KindofArticles { get; set; }
+        public DbSet<TradeMark> TradeMarks { get; set; }
+
+        public DbSet<KindofPeople> KindofPeoples { get; set; }
+        public DbSet<Gender> Genders { get; set; }
+
+        public DbSet<KindofArticle> Articles { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -38,9 +46,18 @@ namespace SISGESAL.web.Data
             modelBuilder.Entity<Court>().HasIndex(x => x.Name).IsUnique();
 
             modelBuilder.Entity<Depot>().HasIndex(x => x.Name).IsUnique();
+
+            modelBuilder.Entity<Supplier>().HasIndex(x => x.Name).IsUnique();
+
+            modelBuilder.Entity<KindofArticle>().HasIndex(x => x.Name).IsUnique();
+
+            modelBuilder.Entity<TradeMark>().HasIndex(x => x.Name).IsUnique();
+
+            modelBuilder.Entity<Article>().HasIndex(x => x.Name).IsUnique();
         }
 
-        public DbSet<SISGESAL.web.Data.Entities.Depot> Depot { get; set; } = default!;
+        public DbSet<SISGESAL.web.Data.Entities.Depot> Supplier { get; set; } = default!;
         public DbSet<SISGESAL.web.Models.DepotViewModel> DepotViewModel { get; set; } = default!;
+        public DbSet<SISGESAL.web.Data.Entities.Article> Article { get; set; } = default!;
     }
 }

@@ -9,7 +9,7 @@ namespace SISGESAL.web.Data
         private readonly DataContext _dataContext;
         private readonly IUserHelper _userHelper;
 
-        public SeedDb(DataContext context , IUserHelper userHelper)
+        public SeedDb(DataContext context, IUserHelper userHelper)
         {
             _userHelper = userHelper;
             _dataContext = context;
@@ -22,10 +22,14 @@ namespace SISGESAL.web.Data
             var manager = await CheckUserAsync("ADMIN", "admin@admin.com", "admin", UserType.Manager);
             var customer = await CheckUserAsync("USER", "user@user.com", "user", UserType.Customer);
 
-            await CheckDepartmentsAsync();
-
             await CheckCustomerAsync(customer);
             await CheckManagerAsync(manager);
+
+            await CheckDepartmentsAsync();
+
+            await CheckKindofArticleAsync();
+
+            await CheckKindofPeopleAsync();
         }
 
         private async Task<User> CheckUserAsync(string fullName, string email, string username, UserType userType)
@@ -67,6 +71,56 @@ namespace SISGESAL.web.Data
             if (!_dataContext.Customers.Any())
             {
                 _dataContext.Customers.Add(new Customer { User = user });
+                await _dataContext.SaveChangesAsync();
+            }
+        }
+
+        private async Task CheckKindofArticleAsync()
+        {
+            if (!_dataContext.KindofArticles.Any())
+            {
+                _dataContext.KindofArticles.Add(new KindofArticle
+                {
+                    Name = "ASEO",
+                    Status = true,
+                });
+                _dataContext.KindofArticles.Add(new KindofArticle
+                {
+                    Name = "PAPELERÍA Y ÚTILES",
+                    Status = true,
+                });
+                _dataContext.KindofArticles.Add(new KindofArticle
+                {
+                    Name = "MANTENIMIENTO",
+                    Status = true,
+                });
+                await _dataContext.SaveChangesAsync();
+            }
+        }
+
+
+        private async Task CheckKindofPeopleAsync()
+        {
+            if (!_dataContext.KindofPeoples.Any())
+            {
+                _dataContext.KindofPeoples.Add(new KindofPeople
+                {
+                    Name = "PERSONA NATURAL",
+                    Genders = new List<Gender>
+                    {
+                        new Gender { Name = "MASCULINO" },
+                        new Gender { Name = "FEMENINO" },
+                    }
+                });
+                _dataContext.KindofPeoples.Add(new KindofPeople
+                {
+                    Name = "PERSONA JURÍDICA",
+                    Genders = new List<Gender>
+                    {
+                        new Gender { Name = "EMPRESA PÚBLICA" },
+                        new Gender { Name = "EMPRESA PRIVADA" },
+                    }
+                });
                 await _dataContext.SaveChangesAsync();
             }
         }

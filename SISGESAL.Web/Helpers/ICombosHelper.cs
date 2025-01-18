@@ -11,6 +11,8 @@ namespace SISGESAL.web.Helpers
 
         IEnumerable<SelectListItem> GetComboCourts();
 
+        IEnumerable<SelectListItem> GetComboKindofArticles();
+
         //IEnumerable<SelectListItem> GetComboUserWithNoDepot();
 
         //IEnumerable<SelectListItem> GetComboDepotWithNoUser();

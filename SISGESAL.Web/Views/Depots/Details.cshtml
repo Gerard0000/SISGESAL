@@ -1,4 +1,4 @@
-﻿@model SRIAGRALNOTIFICACIONES2024.web.Data.Entities.Depot
+﻿@model SISGESAL.web.Data.Entities.Depot
 
 @{
     ViewData["Title"] = "Details";
@@ -8,8 +8,15 @@
 <!-- Font Awesome Icons -->
 <link rel="stylesheet" href="~/ArchivosAdminLTE/plugins/fontawesome-free/css/all.min.css">
 
+<!-- datatable -->
+<link rel="stylesheet" href="~/DataTable/css/buttons.dataTables.min.css">
+<link rel="stylesheet" href="~/DataTable/css/dataTables.dateTime.min.css">
+<link rel="stylesheet" href="~/DataTable/css/jquery.dataTables.min.css">
+<link rel="stylesheet" href="~/DataTable/css/responsive.dataTables.min.css">
+<link rel="stylesheet" href="~/DataTable/css/select.dataTables.min.css">
+
 <br />
-<h1><b>DETALLES</b></h1>
+<h1><b>DETALLES ALMACÉN</b></h1>
 
 <div>
     <h4><b>Almacén: </b><b class="text-red">@Html.DisplayFor(model => model.Name)</b></h4>
@@ -22,6 +29,12 @@
                 </dt>
                 <dd class="col-sm-10">
                     @Html.DisplayFor(model => model.Name)
+                </dd>
+                <dt class="col-sm-2">
+                    @Html.DisplayNameFor(model => model.Status)
+                </dt>
+                <dd class="col-sm-10">
+                    @Html.DisplayFor(model => model.Status)
                 </dd>
                 <dt class="col-sm-2">
                     @Html.DisplayNameFor(model => model.Observation)
@@ -55,12 +68,14 @@
                 </dd>
             </dl>
             <div>
-                <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-warning">Editar Departamento</a>
+                <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-warning">Editar Almacén</a>
                 <a asp-action="Index" class="btn btn-dark">Regresar</a>
             </div>
         </div>
     </div>
 </div>
+
+<hr />
 
 @section Scripts
 {

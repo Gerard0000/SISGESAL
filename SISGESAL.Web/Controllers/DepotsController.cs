@@ -25,10 +25,10 @@ namespace SISGESAL.web.Controllers
         // GET: Depots
         public async Task<IActionResult> Index()
         {
-            ViewBag.Indexcount = _dataContext.Depots.Count();
-            ViewBag.Indexcount2 = _dataContext.Depots.Where(m => m.Status == true).Count();
-            ViewBag.Indexcount3 = _dataContext.Depots.Where(m => m.Status == false).Count();
-            return View(await _dataContext.Depots.ToListAsync());
+            ViewBag.Indexcount = _dataContext.Supplier.Count();
+            ViewBag.Indexcount2 = _dataContext.Supplier.Where(m => m.Status == true).Count();
+            ViewBag.Indexcount3 = _dataContext.Supplier.Where(m => m.Status == false).Count();
+            return View(await _dataContext.Supplier.ToListAsync());
         }
 
         // GET: Depots/Details/5
@@ -71,6 +71,7 @@ namespace SISGESAL.web.Controllers
             if (ModelState.IsValid)
             {
                 depot.Name = depot.Name?.ToUpper().Trim();
+                depot.Status = true;
                 depot.Observation = depot.Observation?.ToUpper().Trim();
                 depot.CreationDate = DateTime.Now;
                 depot.ModificationDate = DateTime.Now;
@@ -81,7 +82,7 @@ namespace SISGESAL.web.Controllers
                 {
                     _dataContext.Add(depot);
                     await _dataContext.SaveChangesAsync();
-                    TempData["AlertMessageCreate"] = "Departamento Agregado Exitosamente";
+                    TempData["AlertMessageCreate"] = "Almacén Agregado Exitosamente";
                     return RedirectToAction(nameof(Index));
                 }
                 catch (Exception)
@@ -126,14 +127,15 @@ namespace SISGESAL.web.Controllers
                 {
                     depot.Name = depot.Name?.ToUpper().Trim();
                     depot.Observation = depot.Observation?.ToUpper().Trim();
-                    depot.CreationDate = DateTime.Now;
-                    depot.Creator = User.FindFirstValue(ClaimTypes.NameIdentifier);
+                    depot.Status = depot.Status;
+                    depot.CreationDate = depot.CreationDate;
+                    depot.Creator = depot.Creator;
                     depot.ModificationDate = DateTime.Now;
                     depot.Modifier = User.FindFirstValue(ClaimTypes.NameIdentifier);
 
                     _dataContext.Update(depot);
                     await _dataContext.SaveChangesAsync();
-                    TempData["AlertMessageEdit"] = "Departamento Editado Exitosamente";
+                    TempData["AlertMessageEdit"] = "Almacén Editado Exitosamente";
                     return RedirectToAction(nameof(Index));
                 }
             }
@@ -180,7 +182,7 @@ namespace SISGESAL.web.Controllers
                 .FirstOrDefaultAsync(u => u.Id == id);
             if (depot != null)
             {
-                depot.Status = true;
+                depot.Status = false;
                 depot.Modifier = User.FindFirstValue(ClaimTypes.NameIdentifier);
                 depot.ModificationDate = DateTime.Now;
             }
@@ -189,7 +191,7 @@ namespace SISGESAL.web.Controllers
             {
                 _dataContext.Update(depot);
                 await _dataContext.SaveChangesAsync();
-                TempData["AlertMessageLock"] = "Administrador Bloqueado Exitosamente";
+                TempData["AlertMessageLock"] = "Almacén Bloqueado Exitosamente";
                 return RedirectToAction(nameof(Index));
             }
             catch (Exception)
@@ -231,7 +233,7 @@ namespace SISGESAL.web.Controllers
             {
                 _dataContext.Update(depot);
                 await _dataContext.SaveChangesAsync();
-                TempData["AlertMessageUnLock"] = "Almacen Activado Exitosamente";
+                TempData["AlertMessageUnLock"] = "Almacén Activado Exitosamente";
                 return RedirectToAction(nameof(Index));
             }
             catch (Exception)

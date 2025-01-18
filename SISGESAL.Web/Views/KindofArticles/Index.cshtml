@@ -1,0 +1,500 @@
+﻿@model IEnumerable<SISGESAL.web.Data.Entities.KindofArticle>
+
+<!-- Font Awesome Icons -->
+<link rel="stylesheet" href="~/ArchivosAdminLTE/plugins/fontawesome-free/css/all.min.css">
+
+<!-- datatable -->
+<link rel="stylesheet" href="~/DataTable/css/buttons.dataTables.min.css">
+<link rel="stylesheet" href="~/DataTable/css/dataTables.dateTime.min.css">
+<link rel="stylesheet" href="~/DataTable/css/jquery.dataTables.min.css">
+<link rel="stylesheet" href="~/DataTable/css/responsive.dataTables.min.css">
+<link rel="stylesheet" href="~/DataTable/css/select.dataTables.min.css">
+
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_AdminLTE.cshtml";
+}
+
+<br />
+
+@if (TempData["AlertMessageCreate"] != null)
+{
+    <div class="alert alert-success">
+        <strong>@TempData["AlertMessageCreate"]</strong>
+        <button type="button" class="close cm-strong" data-dismiss="alert">
+            <span>&times;</span>
+        </button>
+    </div>
+}
+@if (TempData["AlertMessageEdit"] != null)
+{
+    <div class="alert alert-warning">
+        <strong>@TempData["AlertMessageEdit"]</strong>
+        <button type="button" class="close cm-strong" data-dismiss="alert">
+            <span>&times;</span>
+        </button>
+    </div>
+}
+@if (TempData["AlertMessageLock"] != null)
+{
+    <div class="alert alert-danger">
+        <strong>@TempData["AlertMessageLock"]</strong>
+        <button type="button" class="close cm-strong" data-dismiss="alert">
+            <span>&times;</span>
+        </button>
+    </div>
+}
+@if (TempData["AlertMessageUnLock"] != null)
+{
+    <div class="alert alert-success">
+        <strong>@TempData["AlertMessageUnLock"]</strong>
+        <button type="button" class="close cm-strong" data-dismiss="alert">
+            <span>&times;</span>
+        </button>
+    </div>
+}
+
+<div class="row">
+    <div class="col-lg-7">
+        <p class="text-center">
+            <h1 align="center"><b>TIPOS DE ARTÍCULOS</b></h1>
+        </p>
+    </div>
+    <div class="col-lg-5">
+        <p class="text-center">
+            <br />
+            <a asp-action="Create" class="btn btn-primary col-md-6"><b>CREAR NUEVO TIPO DE ARTÍCULOS</b></a>
+        </p>
+    </div>
+</div>
+
+<hr />
+
+<div class="card">
+    <div class="card-body">
+        <div class="row">
+            <div class="col-lg-4 col-6">
+                <div class="small-box bg-success">
+                    <div class="inner">
+                        <h3 align="center">@ViewBag.Indexcount2</h3>
+                        <p align="center">Tipos de Artículos Activos</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-4 col-6">
+                <div class="small-box bg-danger">
+                    <div class="inner">
+                        <h3 align="center">@ViewBag.Indexcount3</h3>
+                        <p align="center">Tipos de Artículos Bloqueados</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-4 col-6">
+                <div class="small-box bg-info">
+                    <div class="inner">
+                        <h3 align="center">@ViewBag.Indexcount</h3>
+                        <p align="center">Total de Tipos de Artículos</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- TIPO DE ARTÍCULOS ACTIVOS -->
+<div class="card">
+    <div class="card-header bg-success">
+        <h5 style="text-align:center;"><b>TIPOS DE ARTÍCULOS ACTIVOS</b></h5>
+    </div>
+    <div class="card-body" style="text-align: center;">
+        <table id="tabla" class="table table-bordered table-striped" style="width:100%">
+            <thead class="thead-success">
+                <tr>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Name)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Status)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.ArticlesNumber)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Observation)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.CreationDate)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Creator)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.ModificationDate)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Modifier)
+                    </th>
+                    <th>
+
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    @if (item.Status == true)
+                    {
+                        <tr>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Name)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Status)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.ArticlesNumber)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Observation)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.CreationDate)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Creator)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.ModificationDate)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Modifier)
+                            </td>
+                            <td>
+                                <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-warning fa fa-solid fa-edit" title="EDITAR"></a>
+                                <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-info fa fa-solid fa-info-circle" title="DETALLE"></a>
+                                @if (item.Status == true)
+                                {
+                                    <a asp-action="Lock" asp-route-id="@item.Id" class="btn btn-danger fa fa-solid fa-lock" title="BLOQUEAR"></a>
+                                }
+                            </td>
+                        </tr>
+                    }
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<!-- TIPO DE ARTÍCULOS BLOQUEADOS -->
+<div class="card">
+    <div class="card-header bg-danger">
+        <h5 style="text-align:center;"><b>TIPOS DE ARTÍCULOS BLOQUEADOS</b></h5>
+    </div>
+    <div class="card-body" style="text-align: center;">
+        <table id="tabla2" class="table table-bordered table-striped" style="width:100%">
+            <thead class="thead-success">
+                <tr>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Name)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Status)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Observation)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.CreationDate)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Creator)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.ModificationDate)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Modifier)
+                    </th>
+                    <th>
+
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    @if (item.Status == false)
+                    {
+                        <tr>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Name)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Status)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Observation)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.CreationDate)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Creator)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.ModificationDate)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Modifier)
+                            </td>
+                            <td>
+                                <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-warning fa fa-solid fa-edit" title="EDITAR"></a>
+                                <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-info fa fa-solid fa-info-circle" title="DETALLE"></a>
+                                @if (item.Status == false)
+                                {
+                                    <a asp-action="UnLock" asp-route-id="@item.Id" class="btn btn-success fa fa-solid fa-unlock" title="ACTIVAR"></a>
+                                }
+                            </td>
+                        </tr>
+                    }
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<!-- TODOS LOS TIPO DE ARTÍCULOS -->
+<div class="card">
+    <div class="card-header bg-info">
+        <h5 style="text-align:center;"><b>TODOS LOS TIPO DE ARTÍCULOS</b></h5>
+    </div>
+    <div class="card-body" style="text-align: center;">
+        <table id="tabla3" class="table table-bordered table-striped" style="width:100%">
+            <thead class="thead-success">
+                <tr>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Name)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Status)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Observation)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.CreationDate)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Creator)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.ModificationDate)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Modifier)
+                    </th>
+                    <th>
+
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Name)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Status)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Observation)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.CreationDate)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Creator)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.ModificationDate)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Modifier)
+                        </td>
+                        <td>
+                            <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-warning fa fa-solid fa-edit" title="EDITAR"></a>
+                            <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-info fa fa-solid fa-info-circle" title="DETALLE"></a>
+                            @if (item.Status == true)
+                            {
+                                <a asp-action="Lock" asp-route-id="@item.Id" class="btn btn-danger fa fa-solid fa-lock" title="BLOQUEAR"></a>
+                            }
+                            @if (item.Status == false)
+                            {
+                                <a asp-action="UnLock" asp-route-id="@item.Id" class="btn btn-success fa fa-solid fa-unlock" title="ACTIVAR"></a>
+                            }
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+
+    <script src="~/archivosadminlte/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script src="~/archivosadminlte/plugins/datatables-buttons/js/buttons.bootstrap4.js"></script>
+    <script src="~/archivosadminlte/plugins/datatables-buttons/js/datatables.buttons.js"></script>
+    <script src="~/archivosadminlte/plugins/datatables-buttons/js/buttons.html5.min.js"></script>
+    <script src="~/archivosadminlte/plugins/datatables-buttons/js/buttons.print.min.js"></script>
+    <script src="~/archivosadminlte/plugins/datatables-bs4/js/datatables.bootstrap4.js"></script>
+    <script src="~/archivosadminlte/plugins/datatables-buttons/js/datatables.buttons.js"></script>
+    <script src="~/archivosadminlte/plugins/datatables/jquery.datatables.js"></script>
+    <script src="~/archivosadminlte/plugins/jquery/jquery.js"></script>
+    <script src="~/archivosadminlte/plugins/jszip/jszip.min.js"></script>
+    <script src="~/archivosadminlte/plugins/pdfmake/pdfmake.min.js"></script>
+    <script src="~/archivosadminlte/plugins/pdfmake/vfs_fonts.js"></script>
+
+    <script>
+        $(document).ready(function () {
+            $('#tabla').DataTable({
+                "language": {
+                    "url": "//cdn.datatables.net/plug-ins/1.10.15/i18n/Spanish.json"
+                },
+                //responsive: true,
+                dom: '<"pt-2 row" <"col-xl"l><"col-x"B><"col-xl"f> >rtip',
+                buttons: [
+
+                    {
+                        extend: 'copy',
+                        text: ' Copiar',
+                        className: 'btn btn-info fa fa-solid fa-copy'
+                    },
+                    {
+                        extend: 'print',
+                        text: ' Imprimir',
+                        className: 'btn btn-secondary fa fa-solid fa-print'
+                    },
+                    {
+                        extend: 'pdfHtml5',
+                        text: ' PDF',
+                        className: 'btn btn-danger fa fa-solid fa-file',
+                        orientation: 'portrait',
+                        pageSize: 'FOLIO',
+                        // customize: function (doc) {
+                        //     doc.content.splice(1, 0, {
+                        //         margin: [0, 0, 0, 12],
+                        //         alignment: 'center',
+                        //         image: '~/Imagenes/PODERJUDICIAL.png',
+                        //         width: 95,
+                        //         height: 40
+                        //     });
+                        // }
+                    },
+                    {
+                        extend: 'excel',
+                        text: ' Excel',
+                        className: 'btn btn-success fa fa-solid fa-file'
+                    }
+                ]
+            });
+        });
+    </script>
+
+    <script>
+        $(document).ready(function () {
+            $('#tabla2').DataTable({
+                "language": {
+                    "url": "//cdn.datatables.net/plug-ins/1.10.15/i18n/Spanish.json"
+                },
+                //responsive: true,
+                dom: '<"pt-2 row" <"col-xl"l><"col-x"B><"col-xl"f> >rtip',
+                buttons: [
+
+                    {
+                        extend: 'copy',
+                        text: ' Copiar',
+                        className: 'btn btn-info fa fa-solid fa-copy'
+                    },
+                    {
+                        extend: 'print',
+                        text: ' Imprimir',
+                        className: 'btn btn-secondary fa fa-solid fa-print'
+                    },
+                    {
+                        extend: 'pdfHtml5',
+                        text: ' PDF',
+                        className: 'btn btn-danger fa fa-solid fa-file',
+                        orientation: 'portrait',
+                        pageSize: 'FOLIO',
+                        // customize: function (doc) {
+                        //     doc.content.splice(1, 0, {
+                        //         margin: [0, 0, 0, 12],
+                        //         alignment: 'center',
+                        //         image: '~/Imagenes/PODERJUDICIAL.png',
+                        //         width: 95,
+                        //         height: 40
+                        //     });
+                        // }
+                    },
+                    {
+                        extend: 'excel',
+                        text: ' Excel',
+                        className: 'btn btn-success fa fa-solid fa-file'
+                    }
+                ]
+            });
+        });
+    </script>
+
+    <script>
+        $(document).ready(function () {
+            $('#tabla3').DataTable({
+                "language": {
+                    "url": "//cdn.datatables.net/plug-ins/1.10.15/i18n/Spanish.json"
+                },
+                //responsive: true,
+                dom: '<"pt-2 row" <"col-xl"l><"col-x"B><"col-xl"f> >rtip',
+                buttons: [
+
+                    {
+                        extend: 'copy',
+                        text: ' Copiar',
+                        className: 'btn btn-info fa fa-solid fa-copy'
+                    },
+                    {
+                        extend: 'print',
+                        text: ' Imprimir',
+                        className: 'btn btn-secondary fa fa-solid fa-print'
+                    },
+                    {
+                        extend: 'pdfHtml5',
+                        text: ' PDF',
+                        className: 'btn btn-danger fa fa-solid fa-file',
+                        orientation: 'portrait',
+                        pageSize: 'FOLIO',
+                        // customize: function (doc) {
+                        //     doc.content.splice(1, 0, {
+                        //         margin: [0, 0, 0, 12],
+                        //         alignment: 'center',
+                        //         image: '~/Imagenes/PODERJUDICIAL.png',
+                        //         width: 95,
+                        //         height: 40
+                        //     });
+                        // }
+                    },
+                    {
+                        extend: 'excel',
+                        text: ' Excel',
+                        className: 'btn btn-success fa fa-solid fa-file'
+                    }
+                ]
+            });
+        });
+    </script>
+}
