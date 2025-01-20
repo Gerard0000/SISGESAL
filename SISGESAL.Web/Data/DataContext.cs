@@ -13,6 +13,7 @@ namespace SISGESAL.web.Data
 
         //CREAMOS LA PROPIEDAD DE TIPO DBSET DE LAS TABLAS
         public DbSet<Manager> Managers { get; set; }
+
         public DbSet<Customer> Customers { get; set; }
 
         public DbSet<Department> Departments { get; set; }
@@ -28,7 +29,7 @@ namespace SISGESAL.web.Data
         public DbSet<KindofPeople> KindofPeoples { get; set; }
         public DbSet<Gender> Genders { get; set; }
 
-        public DbSet<KindofArticle> Articles { get; set; }
+        public DbSet<Article> Articles { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

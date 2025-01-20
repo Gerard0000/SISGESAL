@@ -28,7 +28,9 @@ namespace SISGESAL.web.Controllers
             ViewBag.Indexcount = _dataContext.TradeMarks.Count();
             ViewBag.Indexcount2 = _dataContext.TradeMarks.Where(m => m.Status == true).Count();
             ViewBag.Indexcount3 = _dataContext.TradeMarks.Where(m => m.Status == false).Count();
-            return View(await _dataContext.TradeMarks.ToListAsync());
+            return View(await _dataContext.TradeMarks
+                .Include(x => x.Articles)
+                .ToListAsync());
         }
 
         // GET: TradeMarks/Details/5
@@ -40,6 +42,10 @@ namespace SISGESAL.web.Controllers
             }
 
             var tradeMark = await _dataContext.TradeMarks
+                .Include(x => x.Articles)
+                .ThenInclude(x => x.KindofArticle)
+                .Include(x => x.Articles)
+                .ThenInclude(x => x.Supplier)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (tradeMark == null)
             {
@@ -147,7 +153,6 @@ namespace SISGESAL.web.Controllers
                 {
                     throw;
                 }
-
             }
             catch (Exception)
             {
@@ -163,16 +168,16 @@ namespace SISGESAL.web.Controllers
             {
                 return NotFound();
             }
-            var kindofArticle = await _dataContext.KindofArticles
+            var trademark = await _dataContext.TradeMarks
                 .FirstOrDefaultAsync(u => u.Id == id);
-            if (kindofArticle == null)
+            if (trademark == null)
             {
                 return NotFound();
             }
-            return View(kindofArticle);
+            return View(trademark);
         }
 
-        // POST: KindofArticle/Lock/5
+        // POST: TradeMarks/Lock/5
         [HttpPost, ActionName("Lock")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> LockConfirmed(int id)
@@ -199,7 +204,7 @@ namespace SISGESAL.web.Controllers
             }
         }
 
-        // GET: KindofArticle/UnLock
+        // GET: TradeMarks/UnLock
         public async Task<IActionResult> UnLock(int? id)
         {
             if (id == null)
@@ -215,12 +220,12 @@ namespace SISGESAL.web.Controllers
             return View(tradeMark);
         }
 
-        // POST: KindofArticle/UnLock/5
+        // POST: TradeMarks/UnLock/5
         [HttpPost, ActionName("UnLock")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> UnLockConfirmed(int id)
         {
-            var trademark = await _dataContext.KindofArticles
+            var trademark = await _dataContext.TradeMarks
                 .FirstOrDefaultAsync(u => u.Id == id);
             if (trademark != null)
             {

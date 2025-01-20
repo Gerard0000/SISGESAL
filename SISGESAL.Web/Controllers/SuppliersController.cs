@@ -28,7 +28,9 @@ namespace SISGESAL.web.Controllers
             ViewBag.Indexcount = _dataContext.Suppliers.Count();
             ViewBag.Indexcount2 = _dataContext.Suppliers.Where(m => m.Status == true).Count();
             ViewBag.Indexcount3 = _dataContext.Suppliers.Where(m => m.Status == false).Count();
-            return View(await _dataContext.Suppliers.ToListAsync());
+            return View(await _dataContext.Suppliers
+                .Include(x => x.Articles)
+                .ToListAsync());
         }
 
         // GET: Suppliers/Details/5
@@ -40,6 +42,10 @@ namespace SISGESAL.web.Controllers
             }
 
             var supplier = await _dataContext.Suppliers
+                .Include(x => x.Articles)
+                .ThenInclude(x => x.TradeMark)
+                .Include(x => x.Articles)
+                .ThenInclude(x => x.KindofArticle)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (supplier == null)
             {
@@ -138,23 +144,23 @@ namespace SISGESAL.web.Controllers
                     return RedirectToAction(nameof(Index));
                 }
             }
-                catch (DbUpdateConcurrencyException)
+            catch (DbUpdateConcurrencyException)
+            {
+                if (!SupplierExists(supplier.Id))
                 {
-                    if (!SupplierExists(supplier.Id))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
+                    return NotFound();
                 }
+                else
+                {
+                    throw;
+                }
+            }
             catch (Exception)
             {
                 ViewBag.DuplicateMessage = "Se ha producido un error ó el valor esta duplicado con otro valor de la base de datos";
             }
             return View(supplier);
-            }
+        }
 
         // GET: Suppliers/Lock
         public async Task<IActionResult> Lock(int? id)
@@ -282,6 +288,7 @@ namespace SISGESAL.web.Controllers
             }
             return RedirectToAction(nameof(Index));
         }
+
         private bool SupplierExists(int id)
         {
             return _dataContext.Suppliers.Any(e => e.Id == id);

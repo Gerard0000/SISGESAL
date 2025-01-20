@@ -28,7 +28,9 @@ namespace SISGESAL.web.Controllers
             ViewBag.Indexcount = _dataContext.KindofArticles.Count();
             ViewBag.Indexcount2 = _dataContext.KindofArticles.Where(m => m.Status == true).Count();
             ViewBag.Indexcount3 = _dataContext.KindofArticles.Where(m => m.Status == false).Count();
-            return View(await _dataContext.KindofArticles.ToListAsync());
+            return View(await _dataContext.KindofArticles
+                .Include(x => x.Articles)
+                .ToListAsync());
         }
 
         // GET: KindofArticles/Details/5
@@ -40,6 +42,10 @@ namespace SISGESAL.web.Controllers
             }
 
             var kindofArticle = await _dataContext.KindofArticles
+                .Include(x => x.Articles)
+                .ThenInclude(x => x.TradeMark)
+                .Include(x => x.Articles)
+                .ThenInclude(x => x.Supplier)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (kindofArticle == null)
             {

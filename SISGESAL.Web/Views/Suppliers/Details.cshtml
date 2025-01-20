@@ -75,6 +75,79 @@
     </div>
 </div>
 
+@if (Model.Articles.Count == 0)
+{
+    <div class="card">
+        <div class="card-body">
+            <h4><b class="text-purple">NO HAY ARTÍCULOS REGISTRADOS</b></h4>
+            <div>
+                <a href="/Articles/Create/@Model.Id" class="btn btn-primary">Crear Artículo</a>
+            </div>
+            <br>
+        </div>
+    </div>
+}
+else
+{
+    <div class="card">
+        <div class="card-header bg-info">
+            <h5 style="text-align:center;"><b>ARTÍCULOS DEL PROVEEDOR @Model.Name</b></h5>
+        </div>
+        <div class="card-body">
+            <div>@* 
+                <a asp-action="CreateMunicipality" asp-route-id="@Model.Id" class="btn btn-primary">Crear Municipio</a> *@
+                <a href="/Articles/Create/@Model.Id" class="btn btn-primary">Crear Artículo</a>
+            </div>
+            <br>
+            <div style="text-align: center;">
+                <table id="tabla" class="table table-bordered table-striped" style="width:100%">
+                    <thead>
+                        <tr>
+                            <th>
+                                @Html.DisplayNameFor(model => model.Articles.FirstOrDefault().Name)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.Articles.FirstOrDefault().KindofArticle.Name)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.Articles.FirstOrDefault().TradeMark.Name)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.Articles.FirstOrDefault().Observation)
+                            </th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model.Articles)
+                        {
+                            <tr>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Name)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.KindofArticle.Name)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.TradeMark.Name)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Observation)
+                                </td>
+                                <td>
+                                    <a href="/Articles/Details/@item.Id" class="btn btn-info fa fa-solid fa-info-circle" title="DETALLE"></a>
+                                    <a href="/Articles/Edit/@item.Id" class="btn btn-warning fa fa-solid fa-edit" title="EDITAR"></a>
+                                    <a href="/Articles/Delete/@item.Id" class="btn btn-danger fa fa-solid fa-trash" title="ELIMINAR"></a>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+}
+
 <hr />
 
 @section Scripts

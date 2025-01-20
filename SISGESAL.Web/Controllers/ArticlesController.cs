@@ -1,7 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -12,13 +15,16 @@ using SISGESAL.web.Models;
 
 namespace SISGESAL.web.Controllers
 {
+    [Authorize(Roles = "Manager")]
     public class ArticlesController : Controller
     {
         private readonly DataContext _dataContext;
+        private readonly ICombosHelper _combosHelper;
 
-        public ArticlesController(DataContext context)
+        public ArticlesController(DataContext context, ICombosHelper combosHelper)
         {
             _dataContext = context;
+            _combosHelper = combosHelper;
         }
 
         // GET: Articles
@@ -27,6 +33,7 @@ namespace SISGESAL.web.Controllers
             ViewBag.Indexcount = _dataContext.Articles.Count();
             ViewBag.Indexcount2 = _dataContext.Articles.Where(m => m.Status == true).Count();
             ViewBag.Indexcount3 = _dataContext.Articles.Where(m => m.Status == false).Count();
+
             return View(await _dataContext.Article
                 .Include(m => m.KindofArticle)
                 .Include(m => m.Supplier)
@@ -44,6 +51,8 @@ namespace SISGESAL.web.Controllers
 
             var article = await _dataContext.Article
                 .Include(m => m.KindofArticle)
+                .Include(m => m.Supplier)
+                .Include(m => m.TradeMark)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (article == null)
             {
@@ -54,22 +63,15 @@ namespace SISGESAL.web.Controllers
         }
 
         // GET: Articles/Create
-        public async Task<IActionResult> Create(int? id)
+        public IActionResult Create()
         {
-            if (id == null)
-            {
-                return NotFound();
-            }
-            var kindofArticle = await _dataContext.KindofArticles.FindAsync(id.Value);
-            if (kindofArticle == null)
-            {
-                return NotFound();
-            }
-
             var model = new ArticleViewModel
             {
-                KindofArticleId = kindofArticle.Id
+                KindofArticles = _combosHelper.GetComboKindofArticles(),
+                Suppliers = _combosHelper.GetComboSuppliers(),
+                Trademarks = _combosHelper.GetComboTradeMarks()
             };
+
             return View(model);
         }
 
@@ -89,7 +91,7 @@ namespace SISGESAL.web.Controllers
                     _dataContext.Add(article);
                     await _dataContext.SaveChangesAsync();
                     TempData["AlertMessageCreate"] = "Artículo Agregado Exitosamente";
-                    return RedirectToAction("Details", "KindofArticles", new { @id = model.KindofArticleId });
+                    return RedirectToAction("Index", "Articles");
                 }
                 catch (Exception ex)
                 {
@@ -110,6 +112,8 @@ namespace SISGESAL.web.Controllers
 
             var article = await _dataContext.Article
                 .Include(k => k.KindofArticle)
+                .Include(m => m.Supplier)
+                .Include(m => m.TradeMark)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (article == null)
             {
@@ -134,7 +138,7 @@ namespace SISGESAL.web.Controllers
                     _dataContext.Update(article);
                     await _dataContext.SaveChangesAsync();
                     TempData["AlertMessageEdit"] = "Artículo Editado Exitosamente";
-                    return RedirectToAction("Details", "KindofArticles", new { @id = model.KindofArticleId });
+                    return RedirectToAction("Index", "Articles");
                 }
                 catch (Exception)
                 {
@@ -143,8 +147,6 @@ namespace SISGESAL.web.Controllers
             }
             return View(model);
         }
-
-
 
         // GET: Articles/Delete/5
         public async Task<IActionResult> Delete(int? id)
@@ -155,6 +157,9 @@ namespace SISGESAL.web.Controllers
             }
 
             var article = await _dataContext.Article
+                .Include(k => k.KindofArticle)
+                .Include(m => m.Supplier)
+                .Include(m => m.TradeMark)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (article == null)
             {
@@ -179,25 +184,172 @@ namespace SISGESAL.web.Controllers
             return RedirectToAction(nameof(Index));
         }
 
+        // GET: Article/Lock
+        public async Task<IActionResult> Lock(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+            var article = await _dataContext.Articles
+                .FirstOrDefaultAsync(u => u.Id == id);
+            if (article == null)
+            {
+                return NotFound();
+            }
+            return View(article);
+        }
+
+        // POST: Article/Lock/5
+        [HttpPost, ActionName("Lock")]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> LockConfirmed(int id)
+        {
+            var article = await _dataContext.Articles
+                .FirstOrDefaultAsync(u => u.Id == id);
+            if (article != null)
+            {
+                article.Status = false;
+                article.Modifier = User.FindFirstValue(ClaimTypes.NameIdentifier);
+                article.ModificationDate = DateTime.Now;
+            }
+
+            try
+            {
+                _dataContext.Update(article);
+                await _dataContext.SaveChangesAsync();
+                TempData["AlertMessageLock"] = "Artículo Bloqueado Exitosamente";
+                return RedirectToAction(nameof(Index));
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+
+        // GET: Article/UnLock
+        public async Task<IActionResult> UnLock(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+            var article = await _dataContext.Articles
+                .FirstOrDefaultAsync(u => u.Id == id);
+            if (article == null)
+            {
+                return NotFound();
+            }
+            return View(article);
+        }
+
+        // POST: Article/UnLock/5
+        [HttpPost, ActionName("UnLock")]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> UnLockConfirmed(int id)
+        {
+            var article = await _dataContext.Articles
+                .FirstOrDefaultAsync(u => u.Id == id);
+            if (article != null)
+            {
+                article.Status = true;
+                article.Modifier = User.FindFirstValue(ClaimTypes.NameIdentifier);
+                article.ModificationDate = DateTime.Now;
+            }
+            try
+            {
+                _dataContext.Update(article);
+                await _dataContext.SaveChangesAsync();
+                TempData["AlertMessageUnLock"] = "Artículo Activado Exitosamente";
+                return RedirectToAction(nameof(Index));
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+
         private bool ArticleExists(int id)
         {
             return _dataContext.Article.Any(e => e.Id == id);
         }
 
         //OTROS MÉTODOS PRIVADOS
-        private async Task<object> ToArticleAsync(ArticleViewModel model, bool v)
+        private async Task<object> ToArticleAsync(ArticleViewModel model, bool isNew)
         {
-            throw new NotImplementedException();
+            var article = new Article
+
+            {
+                Id = isNew ? 0 : model.Id,
+
+                Name = model.Name?.Trim().ToUpper(),
+                Status = true,
+                Observation = model.Observation?.Trim().ToUpper(),
+
+                TradeMark = await _dataContext.TradeMarks.FindAsync(model.TrademarkId),
+                Supplier = await _dataContext.Suppliers.FindAsync(model.SupplierId),
+                KindofArticle = await _dataContext.KindofArticles.FindAsync(model.KindofArticleId),
+
+                CreationDate = DateTime.Now,
+                ModificationDate = DateTime.Now,
+                Creator = User.FindFirstValue(ClaimTypes.NameIdentifier),
+                Modifier = User.FindFirstValue(ClaimTypes.NameIdentifier),
+            };
+
+            return article;
         }
 
-        private string? ToArticleViewModel(Article article)
+        private async Task<object> ToArticle2Async(ArticleViewModel model, bool isNew)
         {
-            throw new NotImplementedException();
+            var article = new Article
+
+            {
+                Id = isNew ? 0 : model.Id,
+
+                Name = model.Name?.Trim().ToUpper(),
+                Status = model.Status,
+                Observation = model.Observation?.Trim().ToUpper(),
+
+                TradeMark = await _dataContext.TradeMarks.FindAsync(model.TrademarkId),
+                Supplier = await _dataContext.Suppliers.FindAsync(model.SupplierId),
+                KindofArticle = await _dataContext.KindofArticles.FindAsync(model.KindofArticleId),
+
+                CreationDate = model.CreationDate,
+                Creator = model.Creator,
+                ModificationDate = DateTime.Now,
+                Modifier = User.FindFirstValue(ClaimTypes.NameIdentifier),
+            };
+
+            return article;
         }
 
-        private async Task<object> ToArticle2Async(ArticleViewModel model, bool v)
+        private ArticleViewModel ToArticleViewModel(Article article)
         {
-            throw new NotImplementedException();
+            return new ArticleViewModel
+            {
+                Name = article.Name?.Trim().ToUpper(),
+                Status = article.Status,
+                Observation = article.Observation?.Trim().ToUpper(),
+
+                KindofArticle = article.KindofArticle,
+                TradeMark = article.TradeMark,
+                Supplier = article.Supplier,
+
+                CreationDate = article.CreationDate,
+                Creator = article.Creator,
+                ModificationDate = DateTime.Now,
+                Modifier = User.FindFirstValue(ClaimTypes.NameIdentifier),
+
+                Id = article.Id,
+
+                KindofArticleId = article.KindofArticle.Id,
+                TrademarkId = article.TradeMark.Id,
+                SupplierId = article.Supplier.Id,
+
+                KindofArticles = _combosHelper.GetComboKindofArticles(),
+                Trademarks = _combosHelper.GetComboTradeMarks(),
+                Suppliers = _combosHelper.GetComboSuppliers(),
+            };
         }
     }
 }

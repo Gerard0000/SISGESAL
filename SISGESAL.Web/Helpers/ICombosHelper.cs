@@ -13,6 +13,10 @@ namespace SISGESAL.web.Helpers
 
         IEnumerable<SelectListItem> GetComboKindofArticles();
 
+        IEnumerable<SelectListItem> GetComboTradeMarks();
+
+        IEnumerable<SelectListItem> GetComboSuppliers();
+
         //IEnumerable<SelectListItem> GetComboUserWithNoDepot();
 
         //IEnumerable<SelectListItem> GetComboDepotWithNoUser();

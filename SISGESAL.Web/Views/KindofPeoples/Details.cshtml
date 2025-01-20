@@ -76,9 +76,7 @@
                         <th>
                             @Html.DisplayNameFor(model => model.Genders.FirstOrDefault().Name)
                         </th>
-                        <th>
-                            @Html.DisplayNameFor(model => model.Genders.FirstOrDefault().Observation)
-                        </th>
+                        <th></th>
                     </tr>
                 </thead>
                 <tbody>
@@ -89,7 +87,7 @@
                                 @Html.DisplayFor(modelItem => item.Name)
                             </td>
                             <td>
-                                @Html.DisplayFor(modelItem => item.Observation)
+                                <a href="/Genders/Details/@item.Id" class="btn btn-info fa fa-solid fa-list-alt" title="DETALLE"></a>
                             </td>
                         </tr>
                     }

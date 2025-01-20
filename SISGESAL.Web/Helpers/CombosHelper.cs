@@ -79,7 +79,44 @@ namespace SISGESAL.web.Helpers
             {
                 Text = type.Name,
                 Value = $"{type.Id}"
-                
+            })
+                .OrderBy(type => type.Text)
+                .ToList();
+
+            list.Insert(0, new SelectListItem
+            {
+                Text = "--Seleccione una Opción",
+                Value = "0"
+            });
+
+            return list;
+        }
+
+        public IEnumerable<SelectListItem> GetComboTradeMarks()
+        {
+            var list = _dataContext.TradeMarks.Select(type => new SelectListItem
+            {
+                Text = type.Name,
+                Value = $"{type.Id}"
+            })
+                .OrderBy(type => type.Text)
+                .ToList();
+
+            list.Insert(0, new SelectListItem
+            {
+                Text = "--Seleccione una Opción",
+                Value = "0"
+            });
+
+            return list;
+        }
+
+        public IEnumerable<SelectListItem> GetComboSuppliers()
+        {
+            var list = _dataContext.Suppliers.Select(type => new SelectListItem
+            {
+                Text = type.Name,
+                Value = $"{type.Id}"
             })
                 .OrderBy(type => type.Text)
                 .ToList();

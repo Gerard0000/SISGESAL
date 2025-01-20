@@ -105,9 +105,6 @@ else
                             <th>
                                 @Html.DisplayNameFor(model => model.Courts.FirstOrDefault().Name)
                             </th>
-                            <th>
-                                @Html.DisplayNameFor(model => model.Courts.FirstOrDefault().Observation)
-                            </th>
                             <th></th>
                         </tr>
                     </thead>
@@ -117,9 +114,6 @@ else
                             <tr>
                                 <td>
                                     @Html.DisplayFor(modelItem => item.Name)
-                                </td>
-                                <td>
-                                    @Html.DisplayFor(modelItem => item.Observation)
                                 </td>
                                 <td>
                                     <a href="/Courts/Details/@item.Id" class="btn btn-info fa fa-solid fa-info-circle" title="DETALLE Y JUZGADOS"></a>

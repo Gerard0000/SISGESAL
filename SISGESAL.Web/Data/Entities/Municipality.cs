@@ -49,7 +49,7 @@ namespace SISGESAL.web.Data.Entities
         public ICollection<Court>? Courts { get; set; }
 
         //CONTARME JUZGADOS
-        [Display(Name = "Número de Cortes")]
+        [Display(Name = "Número de Juzgados o Tribunales")]
         public int CourtsNumber => Courts == null ? 0 : Courts.Count;
     }
 }
