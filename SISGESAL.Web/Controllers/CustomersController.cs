@@ -7,6 +7,7 @@ using SISGESAL.web.Enums;
 using SISGESAL.web.Helpers;
 using SISGESAL.web.Models;
 using System.Security.Claims;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace SISGESAL.web.Controllers
 {
@@ -34,6 +35,27 @@ namespace SISGESAL.web.Controllers
             return View(_dataContext.Customers
                 .Include(m => m.User!)
                 .ThenInclude(c => c.Court));
+        }
+
+        [HttpGet]
+        public IActionResult GetDepartments()
+        {
+            var countries = _dataContext.Departments.ToList();
+            return Json(new SelectList(countries, "Id", "Name"));
+        }
+
+        [HttpGet]
+        public IActionResult GetMunicipalities(int Id)
+        {
+            var municipalities = _dataContext.Municipalities.Where(x => x.Department.Id == Id).ToList();
+            return Json(new SelectList(municipalities, "Id", "Name"));
+        }
+
+        [HttpGet]
+        public IActionResult GetCourts(int Id)
+        {
+            var courts = _dataContext.Courts.Where(x => x.Municipality.Id == Id).ToList();
+            return Json(new SelectList(courts, "Id", "Name"));
         }
 
         // GET: Customers/Details/5

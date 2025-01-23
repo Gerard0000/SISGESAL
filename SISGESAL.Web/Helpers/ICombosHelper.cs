@@ -5,11 +5,13 @@ namespace SISGESAL.web.Helpers
 {
     public interface ICombosHelper
     {
-        IEnumerable<SelectListItem> GetComboDepartments();
+        //COMBOBOX DE DEPARTAMENTOS, MUNICIPIOS Y CORTES NORMALES
 
-        IEnumerable<SelectListItem> GetComboMunicipalities();
+        //IEnumerable<SelectListItem> GetComboDepartments();
 
-        IEnumerable<SelectListItem> GetComboCourts();
+        //IEnumerable<SelectListItem> GetComboMunicipalities();
+
+        //IEnumerable<SelectListItem> GetComboCourts();
 
         IEnumerable<SelectListItem> GetComboKindofArticles();
 
@@ -21,13 +23,22 @@ namespace SISGESAL.web.Helpers
 
         //IEnumerable<SelectListItem> GetComboDepotWithNoUser();
 
+
         //probar dropdownlist
-        //IEnumerable<SelectListItem> GetComboMunicipalities(int departmentId);
 
-        //IEnumerable<SelectListItem> GetComboCourts(int municipalityId);
+        IEnumerable<SelectListItem> GetComboDepartments();
 
-        //Task<Department> GetDepartmentAsync(Municipality municipality);
+        IEnumerable<SelectListItem> GetComboMunicipalities(int departmentId);
 
-        //Task<Municipality> GetMunicipalityAsync(Court court);
+        IEnumerable<SelectListItem> GetComboCourts(int municipalityId);
+
+
+
+
+        Task<Department> GetDepartmentAsync(Municipality municipality);
+
+        Task<Municipality> GetMunicipalityAsync(Court court);
+
+        Task<Municipality> GetCourtAsync(Court court);
     }
 }

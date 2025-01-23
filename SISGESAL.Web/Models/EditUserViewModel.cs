@@ -31,10 +31,12 @@ namespace SISGESAL.web.Models
 
         [NotMapped]
         [Display(Name = "Departamento")]
+        [Range(1, int.MaxValue, ErrorMessage = "Debes Seleccionar un {0}")]
         public int DepartmentId { get; set; }
 
         [NotMapped]
-        [Display(Name = "Municipios")]
+        [Display(Name = "Municipio")]
+        [Range(1, int.MaxValue, ErrorMessage = "Debes Seleccionar un {0}")]
         public int MunicipalityId { get; set; }
 
         [Required(ErrorMessage = "El {0} es requerido")]

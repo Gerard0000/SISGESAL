@@ -95,11 +95,11 @@ namespace SISGESAL.web.Controllers
             var model = new AddUserViewModel
             {
                 Departments = _combosHelper.GetComboDepartments(),
-                //Municipalities = _combosHelper.GetComboMunicipalities(0),
-                //Courts = _combosHelper.GetComboCourts(0)
+                Municipalities = _combosHelper.GetComboMunicipalities(0),
+                Courts = _combosHelper.GetComboCourts(0)
 
-                Municipalities = _combosHelper.GetComboMunicipalities(),
-                Courts = _combosHelper.GetComboCourts()
+                //Municipalities = _combosHelper.GetComboMunicipalities(),
+                //Courts = _combosHelper.GetComboCourts()
             };
 
             return View(model);
@@ -123,6 +123,8 @@ namespace SISGESAL.web.Controllers
 
                 //var municipality = await _combosHelper.GetMunicipalityAsync(model.MunicipalityId);
                 //var court = await _combosHelper.GetCourtAsync(model.CourtId);
+
+                var court = await _combosHelper.GetCourtAsync(model.CourtId);
 
                 var user = new User
                 {
