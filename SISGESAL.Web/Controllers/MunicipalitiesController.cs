@@ -9,14 +9,9 @@ using System.Security.Claims;
 namespace SISGESAL.web.Controllers
 {
     [Authorize(Roles = "Manager")]
-    public class MunicipalitiesController : Controller
+    public class MunicipalitiesController(DataContext context) : Controller
     {
-        private readonly DataContext _dataContext;
-
-        public MunicipalitiesController(DataContext context)
-        {
-            _dataContext = context;
-        }
+        private readonly DataContext _dataContext = context;
 
         // GET: Municipalities/Details/5
         public async Task<IActionResult> Details(int? id)
@@ -36,6 +31,15 @@ namespace SISGESAL.web.Controllers
             }
 
             return View(municipality);
+        }
+
+        //PARA COMBOBOX EN DROPDOWNLIST
+        [HttpGet("combo/{departmentId:int}")]
+        public async Task<ActionResult> GetCombo(int departmentId)
+        {
+            return Ok(await _dataContext.Municipalities
+                .Where(x => x.Department!.Id == departmentId)
+                .ToListAsync());
         }
     }
 }

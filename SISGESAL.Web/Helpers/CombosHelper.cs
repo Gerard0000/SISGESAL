@@ -3,19 +3,165 @@ using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.EntityFrameworkCore;
 using SISGESAL.web.Data;
 using SISGESAL.web.Data.Entities;
+using System.Diagnostics.Metrics;
 
 namespace SISGESAL.web.Helpers
 {
-    public class CombosHelper : ICombosHelper
+    public class CombosHelper(DataContext dataContext) : ICombosHelper
     {
-        private readonly DataContext _dataContext;
+        private readonly DataContext _dataContext = dataContext;
 
-        public CombosHelper(DataContext dataContext)
+        //DROPDOWNLIST O COMBOBOX DE TIPO DE ARTÍCULO
+        public IEnumerable<SelectListItem> GetComboKindofArticles()
         {
-            _dataContext = dataContext;
+            var list = _dataContext.KindofArticles.Where(type => type.Status == true).Select(type => new SelectListItem
+            {
+                Text = type.Name,
+                Value = $"{type.Id}"
+            })
+                .OrderBy(type => type.Text)
+                .ToList();
+
+            list.Insert(0, new SelectListItem
+            {
+                Text = "--Seleccione una Opción",
+                Value = "0"
+            });
+
+            return list;
         }
 
+        //DROPDOWNLIST O COMBOBOX DE MARCA DE ARTÍCULO
+        public IEnumerable<SelectListItem> GetComboTradeMarks()
+        {
+            var list = _dataContext.TradeMarks.Where(type => type.Status == true).Select(type => new SelectListItem
+            {
+                Text = type.Name,
+                Value = $"{type.Id}"
+            })
+                .OrderBy(type => type.Text)
+                .ToList();
 
+            list.Insert(0, new SelectListItem
+            {
+                Text = "--Seleccione una Opción",
+                Value = "0"
+            });
+
+            return list;
+        }
+
+        //DROPDOWNLIST O COMBOBOX DE PROVEEDOR DE ARTÍCULO
+        public IEnumerable<SelectListItem> GetComboSuppliers()
+        {
+            var list = _dataContext.Suppliers.Where(type => type.Status == true).Select(type => new SelectListItem
+            {
+                Text = type.Name,
+                Value = $"{type.Id}"
+            })
+                .OrderBy(type => type.Text)
+                .ToList();
+
+            list.Insert(0, new SelectListItem
+            {
+                Text = "--Seleccione una Opción",
+                Value = "0"
+            });
+
+            return list;
+        }
+
+        //DROPDOWNLIST O COMBOBOX DE DEPARTAMENTO
+        public IEnumerable<SelectListItem> GetComboDepartments()
+        {
+            var list = _dataContext.Departments.Select(type => new SelectListItem
+            {
+                Text = type.Name,
+                Value = $"{type.Id}"
+            })
+                .OrderBy(type => type.Text)
+                .ToList();
+
+            list.Insert(0, new SelectListItem
+            {
+                Text = "--Seleccione una Opción",
+                Value = "0"
+            });
+
+            return list;
+        }
+
+        //DROPDOWNLIST O COMBOBOX DE MUNICIPIO
+        public IEnumerable<SelectListItem> GetComboMunicipalities(int departmentId)
+        {
+            var department = _dataContext.Departments.Find(departmentId);
+            var list = new List<SelectListItem>();
+            if (department != null)
+            {
+                list = [.. department.Municipalities!.Select(type => new SelectListItem
+                {
+                    Text = type.Name,
+                    Value = $"{type.Id}"
+                })
+                //SE SIMPLIFICÓ Y NO LLEVA TOLIST PORQUE PIDE UN PARÁMETRO
+                .OrderBy(type => type.Text)];
+            }
+            list.Insert(0, new SelectListItem
+            {
+                Text = "--Seleccione una Opción",
+                Value = "0"
+            });
+
+            return list;
+        }
+
+        //DROPDOWNLIST O COMBOBOX DE JUZGADO O TRIBUNAL
+        public IEnumerable<SelectListItem> GetComboCourts(int municipalityId)
+        {
+            var municipality = _dataContext.Municipalities.Find(municipalityId);
+            var list = new List<SelectListItem>();
+            if (municipality != null)
+            {
+                list = [.. municipality.Courts!.Select(type => new SelectListItem
+                {
+                    Text = type.Name,
+                    Value = $"{type.Id}"
+                })
+                //SE SIMPLIFICÓ Y NO LLEVA TOLIST PORQUE PIDE UN PARÁMETRO
+                .OrderBy(type => type.Text)];
+            }
+            list.Insert(0, new SelectListItem
+            {
+                Text = "--Seleccione una Opción",
+                Value = "0"
+            });
+
+            return list;
+        }
+
+        public async Task<Department> GetDepartmentAsync(Municipality municipality)
+        {
+            return await _dataContext.Departments
+                .Where(d => d.Municipalities.Any(m => m.Id == municipality.Id))
+                .FirstOrDefaultAsync();
+        }
+
+        public async Task<Municipality> GetMunicipalityAsync(Court court)
+        {
+            return await _dataContext.Municipalities
+                .Where(d => d.Courts.Any(m => m.Id == court.Id))
+                .FirstOrDefaultAsync();
+        }
+
+        public async Task<Municipality> GetMunicipalityAsync(int id)
+        {
+            return await _dataContext.Municipalities.FindAsync(id);
+        }
+
+        public async Task<Court> GetCourtAsync(int id)
+        {
+            return await _dataContext.Courts.FindAsync(id);
+        }
 
         //DROPDOWNLIST O COMBOBOX DE MUNICIPIO
         //public IEnumerable<SelectListItem> GetComboMunicipalities()
@@ -38,28 +184,9 @@ namespace SISGESAL.web.Helpers
         //}
 
         //DROPDOWNLIST O COMBOBOX DE JUZGADOS O TRIBUNALES
-        //public IEnumerable<SelectListItem> GetComboCourts()
-        //{
-        //    var list = _dataContext.Courts.Select(type => new SelectListItem
-        //    {
-        //        Text = type.Name,
-        //        Value = $"{type.Id}"
-        //    })
-        //        .OrderBy(type => type.Text)
-        //        .ToList();
-
-        //    list.Insert(0, new SelectListItem
-        //    {
-        //        Text = "--Seleccione una Opción",
-        //        Value = "0"
-        //    });
-
-        //    return list;
-        //}
-
-        public IEnumerable<SelectListItem> GetComboKindofArticles()
+        public IEnumerable<SelectListItem> GetComboCourts()
         {
-            var list = _dataContext.KindofArticles.Select(type => new SelectListItem
+            var list = _dataContext.Courts.Select(type => new SelectListItem
             {
                 Text = type.Name,
                 Value = $"{type.Id}"
@@ -76,129 +203,34 @@ namespace SISGESAL.web.Helpers
             return list;
         }
 
-        public IEnumerable<SelectListItem> GetComboTradeMarks()
-        {
-            var list = _dataContext.TradeMarks.Select(type => new SelectListItem
-            {
-                Text = type.Name,
-                Value = $"{type.Id}"
-            })
-                .OrderBy(type => type.Text)
-                .ToList();
-
-            list.Insert(0, new SelectListItem
-            {
-                Text = "--Seleccione una Opción",
-                Value = "0"
-            });
-
-            return list;
-        }
-
-        public IEnumerable<SelectListItem> GetComboSuppliers()
-        {
-            var list = _dataContext.Suppliers.Select(type => new SelectListItem
-            {
-                Text = type.Name,
-                Value = $"{type.Id}"
-            })
-                .OrderBy(type => type.Text)
-                .ToList();
-
-            list.Insert(0, new SelectListItem
-            {
-                Text = "--Seleccione una Opción",
-                Value = "0"
-            });
-
-            return list;
-        }
+        //****************************************************************
 
         //PROBAR COMBOBOX DE DEPARTMENT, MUNICIPALITIES AND COURTS
 
-        //DROPDOWNLIST O COMBOBOX DE DEPARTAMENTO
-        public IEnumerable<SelectListItem> GetComboDepartments()
-        {
-            var list = _dataContext.Departments.Select(type => new SelectListItem
-            {
-                Text = type.Name,
-                Value = $"{type.Id}"
-            })
-                .OrderBy(type => type.Text)
-                .ToList();
+        //****************************************************************
 
-            list.Insert(0, new SelectListItem
-            {
-                Text = "--Seleccione una Opción",
-                Value = "0"
-            });
+        //****************************************************************
 
-            return list;
-        }
-
-        public IEnumerable<SelectListItem> GetComboMunicipalities(int departmentId)
-        {
-            var department = _dataContext.Departments.Find(departmentId);
-            var list = new List<SelectListItem>();
-            if (department != null)
-            {
-                list = department.Municipalities.Select(type => new SelectListItem
-                {
-                    Text = type.Name,
-                    Value = $"{type.Id}"
-                })
-                .OrderBy(type => type.Text)
-                .ToList();
-            }
-            list.Insert(0, new SelectListItem
-            {
-                Text = "--Seleccione una Opción",
-                Value = "0"
-            });
-
-            return list;
-        }
-
-        public IEnumerable<SelectListItem> GetComboCourts(int municipalityId)
-        {
-            var municipality = _dataContext.Municipalities.Find(municipalityId);
-            var list = new List<SelectListItem>();
-            if (municipality != null)
-            {
-                list = municipality.Courts.Select(type => new SelectListItem
-                {
-                    Text = type.Name,
-                    Value = $"{type.Id}"
-                })
-                .OrderBy(type => type.Text)
-                .ToList();
-            }
-            list.Insert(0, new SelectListItem
-            {
-                Text = "--Seleccione una Opción",
-                Value = "0"
-            });
-
-            return list;
-        }
-
-        public async Task<Department> GetDepartmentAsync(Municipality municipality)
+        //****************************************************************para el json
+        public async Task<Department> GetDepartmentWithMunicipalityAsync(int id)
         {
             return await _dataContext.Departments
-                .Where(d => d.Municipalities.Any(m => m.Id == m.Id))
+                .Include(c => c.Municipalities)
+                .Where(c => c.Id == id)
                 .FirstOrDefaultAsync();
         }
 
-        public async Task<Municipality> GetMunicipalityAsync(Court court)
+        public async Task<Municipality> GetMunicipalityWithCourtsAsync(int id)
         {
             return await _dataContext.Municipalities
-                .Where(d => d.Courts.Any(m => m.Id == m.Id))
+                .Include(c => c.Courts)
+                .Where(c => c.Id == id)
                 .FirstOrDefaultAsync();
         }
 
-        public async Task<Court> GetCourtAsync(int id)
+        Task<Court> ICombosHelper.GetMunicipalityAsync(int municipalityId)
         {
-            return await _dataContext.Courts.FindAsync(id);
+            throw new NotImplementedException();
         }
 
         //public IEnumerable<SelectListItem> GetComboUserWithNoDepot()

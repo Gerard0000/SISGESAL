@@ -8,29 +8,23 @@ using SISGESAL.web.Helpers;
 using SISGESAL.web.Models;
 using System.Security.Claims;
 using Microsoft.AspNetCore.Authorization;
+using System.Runtime.InteropServices;
 
 namespace SISGESAL.web.Controllers
 {
     [Authorize(Roles = "Manager")]
-    public class ManagersController : Controller
+    public class ManagersController(DataContext context, IUserHelper userHelper, ICombosHelper combosHelper) : Controller
     {
-        private readonly DataContext _dataContext;
-        private readonly IUserHelper _userHelper;
-        private readonly ICombosHelper _combosHelper;
-
-        public ManagersController(DataContext context, IUserHelper userHelper, ICombosHelper combosHelper)
-        {
-            _dataContext = context;
-            _userHelper = userHelper;
-            _combosHelper = combosHelper;
-        }
+        private readonly DataContext _dataContext = context;
+        private readonly IUserHelper _userHelper = userHelper;
+        private readonly ICombosHelper _combosHelper = combosHelper;
 
         // GET: Managers LE QUITAMOS ASYNC TASK<> TODOS LOS USUARIOS
         public IActionResult Index()
         {
             ViewBag.Indexcount = _dataContext.Managers.Count();
-            ViewBag.Indexcount2 = _dataContext.Managers.Include(x => x.User).Where(m => m.User.LockoutEnd == null).Count();
-            ViewBag.Indexcount3 = _dataContext.Managers.Include(x => x.User).Where(m => m.User.LockoutEnd > DateTime.Now).Count();
+            ViewBag.Indexcount2 = _dataContext.Managers.Include(x => x.User).Where(m => m.User!.LockoutEnd == null).Count();
+            ViewBag.Indexcount3 = _dataContext.Managers.Include(x => x.User).Where(m => m.User!.LockoutEnd > DateTime.Now).Count();
             //LE QUITAMOS EL AWAIT ANTES DEL _CONTEXT, EL TOLISTASYNC Y AGREGAMOS INCLUDE
             return View(_dataContext.Managers
                 .Include(m => m.User!)
@@ -55,6 +49,8 @@ namespace SISGESAL.web.Controllers
         //    var country =
         //}
 
+        //antes iba **************************************************************************
+
         [HttpGet]
         public IActionResult GetMunicipalities(int? departmentId)
         {
@@ -62,10 +58,31 @@ namespace SISGESAL.web.Controllers
             return Json(new SelectList(municipalities, "Id", "Name"));
         }
 
-        [HttpGet]
-        public IActionResult GetCourts(int? municipalityId)
+        //[HttpGet]
+        //public IActionResult GetCourts(int? municipalityId)
+        //{
+        //    var courts = _dataContext.Courts.Where(x => x.Municipality.Id == municipalityId).ToList();
+        //    return Json(new SelectList(courts, "Id", "Name"));
+        //}
+
+        //**************************************************************************
+
+        public async Task<JsonResult> GetMunicipalitiesAsync(int departmentId)
         {
-            var courts = _dataContext.Courts.Where(x => x.Municipality.Id == municipalityId).ToList();
+            var department = await _combosHelper.GetDepartmentWithMunicipalityAsync(departmentId);
+            //return Json(department!.Municipalities!.OrderBy(c => c.Name));
+            return Json(new SelectList(department.Municipalities, "Id", "Name"));
+        }
+
+        //public JsonResult GetMunicipalities(int? departmentId)
+        //{
+        //    var municipalities = _dataContext.Municipalities.Where(x => x.Department.Id == departmentId).ToList();
+        //    return Json(new SelectList(municipalities, "Id", "Name"));
+        //}
+
+        public JsonResult GetCourts(int municipalityId)
+        {
+            var courts = _dataContext.Courts.Where(x => x!.Municipality!.Id == municipalityId).ToList();
             return Json(new SelectList(courts, "Id", "Name"));
         }
 
@@ -97,13 +114,9 @@ namespace SISGESAL.web.Controllers
                 Departments = _combosHelper.GetComboDepartments(),
                 Municipalities = _combosHelper.GetComboMunicipalities(0),
                 Courts = _combosHelper.GetComboCourts(0)
-
-                //Municipalities = _combosHelper.GetComboMunicipalities(),
-                //Courts = _combosHelper.GetComboCourts()
             };
 
             return View(model);
-            //return View();
         }
 
         // POST: Managers/Create
@@ -123,7 +136,7 @@ namespace SISGESAL.web.Controllers
 
                 //var municipality = await _combosHelper.GetMunicipalityAsync(model.MunicipalityId);
                 //var court = await _combosHelper.GetCourtAsync(model.CourtId);
-
+                var municipality = await _combosHelper.GetMunicipalityAsync(model.MunicipalityId);
                 var court = await _combosHelper.GetCourtAsync(model.CourtId);
 
                 var user = new User
@@ -149,13 +162,13 @@ namespace SISGESAL.web.Controllers
                     UserType = UserType.Manager,
                 };
 
-                var response = await _userHelper.AddUserAsync(user, model.Password);
+                var response = await _userHelper.AddUserAsync(user, model!.Password!);
 
                 if (response.Succeeded)
                 {
                     try
                     {
-                        var userInDb = await _userHelper.GetUserAsync(model.UserName);
+                        var userInDb = await _userHelper.GetUserAsync(model!.UserName!);
                         await _userHelper.AddUserToRoleAsync(userInDb, UserType.Manager);
                         var manager = new Manager
                         {
@@ -175,7 +188,8 @@ namespace SISGESAL.web.Controllers
                 ModelState.AddModelError(string.Empty, response.Errors.FirstOrDefault().Description);
             }
 
-            model.Courts = _combosHelper.GetComboCourts();
+            //*****************************************
+            //model.Courts = _combosHelper.GetComboCourts();
 
             return View(model);
         }
@@ -199,7 +213,7 @@ namespace SISGESAL.web.Controllers
 
             var model = new EditUserViewModel
             {
-                UserName = manager?.User?.UserName,
+                UserName = manager.User!.UserName,
                 FullName = manager.User.FullName,
                 DNI = manager.User.DNI,
                 Occupation = manager.User.Occupation,
@@ -212,7 +226,9 @@ namespace SISGESAL.web.Controllers
 
                 //CourtId = manager.User.Court.Id,
 
-                Courts = _combosHelper.GetComboCourts(),
+                //***********************************iba antes
+
+                //Courts = _combosHelper.GetComboCourts(),
             };
             return View(model);
         }
@@ -228,12 +244,12 @@ namespace SISGESAL.web.Controllers
             {
                 var manager = await _dataContext.Managers
                 .Include(c => c.User)
-                .ThenInclude(m => m.Court)
+                .ThenInclude(m => m!.Court)
                 .FirstOrDefaultAsync(c => c.Id == model.Id);
 
                 if (manager != null)
                 {
-                    manager.User.FullName = model.FullName?.Trim().ToUpper();
+                    manager!.User!.FullName = model.FullName?.Trim().ToUpper();
                     manager.User.DNI = model.DNI?.Trim();
                     manager.User.Occupation = model.Occupation?.Trim().ToUpper();
                     manager.User.Email = model.Email?.Trim().ToLower();
@@ -250,14 +266,14 @@ namespace SISGESAL.web.Controllers
                 }
                 try
                 {
-                    await _userHelper.UpdateUserAsync(manager.User);
+                    await _userHelper.UpdateUserAsync(manager!.User!);
                     _dataContext.Update(manager);
                     await _dataContext.SaveChangesAsync();
                     TempData["AlertMessageEdit"] = "Administrador Actualizado Exitosamente";
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!ManagerExists(manager.Id))
+                    if (!ManagerExists(manager!.Id))
                     {
                         return NotFound();
                     }
@@ -270,7 +286,8 @@ namespace SISGESAL.web.Controllers
                 return RedirectToAction(nameof(Index));
             }
 
-            model.Courts = _combosHelper.GetComboCourts();
+            //*****************************************
+            //model.Courts = _combosHelper.GetComboCourts();
 
             return View(model);
         }
@@ -302,14 +319,14 @@ namespace SISGESAL.web.Controllers
                 .FirstOrDefaultAsync(u => u.Id == id);
             if (manager != null)
             {
-                manager.User.LockoutEnd = DateTime.Now.AddYears(1000);
+                manager.User!.LockoutEnd = DateTime.Now.AddYears(1000);
                 manager.User.Modifier = User.FindFirstValue(ClaimTypes.NameIdentifier);
                 manager.User.ModificationDate = DateTime.Now;
             }
 
             try
             {
-                await _userHelper.UpdateUserAsync(manager.User);
+                await _userHelper.UpdateUserAsync(manager!.User!);
                 await _dataContext.SaveChangesAsync();
                 TempData["AlertMessageLock"] = "Administrador Bloqueado Exitosamente";
                 return RedirectToAction(nameof(Index));
@@ -347,13 +364,13 @@ namespace SISGESAL.web.Controllers
                 .FirstOrDefaultAsync(u => u.Id == id);
             if (manager != null)
             {
-                manager.User.LockoutEnd = null;
+                manager.User!.LockoutEnd = null;
                 manager.User.Modifier = User.FindFirstValue(ClaimTypes.NameIdentifier);
                 manager.User.ModificationDate = DateTime.Now;
             }
             try
             {
-                await _userHelper.UpdateUserAsync(manager.User);
+                await _userHelper.UpdateUserAsync(manager!.User!);
                 await _dataContext.SaveChangesAsync();
                 TempData["AlertMessageUnLock"] = "Administrador Activado Exitosamente";
                 return RedirectToAction(nameof(Index));

@@ -45,6 +45,15 @@ namespace SISGESAL.web.Controllers
             return View(court);
         }
 
+        //PARA COMBOBOX EN DROPDOWNLIST
+        [HttpGet("combo/{municipalityId:int}")]
+        public async Task<ActionResult> GetCombo(int municipalityId)
+        {
+            return Ok(await _dataContext.Courts
+                .Where(x => x.Municipality!.Id == municipalityId)
+                .ToListAsync());
+        }
+
         // GET: Courts/Create
         public async Task<IActionResult> Create(int? id)
         {
@@ -149,7 +158,7 @@ if (ModelState.IsValid)
 
             var court = await _dataContext.Courts
                 .Include(d => d.Municipality)
-                .ThenInclude(m => m.Department)
+                .ThenInclude(m => m!.Department)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (court == null)
             {
@@ -174,7 +183,7 @@ if (ModelState.IsValid)
             {
                 await _dataContext.SaveChangesAsync();
                 TempData["AlertMessageDelete"] = "Juzgado o Tribunal Eliminado Exitosamente";
-                return RedirectToAction("Details", "Municipalities", new { @id = court.MunicipalityId });
+                return RedirectToAction("Details", "Municipalities", new { @id = court!.MunicipalityId });
             }
             catch (Exception)
             {
@@ -251,7 +260,7 @@ if (ModelState.IsValid)
 
                 Id = court.Id,
 
-                MunicipalityId = court.Municipality.Id,
+                MunicipalityId = court.Municipality!.Id,
 
                 //Municipalities = _combosHelper.GetComboMunicipalities(),
             };

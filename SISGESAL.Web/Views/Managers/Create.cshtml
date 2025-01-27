@@ -30,7 +30,8 @@
 
                     <div class="form-group">
                         <label asp-for="DepartmentId" class="control-label">Departamento al que Pertenece</label>
-                        <select asp-for="DepartmentId" asp-items="Model.Departments" class="form-control" id="Departments" name="DepartmentId"></select>
+@*                         <select asp-for="DepartmentId" asp-items="Model.Departments" class="form-control" id="Departments" name="DepartmentId"></select> *@
+                        <select asp-for="DepartmentId" asp-items="Model.Departments" class="form-control" @* id="DepartmentId" name="DepartmentId" *@></select>
                         @* <select id="Departments" name="DepartmentId"><option value="">Select Department</option>
     @foreach (var department in Model)
     {
@@ -42,13 +43,15 @@
 
                     <div class="form-group">
                         <label asp-for="MunicipalityId" class="control-label">Municipio al que Pertenece</label>
-                        <select asp-for="MunicipalityId" asp-items="Model.Municipalities" class="form-control" id="Municipalities" name="MunicipalityId"></select>
+@*                         <select asp-for="MunicipalityId" asp-items="Model.Municipalities" class="form-control" id="Municipalities" name="MunicipalityId"></select> *@
+                        <select asp-for="MunicipalityId" asp-items="Model.Municipalities" class="form-control" @* id="MunicipalityId" name="MunicipalityId" *@></select>
                         <b><span asp-validation-for="MunicipalityId" class="text-danger"></span></b>
                     </div>
 
                     <div class="form-group">
                         <label asp-for="CourtId" class="control-label">Juzgado o Tribunal al que Pertenece <b style="color:red">(*)</b></label>
-                        <select asp-for="CourtId" asp-items="Model.Courts" class="form-control" id="Courts" name="CourtId"></select>
+@*                         <select asp-for="CourtId" asp-items="Model.Courts" class="form-control" id="Courts" name="CourtId"></select> *@
+                        <select asp-for="CourtId" asp-items="Model.Courts" class="form-control" @* id="CourtId" name="CourtId" *@></select>
                         <b><span asp-validation-for="CourtId" class="text-danger"></span></b>
                     </div>
 
@@ -71,7 +74,7 @@
                     </div>
 
                     <div class="form-group">
-                        <label asp-for="PhoneNumber" class="control-label">Número Teléfonico </label>
+                        <label asp-for="PhoneNumber" class="control-label">Número Teléfonico <b style="color:red">(*)</b></label>
                         <input asp-for="PhoneNumber" class="form-control" id="PhoneNumber" onKeypress="if (event.keyCode < 48 || event.keyCode > 57) event.returnValue = false;" maxlength="8" />
                         <b><span asp-validation-for="PhoneNumber" class="text-danger"></span></b>
                     </div>
@@ -107,54 +110,55 @@
 @section Scripts {
     @{
         await Html.RenderPartialAsync("_ValidationScriptsPartial");
-
-        <script type="text/javascript">
-            $(document).ready(function () {
-                $("#DepartmentId").change(function () {
-                    $("#MunicipalityId").empty();
-                    $.ajax({
-                        type: 'Post',
-                        url: '@Url.Action("GetMunicipalities")',
-                        dataType: 'json',
-                        data: { departmentId: $("#DepartmentId").val() },
-                        success: function (municipalities) {
-                            debugger;
-                            $("#MunicipalityId").append('<option value="0">(--Seleccione una Opción)</option>');
-                            $.each(municipalities, function (i, municipality) {
-                                $("#MunicipalityId").append('<option value="'
-                                    + municipality.id + '">'
-                                    + municipality.name + '</option>');
-                            });
-                        },
-                        error: function (ex) {
-                            alert('Error al traer ciudades' + ex);
-                        }
-                    });
-                    return false;
-                })
-            });
-        </script>
-
-        <script src="~/Ajax/jquery-3.6.0.min.js"></script>
-
-        <script src="~/mask/jquery.min.js"></script>
-        <script src="~/mask/jquery.inputmask.bundle.min.js"></script>
-
-        <script>
-            $(document).ready(function () {
-                $("#DNI").inputmask("9999-9999-99999")
-            });
-        </script>
     }
 
-    @*     <script src="~/mask/jquery.min.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $("#DepartmentId").change(function () {
+                $("#MunicipalityId").empty();
+                $.ajax({
+                    type: 'POST',
+                    url: '@Url.Action("GetMunicipalitiesAsync")',
+                    dataType: 'json',
+                    data: { departmentId: $("#DepartmentId").val() },
+                    success: function (municipalities) {
+                        debugger;
+                        $("#MunicipalityId").append('<option value="0">(--Seleccione una Opción)</option>');
+                        $.each(municipalities, function (i, municipality) {
+                            $("#MunicipalityId").append('<option value="'
+                                + municipality.id + '">'
+                                + municipality.name + '</option>');
+                        });
+                    },
+                    error: function (ex) {
+                        alert('Error al traer ciudades' + ex);
+                    }
+                });
+                return false;
+            })
+        });
+    </script>
+
+    <script src="~/Ajax/jquery-3.6.0.min.js"></script>
+
+    <script src="~/mask/jquery.min.js"></script>
+    <script src="~/mask/jquery.inputmask.bundle.min.js"></script>
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $("#DNI").inputmask("9999-99999999")
+        });
+    </script>
+}
+
+@*     <script src="~/mask/jquery.min.js"></script>
     <script src="~/mask/jquery.inputmask.bundle.min.js"></script> *@
 
 
 
 
 
-    @*     <script>
+@*     <script>
         $(document).ready(function () {
             $('#DepartmentId').change(function () {
                 var departmentId = $(this).val();
@@ -187,7 +191,7 @@
     </script> *@
 
 
-    @* 
+@* 
     <script>
         $(document).ready(function () {
             $('#Departments').change(function () {
@@ -220,9 +224,8 @@
         });
     </script> *@
 
-    @*     <script>
+@*     <script>
         $(document).ready(function () {
             $("#PhoneNumber").inputmask("9999-9999")
         });
     </script> *@
-}
