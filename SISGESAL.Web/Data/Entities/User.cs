@@ -58,5 +58,8 @@ namespace SISGESAL.web.Data.Entities
 
         [Display(Name = "Juzgado o Tribunal")]
         public Court? Court { get; set; }
+
+        [Display(Name = "Almacén Asignado")]
+        public Depot? Depot{ get; set; }
     }
 }

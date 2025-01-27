@@ -63,6 +63,10 @@ namespace SISGESAL.web.Models
         [Range(1, int.MaxValue, ErrorMessage = "Debes Seleccionar un {0}")]
         public int CourtId { get; set; }
 
+        [Display(Name = "Almacén")]
+        [Range(1, int.MaxValue)]
+        public int DepotId { get; set; }
+
         public IEnumerable<SelectListItem>? Departments { get; set; }
         public IEnumerable<SelectListItem>? Municipalities { get; set; }
         public IEnumerable<SelectListItem>? Courts { get; set; }
