@@ -71,6 +71,25 @@ namespace SISGESAL.web.Helpers
             return list;
         }
 
+        public IEnumerable<SelectListItem> GetComboDepots()
+        {
+            var list = _dataContext.Depots.Where(type => type.Status == true).Select(type => new SelectListItem
+            {
+                Text = type.Name,
+                Value = $"{type.Id}"
+            })
+                .OrderBy(type => type.Text)
+                .ToList();
+
+            list.Insert(0, new SelectListItem
+            {
+                Text = "--Seleccione una Opción",
+                Value = "0"
+            });
+
+            return list;
+        }
+
         //DROPDOWNLIST O COMBOBOX DE DEPARTAMENTO
         public IEnumerable<SelectListItem> GetComboDepartments()
         {

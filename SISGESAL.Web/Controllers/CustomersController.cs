@@ -12,51 +12,48 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 namespace SISGESAL.web.Controllers
 {
     [Authorize(Roles = "Manager")]
-    public class CustomersController : Controller
+    public class CustomersController(DataContext context, IUserHelper userHelper, ICombosHelper combosHelper) : Controller
     {
-        private readonly DataContext _dataContext;
-        private readonly IUserHelper _userHelper;
-        private readonly ICombosHelper _combosHelper;
-
-        public CustomersController(DataContext context, IUserHelper userHelper, ICombosHelper combosHelper)
-        {
-            _dataContext = context;
-            _userHelper = userHelper;
-            _combosHelper = combosHelper;
-        }
+        private readonly DataContext _dataContext = context;
+        private readonly IUserHelper _userHelper = userHelper;
+        private readonly ICombosHelper _combosHelper = combosHelper;
 
         // GET: Managers LE QUITAMOS ASYNC TASK<>
         public IActionResult Index()
         {
             ViewBag.Indexcount = _dataContext.Customers.Count();
-            ViewBag.Indexcount2 = _dataContext.Customers.Include(x => x.User).Where(m => m.User.LockoutEnd == null).Count();
-            ViewBag.Indexcount3 = _dataContext.Customers.Include(x => x.User).Where(m => m.User.LockoutEnd > DateTime.Now).Count();
+            ViewBag.Indexcount2 = _dataContext.Customers.Include(x => x.User).Where(m => m.User!.LockoutEnd == null).Count();
+            ViewBag.Indexcount3 = _dataContext.Customers.Include(x => x.User).Where(m => m.User!.LockoutEnd > DateTime.Now).Count();
 
             return View(_dataContext.Customers
+                //.Include(m => m.User!)
+                //.ThenInclude(c => c.Court)
                 .Include(m => m.User!)
-                .ThenInclude(c => c.Court));
+                .ThenInclude(c => c.Depot));
         }
 
-        [HttpGet]
-        public IActionResult GetDepartments()
-        {
-            var countries = _dataContext.Departments.ToList();
-            return Json(new SelectList(countries, "Id", "Name"));
-        }
+        //*******************************************INTENTAR DROPDOWNLIST EN CASCADA****************************
+        //[HttpGet]
+        //public IActionResult GetDepartments()
+        //{
+        //    var countries = _dataContext.Departments.ToList();
+        //    return Json(new SelectList(countries, "Id", "Name"));
+        //}
 
-        [HttpGet]
-        public IActionResult GetMunicipalities(int Id)
-        {
-            var municipalities = _dataContext.Municipalities.Where(x => x.Department.Id == Id).ToList();
-            return Json(new SelectList(municipalities, "Id", "Name"));
-        }
+        //[HttpGet]
+        //public IActionResult GetMunicipalities(int Id)
+        //{
+        //    var municipalities = _dataContext.Municipalities.Where(x => x.Department!.Id == Id).ToList();
+        //    return Json(new SelectList(municipalities, "Id", "Name"));
+        //}
 
-        [HttpGet]
-        public IActionResult GetCourts(int Id)
-        {
-            var courts = _dataContext.Courts.Where(x => x.Municipality.Id == Id).ToList();
-            return Json(new SelectList(courts, "Id", "Name"));
-        }
+        //[HttpGet]
+        //public IActionResult GetCourts(int Id)
+        //{
+        //    var courts = _dataContext.Courts.Where(x => x.Municipality!.Id == Id).ToList();
+        //    return Json(new SelectList(courts, "Id", "Name"));
+        //}
+        //********************************************************************************************************
 
         // GET: Customers/Details/5
         public async Task<IActionResult> Details(int? id)
@@ -67,8 +64,10 @@ namespace SISGESAL.web.Controllers
             }
 
             var customer = await _dataContext.Customers
+                //.Include(c => c.User!)
+                //.ThenInclude(z => z.Court)
                 .Include(c => c.User!)
-                .ThenInclude(z => z.Court)
+                .ThenInclude(z => z.Depot)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (customer == null)
             {
@@ -83,7 +82,11 @@ namespace SISGESAL.web.Controllers
         {
             var model = new AddUserViewModel
             {
-                Courts = _combosHelper.GetComboCourts(),
+                Depots = _combosHelper.GetComboDepots(),
+
+                Departments = _combosHelper.GetComboDepartments(),
+                Municipalities = _combosHelper.GetComboMunicipalities(0),
+                Courts = _combosHelper.GetComboCourts(0),
             };
 
             return View(model);
@@ -109,7 +112,8 @@ namespace SISGESAL.web.Controllers
                     PhoneNumber = model.PhoneNumber?.Trim(),
                     Observation = model.Observation?.Trim().ToUpper(),
 
-                    Court = await _dataContext.Courts.FindAsync(model.CourtId),
+                    //Court = await _dataContext.Courts.FindAsync(model.CourtId),
+                    Depot = await _dataContext.Depots.FindAsync(model.DepotId),
 
                     CreationDate = DateTime.Now,
                     ModificationDate = DateTime.Now,
@@ -145,6 +149,7 @@ namespace SISGESAL.web.Controllers
             }
 
             model.Courts = _combosHelper.GetComboCourts();
+            model.Depots = _combosHelper.GetComboDepots();
 
             return View(model);
         }
@@ -158,8 +163,8 @@ namespace SISGESAL.web.Controllers
             }
 
             var customer = await _dataContext.Customers
-                .Include(c => c.User!)
-                .ThenInclude(z => z.Court)
+                //.Include(c => c.User!)
+                //.ThenInclude(z => z.Court)
                 .FirstOrDefaultAsync(c => c.Id == id.Value);
             if (customer == null)
             {
@@ -168,20 +173,22 @@ namespace SISGESAL.web.Controllers
 
             var model = new EditUserViewModel
             {
-                UserName = customer?.User?.UserName,
-                FullName = customer?.User?.FullName,
-                DNI = customer?.User?.DNI,
-                Occupation = customer?.User?.Occupation,
-                Email = customer?.User?.Email,
-                PhoneNumber = customer?.User?.PhoneNumber,
-                Observation = customer?.User?.Observation,
+                UserName = customer.User!.UserName,
+                FullName = customer.User.FullName,
+                DNI = customer.User.DNI,
+                Occupation = customer.User.Occupation,
+                Email = customer.User.Email,
+                PhoneNumber = customer.User.PhoneNumber,
+                Observation = customer.User.Observation,
                 CreationDate = customer.User.CreationDate,
                 Creator = customer.User.Creator,
 
-                Court = customer?.User?.Court,
+                //Court = customer.User.Court,
+                Depot = customer.User.Depot,
 
                 //CourtId = manager.User.Court.Id,
 
+                Depots = _combosHelper.GetComboDepots(),
                 Courts = _combosHelper.GetComboCourts(),
             };
             return View(model);
@@ -202,14 +209,14 @@ namespace SISGESAL.web.Controllers
 
                 if (customer != null)
                 {
-                    customer.User.FullName = model.FullName?.Trim().ToUpper();
+                    customer.User!.FullName = model.FullName?.Trim().ToUpper();
                     customer.User.DNI = model.DNI?.Trim();
                     customer.User.Occupation = model.Occupation?.Trim().ToUpper();
                     customer.User.Email = model.Email?.Trim().ToLower();
                     customer.User.PhoneNumber = model.PhoneNumber?.Trim();
                     customer.User.Observation = model.Observation?.Trim().ToUpper();
 
-                    customer.User.Court = await _dataContext.Courts.FindAsync(model.CourtId);
+                    //customer.User.Court = await _dataContext.Courts.FindAsync(model.CourtId);
 
                     customer.User.Creator = model.Creator;
                     customer.User.CreationDate = model.CreationDate;
@@ -219,14 +226,14 @@ namespace SISGESAL.web.Controllers
                 }
                 try
                 {
-                    await _userHelper.UpdateUserAsync(customer.User);
+                    await _userHelper.UpdateUserAsync(customer!.User!);
                     _dataContext.Update(customer);
                     await _dataContext.SaveChangesAsync();
                     TempData["AlertMessageEdit"] = "Usuario Actualizado Exitosamente";
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!CustomerExists(customer.Id))
+                    if (!CustomerExists(customer!.Id))
                     {
                         return NotFound();
                     }
@@ -239,6 +246,7 @@ namespace SISGESAL.web.Controllers
             }
 
             model.Courts = _combosHelper.GetComboCourts();
+            model.Depots = _combosHelper.GetComboDepots();
 
             return View(model);
         }
@@ -270,14 +278,14 @@ namespace SISGESAL.web.Controllers
                 .FirstOrDefaultAsync(u => u.Id == id);
             if (customer != null)
             {
-                customer.User.LockoutEnd = DateTime.Now.AddYears(1000);
+                customer.User!.LockoutEnd = DateTime.Now.AddYears(1000);
                 customer.User.Modifier = User.FindFirstValue(ClaimTypes.NameIdentifier);
                 customer.User.ModificationDate = DateTime.Now;
             }
 
             try
             {
-                await _userHelper.UpdateUserAsync(customer.User);
+                await _userHelper.UpdateUserAsync(customer!.User!);
                 await _dataContext.SaveChangesAsync();
                 TempData["AlertMessageLock"] = "Usuario Bloqueado Exitosamente";
                 return RedirectToAction(nameof(Index));
@@ -315,14 +323,14 @@ namespace SISGESAL.web.Controllers
                 .FirstOrDefaultAsync(u => u.Id == id);
             if (customer != null)
             {
-                customer.User.LockoutEnd = null;
+                customer.User!.LockoutEnd = null;
                 customer.User.Modifier = User.FindFirstValue(ClaimTypes.NameIdentifier);
                 customer.User.ModificationDate = DateTime.Now;
             }
 
             try
             {
-                await _userHelper.UpdateUserAsync(customer.User);
+                await _userHelper.UpdateUserAsync(customer!.User!);
                 await _dataContext.SaveChangesAsync();
                 TempData["AlertMessageUnLock"] = "Usuario Activado Exitosamente";
                 return RedirectToAction(nameof(Index));

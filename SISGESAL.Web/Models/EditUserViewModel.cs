@@ -65,8 +65,9 @@ namespace SISGESAL.web.Models
 
         [Display(Name = "Almacén")]
         [Range(1, int.MaxValue)]
-        public int DepotId { get; set; }
+        public int? DepotId { get; set; }
 
+        public IEnumerable<SelectListItem>? Depots { get; set; }
         public IEnumerable<SelectListItem>? Departments { get; set; }
         public IEnumerable<SelectListItem>? Municipalities { get; set; }
         public IEnumerable<SelectListItem>? Courts { get; set; }

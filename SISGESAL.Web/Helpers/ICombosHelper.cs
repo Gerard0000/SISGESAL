@@ -7,11 +7,15 @@ namespace SISGESAL.web.Helpers
     public interface ICombosHelper
     {
         //SE RELACIONAN CON EL ARTÍCULO
+
         IEnumerable<SelectListItem> GetComboKindofArticles();
 
         IEnumerable<SelectListItem> GetComboTradeMarks();
 
         IEnumerable<SelectListItem> GetComboSuppliers();
+
+        //COMBO DE DEPOT
+        IEnumerable<SelectListItem> GetComboDepots();
 
         //PARA HACER DROPDOWNLIST EN CASCADA
 

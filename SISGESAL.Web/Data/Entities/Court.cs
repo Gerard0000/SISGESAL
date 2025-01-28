@@ -38,7 +38,9 @@ namespace SISGESAL.web.Data.Entities
         [Display(Name = "Municipio")]
         public Municipality? Municipality { get; set; }
 
-        public ICollection<User>? Users { get; set; }
+        public ICollection<Depot>? Depots { get; set; }
+
+        //public ICollection<User>? Users { get; set; }
 
         //CONTARME JUZGADOS
         //[Display(Name = "Número de Usuarios")]

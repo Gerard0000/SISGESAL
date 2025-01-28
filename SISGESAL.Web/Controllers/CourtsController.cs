@@ -18,13 +18,6 @@ namespace SISGESAL.web.Controllers
             _dataContext = context;
         }
 
-        // GET: Courts
-        public async Task<IActionResult> Index()
-        {
-            return View(await _dataContext.Courts
-                .ToListAsync());
-        }
-
         // GET: Courts/Details/5
         public async Task<IActionResult> Details(int? id)
         {
@@ -34,6 +27,7 @@ namespace SISGESAL.web.Controllers
             }
 
             var court = await _dataContext.Courts
+                .Include(d => d.Depots!)
                 .Include(d => d.Municipality!)
                 .ThenInclude(m => m.Department)
                 .FirstOrDefaultAsync(m => m.Id == id);
@@ -45,14 +39,15 @@ namespace SISGESAL.web.Controllers
             return View(court);
         }
 
-        //PARA COMBOBOX EN DROPDOWNLIST
-        [HttpGet("combo/{municipalityId:int}")]
-        public async Task<ActionResult> GetCombo(int municipalityId)
-        {
-            return Ok(await _dataContext.Courts
-                .Where(x => x.Municipality!.Id == municipalityId)
-                .ToListAsync());
-        }
+        //*******************************************INTENTAR DROPDOWNLIST EN CASCADA****************************
+        //[HttpGet("combo/{municipalityId:int}")]
+        //public async Task<ActionResult> GetCombo(int municipalityId)
+        //{
+        //    return Ok(await _dataContext.Courts
+        //        .Where(x => x.Municipality!.Id == municipalityId)
+        //        .ToListAsync());
+        //}
+        //********************************************************************************************************
 
         // GET: Courts/Create
         public async Task<IActionResult> Create(int? id)
@@ -84,8 +79,7 @@ namespace SISGESAL.web.Controllers
             {
                 ViewBag.DuplicateMessage = $"El nombre '{model.Name}' ya se esta usando";
             }
-            else
-if (ModelState.IsValid)
+            else if (ModelState.IsValid)
             {
                 var court = await ToCourtAsync(model, true);
 

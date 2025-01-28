@@ -22,14 +22,21 @@ namespace SISGESAL.web.Controllers
             _dataContext = context;
         }
 
+        //TODO:*********************************************MODIFICAR GRUESO***********************************
         // GET: Depots
         public async Task<IActionResult> Index()
         {
-            ViewBag.Indexcount = _dataContext.Supplier.Count();
-            ViewBag.Indexcount2 = _dataContext.Supplier.Where(m => m.Status == true).Count();
-            ViewBag.Indexcount3 = _dataContext.Supplier.Where(m => m.Status == false).Count();
-            return View(await _dataContext.Supplier.ToListAsync());
+            ViewBag.Indexcount = _dataContext.Depots.Count();
+            ViewBag.Indexcount2 = _dataContext.Depots.Where(m => m.Status == true).Count();
+            ViewBag.Indexcount3 = _dataContext.Depots.Where(m => m.Status == false).Count();
+            return View(await _dataContext.Depots
+                .Include(c => c.Court)
+                .ThenInclude(m => m!.Municipality)
+                .ThenInclude(d => d!.Department)
+                .ToListAsync());
         }
+
+        //*****************************************************************************************************
 
         // GET: Depots/Details/5
         public async Task<IActionResult> Details(int? id)
@@ -40,6 +47,9 @@ namespace SISGESAL.web.Controllers
             }
 
             var depot = await _dataContext.Depots
+                .Include(c => c.Court)
+                .ThenInclude(m => m!.Municipality)
+                .ThenInclude(d => d!.Department)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (depot == null)
             {

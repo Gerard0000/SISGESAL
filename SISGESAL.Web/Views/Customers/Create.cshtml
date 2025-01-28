@@ -29,10 +29,24 @@
                     </div>
 
                     <div class="form-group">
+                        <label asp-for="DepartmentId" class="control-label">Departamento al que Pertenece</label>
+                        <select asp-for="DepartmentId" asp-items="Model.Departments" class="form-control"></select>
+                        <b><span asp-validation-for="DepartmentId" class="text-danger"></span></b>
+                    </div>
+
+                    <div class="form-group">
+                        <label asp-for="MunicipalityId" class="control-label">Municipio al que Pertenece</label>
+                        <select asp-for="MunicipalityId" asp-items="Model.Municipalities" class="form-control"></select>
+                        <b><span asp-validation-for="MunicipalityId" class="text-danger"></span></b>
+                    </div>
+
+                    <div class="form-group">
                         <label asp-for="CourtId" class="control-label">Juzgado o Tribunal al que Pertenece <b style="color:red">(*)</b></label>
                         <select asp-for="CourtId" asp-items="Model.Courts" class="form-control"></select>
                         <b><span asp-validation-for="CourtId" class="text-danger"></span></b>
                     </div>
+
+
 
                     <div class="form-group">
                         <label asp-for="DNI" class="control-label">DNI <b style="color:red">(*)</b></label>

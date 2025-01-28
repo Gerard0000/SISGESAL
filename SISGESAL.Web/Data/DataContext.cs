@@ -19,7 +19,6 @@ namespace SISGESAL.web.Data
         public DbSet<Department> Departments { get; set; }
         public DbSet<Municipality> Municipalities { get; set; }
         public DbSet<Court> Courts { get; set; }
-
         public DbSet<Depot> Depots { get; set; }
 
         public DbSet<Supplier> Suppliers { get; set; }

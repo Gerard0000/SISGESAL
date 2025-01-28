@@ -46,12 +46,13 @@ namespace SISGESAL.web.Controllers
             return View(department);
         }
 
-        //PARA COMBOBOX EN DROPDOWNLIST
-        [HttpGet("combo")]
-        public async Task<ActionResult> GetCombo()
-        {
-            return Ok(await _dataContext.Departments.ToListAsync());
-        }
+        //*******************************************INTENTAR DROPDOWNLIST EN CASCADA****************************
+        //[HttpGet("combo")]
+        //public async Task<ActionResult> GetCombo()
+        //{
+        //    return Ok(await _dataContext.Departments.ToListAsync());
+        //}
+        //********************************************************************************************************
 
         private bool DepartmentExists(int id)
         {

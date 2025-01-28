@@ -33,13 +33,14 @@ namespace SISGESAL.web.Controllers
             return View(municipality);
         }
 
-        //PARA COMBOBOX EN DROPDOWNLIST
-        [HttpGet("combo/{departmentId:int}")]
-        public async Task<ActionResult> GetCombo(int departmentId)
-        {
-            return Ok(await _dataContext.Municipalities
-                .Where(x => x.Department!.Id == departmentId)
-                .ToListAsync());
-        }
+        //*******************************************INTENTAR DROPDOWNLIST EN CASCADA****************************
+        //[HttpGet("combo/{departmentId:int}")]
+        //public async Task<ActionResult> GetCombo(int departmentId)
+        //{
+        //    return Ok(await _dataContext.Municipalities
+        //        .Where(x => x.Department!.Id == departmentId)
+        //        .ToListAsync());
+        //}
+        //********************************************************************************************************
     }
 }

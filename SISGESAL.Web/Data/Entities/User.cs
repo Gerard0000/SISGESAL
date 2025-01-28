@@ -30,7 +30,6 @@ namespace SISGESAL.web.Data.Entities
 
         [Display(Name = "Fecha de Creación")]
         [DataType(DataType.DateTime)]
-        //[DisplayFormat(DataFormatString = "{0:yyyy/MM/dd", ApplyFormatInEditMode = true)]
         public DateTime CreationDate { get; set; }
 
         [Display(Name = "Creador")]
@@ -38,7 +37,6 @@ namespace SISGESAL.web.Data.Entities
 
         [Display(Name = "Fecha de Modificación")]
         [DataType(DataType.DateTime)]
-        //[DisplayFormat(DataFormatString = "{0:yyyy/MM/dd", ApplyFormatInEditMode = true)]
         public DateTime ModificationDate { get; set; }
 
         [Display(Name = "Modificador")]
@@ -47,19 +45,14 @@ namespace SISGESAL.web.Data.Entities
         //PROPIEDAD DE LECTURA DE FECHA, INTENTO DE HACERLA INTERNACIONAL
 
         [Display(Name = "Fecha de Creación")]
-        //[DisplayFormat(DataFormatString = "{0:yyyy/MM/dd", ApplyFormatInEditMode = true)]
         public DateTime DateLocalCreation => CreationDate.ToLocalTime();
 
         [Display(Name = "Fecha de Modificación")]
-        //[DisplayFormat(DataFormatString = "{0:yyyy/MM/dd", ApplyFormatInEditMode = true)]
         public DateTime DateLocalModification => ModificationDate.ToLocalTime();
 
         //SOLO ME TRAE LOS SIGUIENTES DATOS CON COMBOBOX
 
-        [Display(Name = "Juzgado o Tribunal")]
-        public Court? Court { get; set; }
-
         [Display(Name = "Almacén Asignado")]
-        public Depot? Depot{ get; set; }
+        public Depot? Depot { get; set; }
     }
 }
