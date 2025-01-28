@@ -110,19 +110,19 @@
             <thead class="thead-success">
                 <tr>
                     <th>
-                        @Html.DisplayNameFor(model => model.User.UserName)
+                        @Html.DisplayNameFor(model => model.User!.UserName)
                     </th>
                     <th>
-                        @Html.DisplayNameFor(model => model.User.FullName)
+                        @Html.DisplayNameFor(model => model.User!.FullName)
                     </th>
                     <th>
-                        @Html.DisplayNameFor(model => model.User.Occupation)
+                        @Html.DisplayNameFor(model => model.User!.Occupation)
                     </th>
                     <th>
-                        @Html.DisplayNameFor(model => model.User.Email)
+                        @Html.DisplayNameFor(model => model.User!.Email)
                     </th>
                     <th>
-                        @Html.DisplayNameFor(model => model.User.Observation)
+                        @Html.DisplayNameFor(model => model.User!.Observation)
                     </th>
                     <th>
 
@@ -132,7 +132,7 @@
             <tbody>
                 @foreach (var item in Model)
                 {
-                    @if (item.User.LockoutEnd == null)
+                    @if (item.User!.LockoutEnd == null)
                     {
                         <tr>
                             <td>
@@ -153,7 +153,7 @@
                             <td>
                                 <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-warning fa fa-solid fa-edit" title="EDITAR"></a>
                                 <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-info fa fa-solid fa-info-circle" title="DETALLE"></a>
-                                @if (item.User.LockoutEnd == null && item.User.UserName != User.Identity.Name)
+                                @if (item.User.LockoutEnd == null && item.User.UserName != User.Identity!.Name)
                                 {
                                     <a asp-action="Lock" asp-route-id="@item.Id" class="btn btn-danger fa fa-solid fa-lock" title="BLOQUEAR"></a>
                                 }
@@ -176,19 +176,19 @@
             <thead class="thead-success">
                 <tr>
                     <th>
-                        @Html.DisplayNameFor(model => model.User.UserName)
+                        @Html.DisplayNameFor(model => model.User!.UserName)
                     </th>
                     <th>
-                        @Html.DisplayNameFor(model => model.User.FullName)
+                        @Html.DisplayNameFor(model => model.User!.FullName)
                     </th>
                     <th>
-                        @Html.DisplayNameFor(model => model.User.Occupation)
+                        @Html.DisplayNameFor(model => model.User!.Occupation)
                     </th>
                     <th>
-                        @Html.DisplayNameFor(model => model.User.Email)
+                        @Html.DisplayNameFor(model => model.User!.Email)
                     </th>
                     <th>
-                        @Html.DisplayNameFor(model => model.User.Observation)
+                        @Html.DisplayNameFor(model => model.User!.Observation)
                     </th>
                     <th>
 
@@ -198,7 +198,7 @@
             <tbody>
                 @foreach (var item in Model)
                 {
-                    @if (item.User.LockoutEnd > DateTime.Now)
+                    @if (item.User!.LockoutEnd > DateTime.Now)
                     {
                         <tr>
                             <td>
@@ -242,19 +242,19 @@
             <thead class="thead-success">
                 <tr>
                     <th>
-                        @Html.DisplayNameFor(model => model.User.UserName)
+                        @Html.DisplayNameFor(model => model.User!.UserName)
                     </th>
                     <th>
-                        @Html.DisplayNameFor(model => model.User.FullName)
+                        @Html.DisplayNameFor(model => model.User!.FullName)
                     </th>
                     <th>
-                        @Html.DisplayNameFor(model => model.User.Occupation)
+                        @Html.DisplayNameFor(model => model.User!.Occupation)
                     </th>
                     <th>
-                        @Html.DisplayNameFor(model => model.User.Email)
+                        @Html.DisplayNameFor(model => model.User!.Email)
                     </th>
                     <th>
-                        @Html.DisplayNameFor(model => model.User.Observation)
+                        @Html.DisplayNameFor(model => model.User!.Observation)
                     </th>
                     <th>
 
@@ -266,29 +266,29 @@
                 {
                     <tr>
                         <td>
-                            @Html.DisplayFor(modelItem => item.User.UserName)
+                            @Html.DisplayFor(modelItem => item.User!.UserName)
                         </td>
                         <td>
-                            @Html.DisplayFor(modelItem => item.User.FullName)
+                            @Html.DisplayFor(modelItem => item.User!.FullName)
                         </td>
                         <td>
-                            @Html.DisplayFor(modelItem => item.User.Occupation)
+                            @Html.DisplayFor(modelItem => item.User!.Occupation)
                         </td>
                         <td>
-                            @Html.DisplayFor(modelItem => item.User.Email)
+                            @Html.DisplayFor(modelItem => item.User!.Email)
                         </td>
                         <td>
-                            @Html.DisplayFor(modelItem => item.User.Observation)
+                            @Html.DisplayFor(modelItem => item.User!.Observation)
                         </td>
                         <td>
                             <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-warning fa fa-solid fa-edit" title="EDITAR"></a>
                             <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-info fa fa-solid fa-info-circle" title="DETALLE"></a>
-                            @if (item.User.LockoutEnd == null && item.User.UserName != User.Identity.Name)
+                            @if (item.User!.LockoutEnd == null && item.User.UserName != User.Identity!.Name)
                             {
                                 <a asp-action="Lock" asp-route-id="@item.Id" class="btn btn-danger fa fa-solid fa-lock" title="BLOQUEAR"></a>
 
                             }
-                            @if (item.User.LockoutEnd > DateTime.Now && item.User.UserName != User.Identity.Name)
+                            @if (item.User.LockoutEnd > DateTime.Now && item.User.UserName != User.Identity!.Name)
                             {
                                 <a asp-action="UnLock" asp-route-id="@item.Id" class="btn btn-success fa fa-solid fa-unlock" title="ACTIVAR"></a>
                             }

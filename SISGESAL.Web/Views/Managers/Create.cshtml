@@ -29,33 +29,6 @@
                     </div>
 
                     <div class="form-group">
-                        <label asp-for="DepartmentId" class="control-label">Departamento al que Pertenece</label>
-@*                         <select asp-for="DepartmentId" asp-items="Model.Departments" class="form-control" id="Departments" name="DepartmentId"></select> *@
-                        <select asp-for="DepartmentId" asp-items="Model.Departments" class="form-control" @* id="DepartmentId" name="DepartmentId" *@></select>
-                        @* <select id="Departments" name="DepartmentId"><option value="">Select Department</option>
-    @foreach (var department in Model)
-    {
-        <option value="@department.Id">@department.Name</option>
-    }
-</select> *@
-                        <b><span asp-validation-for="DepartmentId" class="text-danger"></span></b>
-                    </div>
-
-                    <div class="form-group">
-                        <label asp-for="MunicipalityId" class="control-label">Municipio al que Pertenece</label>
-@*                         <select asp-for="MunicipalityId" asp-items="Model.Municipalities" class="form-control" id="Municipalities" name="MunicipalityId"></select> *@
-                        <select asp-for="MunicipalityId" asp-items="Model.Municipalities" class="form-control" @* id="MunicipalityId" name="MunicipalityId" *@></select>
-                        <b><span asp-validation-for="MunicipalityId" class="text-danger"></span></b>
-                    </div>
-
-                    <div class="form-group">
-                        <label asp-for="CourtId" class="control-label">Juzgado o Tribunal al que Pertenece <b style="color:red">(*)</b></label>
-@*                         <select asp-for="CourtId" asp-items="Model.Courts" class="form-control" id="Courts" name="CourtId"></select> *@
-                        <select asp-for="CourtId" asp-items="Model.Courts" class="form-control" @* id="CourtId" name="CourtId" *@></select>
-                        <b><span asp-validation-for="CourtId" class="text-danger"></span></b>
-                    </div>
-
-                    <div class="form-group">
                         <label asp-for="DNI" class="control-label">DNI <b style="color:red">(*)</b></label>
                         <input asp-for="DNI" class="form-control" id="DNI" name="DNI" onKeypress="if (event.keyCode < 48 || event.keyCode > 57) event.returnValue = false;" />
                         <b><span asp-validation-for="DNI" class="text-danger"></span></b>
@@ -151,8 +124,8 @@
     </script>
 }
 
-@*     <script src="~/mask/jquery.min.js"></script>
-    <script src="~/mask/jquery.inputmask.bundle.min.js"></script> *@
+    <script src="~/Mask/jquery.min.js"></script>
+    <script src="~/Mask/jquery.inputmask.bundle.min.js"></script>
 
 
 
@@ -224,8 +197,8 @@
         });
     </script> *@
 
-@*     <script>
+    <script>
         $(document).ready(function () {
             $("#PhoneNumber").inputmask("9999-9999")
         });
-    </script> *@
+    </script>

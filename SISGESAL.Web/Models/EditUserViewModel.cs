@@ -48,28 +48,25 @@ namespace SISGESAL.web.Models
         [Display(Name = "Observación")]
         public new string? Observation { get; set; }
 
-        [Required(ErrorMessage = "El {0} es requerido")]
         [Display(Name = "Departamento")]
-        [Range(1, int.MaxValue, ErrorMessage = "Debes Seleccionar un {0}")]
+        //[Range(1, int.MaxValue)]
         public int DepartmentId { get; set; }
 
-        [Required(ErrorMessage = "El {0} es requerido")]
         [Display(Name = "Municipio")]
-        [Range(1, int.MaxValue, ErrorMessage = "Debes Seleccionar un {0}")]
+        //[Range(1, int.MaxValue)]
         public int MunicipalityId { get; set; }
 
-        [Required(ErrorMessage = "El {0} es requerido")]
         [Display(Name = "Juzgado o Tribunal")]
-        [Range(1, int.MaxValue, ErrorMessage = "Debes Seleccionar un {0}")]
+        //[Range(1, int.MaxValue)]
         public int CourtId { get; set; }
 
         [Display(Name = "Almacén")]
-        [Range(1, int.MaxValue)]
-        public int? DepotId { get; set; }
+        //[Range(1, int.MaxValue)]
+        public int? DepotId { get; set; } = null;
 
-        public IEnumerable<SelectListItem>? Depots { get; set; }
-        public IEnumerable<SelectListItem>? Departments { get; set; }
-        public IEnumerable<SelectListItem>? Municipalities { get; set; }
-        public IEnumerable<SelectListItem>? Courts { get; set; }
+        public IEnumerable<SelectListItem>? Depots { get; set; } = null;
+        public IEnumerable<SelectListItem>? Departments { get; set; } = null;
+        public IEnumerable<SelectListItem>? Municipalities { get; set; } = null;
+        public IEnumerable<SelectListItem>? Courts { get; set; } = null;
     }
 }

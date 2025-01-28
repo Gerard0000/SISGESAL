@@ -25,18 +25,24 @@ namespace SISGESAL.web.Controllers
             ViewBag.Indexcount = _dataContext.Managers.Count();
             ViewBag.Indexcount2 = _dataContext.Managers.Include(x => x.User).Where(m => m.User!.LockoutEnd == null).Count();
             ViewBag.Indexcount3 = _dataContext.Managers.Include(x => x.User).Where(m => m.User!.LockoutEnd > DateTime.Now).Count();
-            //LE QUITAMOS EL AWAIT ANTES DEL _CONTEXT, EL TOLISTASYNC Y AGREGAMOS INCLUDE
+
             return View(_dataContext.Managers
                 .Include(m => m.User!)
-                .ThenInclude(m => m.Court));
+                .ThenInclude(c => c.Depot)
+                .ThenInclude(z => z!.Court)
+                .ThenInclude(z => z!.Municipality)
+                .ThenInclude(z => z!.Department));
         }
 
-        [HttpGet]
-        public async Task<IActionResult> GetDepartments()
-        {
-            var departments = _dataContext.Departments.ToList();
-            return Json(new SelectList(departments, "Id", "Name"));
-        }
+
+        //*******************************INTENTO DE HACER DROPDOWNLIST EN CASCADA*******************
+        //*******************************REVISAR PRIMERO EL CUSTOMER*******************
+        //[HttpGet]
+        //public async Task<IActionResult> GetDepartments()
+        //{
+        //    var departments = _dataContext.Departments.ToList();
+        //    return Json(new SelectList(departments, "Id", "Name"));
+        //}
 
         //Metodo Json para dropdonlist in cascade
         //public async Task<JsonResult> GetCourtsAsync(int mulicipalityId)
@@ -49,14 +55,12 @@ namespace SISGESAL.web.Controllers
         //    var country =
         //}
 
-        //antes iba **************************************************************************
-
-        [HttpGet]
-        public IActionResult GetMunicipalities(int? departmentId)
-        {
-            var municipalities = _dataContext.Municipalities.Where(x => x.Department.Id == departmentId).ToList();
-            return Json(new SelectList(municipalities, "Id", "Name"));
-        }
+        //[HttpGet]
+        //public IActionResult GetMunicipalities(int? departmentId)
+        //{
+        //    var municipalities = _dataContext.Municipalities.Where(x => x.Department.Id == departmentId).ToList();
+        //    return Json(new SelectList(municipalities, "Id", "Name"));
+        //}
 
         //[HttpGet]
         //public IActionResult GetCourts(int? municipalityId)
@@ -65,14 +69,12 @@ namespace SISGESAL.web.Controllers
         //    return Json(new SelectList(courts, "Id", "Name"));
         //}
 
-        //**************************************************************************
-
-        public async Task<JsonResult> GetMunicipalitiesAsync(int departmentId)
-        {
-            var department = await _combosHelper.GetDepartmentWithMunicipalityAsync(departmentId);
-            //return Json(department!.Municipalities!.OrderBy(c => c.Name));
-            return Json(new SelectList(department.Municipalities, "Id", "Name"));
-        }
+        //public async Task<JsonResult> GetMunicipalitiesAsync(int departmentId)
+        //{
+        //    var department = await _combosHelper.GetDepartmentWithMunicipalityAsync(departmentId);
+        //    //return Json(department!.Municipalities!.OrderBy(c => c.Name));
+        //    return Json(new SelectList(department.Municipalities, "Id", "Name"));
+        //}
 
         //public JsonResult GetMunicipalities(int? departmentId)
         //{
@@ -80,11 +82,13 @@ namespace SISGESAL.web.Controllers
         //    return Json(new SelectList(municipalities, "Id", "Name"));
         //}
 
-        public JsonResult GetCourts(int municipalityId)
-        {
-            var courts = _dataContext.Courts.Where(x => x!.Municipality!.Id == municipalityId).ToList();
-            return Json(new SelectList(courts, "Id", "Name"));
-        }
+        //public JsonResult GetCourts(int municipalityId)
+        //{
+        //    var courts = _dataContext.Courts.Where(x => x!.Municipality!.Id == municipalityId).ToList();
+        //    return Json(new SelectList(courts, "Id", "Name"));
+        //}
+
+        //**************************************************************************
 
         // GET: Managers/Details/5
         public async Task<IActionResult> Details(int? id)
@@ -96,7 +100,10 @@ namespace SISGESAL.web.Controllers
 
             var manager = await _dataContext.Managers
                 .Include(c => c.User!)
-                .ThenInclude(m => m.Court)
+                .ThenInclude(z => z.Depot)
+                .ThenInclude(z => z!.Court)
+                .ThenInclude(z => z!.Municipality)
+                .ThenInclude(z => z!.Department)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (manager == null)
             {
@@ -111,11 +118,18 @@ namespace SISGESAL.web.Controllers
         {
             var model = new AddUserViewModel
             {
-                Departments = _combosHelper.GetComboDepartments(),
-                Municipalities = _combosHelper.GetComboMunicipalities(0),
-                Courts = _combosHelper.GetComboCourts(0)
-            };
+                //TODO: DESCOMENTAR CUANDO SE CORRIJA EL DROPDOWNLIST EN CASCADA
+                //Departments = _combosHelper.GetComboDepartments(),
+                //Municipalities = _combosHelper.GetComboMunicipalities(0),
+                //Courts = _combosHelper.GetComboCourts(0),
+                //Depots = _combosHelper.GetComboDepots(0),
 
+                //TODO: ELIMINAR CUANDO SE CORRIJA EL DROPDOWNLIST EN CASCADA
+                Departments = _combosHelper.GetComboDepartments(),
+                Municipalities = _combosHelper.GetComboMunicipalities(),
+                Courts = _combosHelper.GetComboCourts(),
+                Depots = _combosHelper.GetComboDepots(),
+            };
             return View(model);
         }
 
@@ -136,8 +150,9 @@ namespace SISGESAL.web.Controllers
 
                 //var municipality = await _combosHelper.GetMunicipalityAsync(model.MunicipalityId);
                 //var court = await _combosHelper.GetCourtAsync(model.CourtId);
-                var municipality = await _combosHelper.GetMunicipalityAsync(model.MunicipalityId);
-                var court = await _combosHelper.GetCourtAsync(model.CourtId);
+
+                //var municipality = await _combosHelper.GetMunicipalityAsync(model.MunicipalityId);
+                //var court = await _combosHelper.GetCourtAsync(model.CourtId);
 
                 var user = new User
                 {
@@ -149,10 +164,7 @@ namespace SISGESAL.web.Controllers
                     PhoneNumber = model.PhoneNumber?.Trim(),
                     Observation = model.Observation?.Trim().ToUpper(),
 
-                    //CourtId = model.CourtId,
-                    //Court = court,
-
-                    Court = await _dataContext.Courts.FindAsync(model.CourtId),
+                    Depot = await _dataContext.Depots.FindAsync(model.DepotId),
 
                     CreationDate = DateTime.Now,
                     ModificationDate = DateTime.Now,
@@ -188,8 +200,10 @@ namespace SISGESAL.web.Controllers
                 ModelState.AddModelError(string.Empty, response.Errors.FirstOrDefault().Description);
             }
 
-            //*****************************************
-            //model.Courts = _combosHelper.GetComboCourts();
+            model.Departments = _combosHelper.GetComboDepartments();
+            model.Municipalities = _combosHelper.GetComboMunicipalities();
+            model.Courts = _combosHelper.GetComboCourts();
+            model.Depots = _combosHelper.GetComboDepots();
 
             return View(model);
         }
@@ -204,7 +218,10 @@ namespace SISGESAL.web.Controllers
 
             var manager = await _dataContext.Managers
                 .Include(c => c.User!)
-                .ThenInclude(m => m.Court)
+                .ThenInclude(z => z.Depot)
+                .ThenInclude(z => z!.Court)
+                .ThenInclude(z => z!.Municipality)
+                .ThenInclude(z => z!.Department)
                 .FirstOrDefaultAsync(c => c.Id == id.Value);
             if (manager == null)
             {
@@ -220,15 +237,15 @@ namespace SISGESAL.web.Controllers
                 Email = manager.User.Email,
                 PhoneNumber = manager.User.PhoneNumber,
                 Observation = manager.User.Observation,
-                Court = manager.User.Court,
                 CreationDate = manager.User.CreationDate,
                 Creator = manager.User.Creator,
 
-                //CourtId = manager.User.Court.Id,
+                Depot = manager.User.Depot,
 
-                //***********************************iba antes
-
-                //Courts = _combosHelper.GetComboCourts(),
+                Departments = _combosHelper.GetComboDepartments(),
+                Municipalities = _combosHelper.GetComboMunicipalities(),
+                Courts = _combosHelper.GetComboCourts(),
+                Depots = _combosHelper.GetComboDepots(),
             };
             return View(model);
         }
@@ -244,7 +261,10 @@ namespace SISGESAL.web.Controllers
             {
                 var manager = await _dataContext.Managers
                 .Include(c => c.User)
-                .ThenInclude(m => m!.Court)
+                .ThenInclude(z => z!.Depot)
+                .ThenInclude(z => z!.Court)
+                .ThenInclude(z => z!.Municipality)
+                .ThenInclude(z => z!.Department)
                 .FirstOrDefaultAsync(c => c.Id == model.Id);
 
                 if (manager != null)
@@ -256,7 +276,7 @@ namespace SISGESAL.web.Controllers
                     manager.User.PhoneNumber = model.PhoneNumber?.Trim();
                     manager.User.Observation = model.Observation?.Trim().ToUpper();
 
-                    manager.User.Court = await _dataContext.Courts.FindAsync(model.CourtId);
+                    manager.User.Depot = await _dataContext.Depots.FindAsync(model.DepotId);
 
                     manager.User.Creator = model.Creator;
                     manager.User.CreationDate = model.CreationDate;
@@ -286,8 +306,10 @@ namespace SISGESAL.web.Controllers
                 return RedirectToAction(nameof(Index));
             }
 
-            //*****************************************
-            //model.Courts = _combosHelper.GetComboCourts();
+            model.Departments = _combosHelper.GetComboDepartments();
+            model.Municipalities = _combosHelper.GetComboMunicipalities();
+            model.Courts = _combosHelper.GetComboCourts();
+            model.Depots = _combosHelper.GetComboDepots();
 
             return View(model);
         }

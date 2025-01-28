@@ -41,12 +41,16 @@
                     </div>
 
                     <div class="form-group">
-                        <label asp-for="CourtId" class="control-label">Juzgado o Tribunal al que Pertenece <b style="color:red">(*)</b></label>
+                        <label asp-for="CourtId" class="control-label">Juzgado o Tribunal al que Pertenece </label>
                         <select asp-for="CourtId" asp-items="Model.Courts" class="form-control"></select>
                         <b><span asp-validation-for="CourtId" class="text-danger"></span></b>
                     </div>
 
-
+                    <div class="form-group">
+                        <label asp-for="DepotId" class="control-label">Almacén a Asignar <b style="color:darkorange">(*)</b></label>
+                        <select asp-for="DepotId" asp-items="Model.Depots" class="form-control"></select>
+                        <b><span asp-validation-for="DepotId" class="text-danger"></span></b>
+                    </div>
 
                     <div class="form-group">
                         <label asp-for="DNI" class="control-label">DNI <b style="color:red">(*)</b></label>
@@ -67,7 +71,7 @@
                     </div>
 
                     <div class="form-group">
-                        <label asp-for="PhoneNumber" class="control-label">Número Teléfonico</label>
+                        <label asp-for="PhoneNumber" class="control-label">Número Teléfonico <b style="color:red">(*)</b></label>
                         <input asp-for="PhoneNumber" class="form-control" id="PhoneNumber" onKeypress="if (event.keyCode < 48 || event.keyCode > 57) event.returnValue = false;" maxlength="8" />
                         <b><span asp-validation-for="PhoneNumber" class="text-danger"></span></b>
                     </div>
