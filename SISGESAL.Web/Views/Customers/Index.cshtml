@@ -69,37 +69,6 @@
 
 <hr />
 
-<div class="card">
-    <div class="card-body">
-        <div class="row">
-            <div class="col-lg-4 col-6">
-                <div class="small-box bg-success">
-                    <div class="inner">
-                        <h3 align="center">@ViewBag.Indexcount2</h3>
-                        <p align="center">Usuarios Activos</p>
-                    </div>
-                </div>
-            </div>
-            <div class="col-lg-4 col-6">
-                <div class="small-box bg-danger">
-                    <div class="inner">
-                        <h3 align="center">@ViewBag.Indexcount3</h3>
-                        <p align="center">Usuarios Bloqueados</p>
-                    </div>
-                </div>
-            </div>
-            <div class="col-lg-4 col-6">
-                <div class="small-box bg-info">
-                    <div class="inner">
-                        <h3 align="center">@ViewBag.Indexcount</h3>
-                        <p align="center">Total de Usuarios</p>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-
 <!-- USUARIOS ACTIVOS -->
 <div class="card">
     <div class="card-header bg-success">
@@ -120,6 +89,9 @@
                     </th>
                     <th>
                         @Html.DisplayNameFor(model => model.User!.Email)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.User!.Depot!.Name)
                     </th>
                     <th>
                         @Html.DisplayNameFor(model => model.User!.Observation)
@@ -146,6 +118,9 @@
                             </td>
                             <td>
                                 @Html.DisplayFor(modelItem => item.User.Email)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.User!.Depot!.Name)
                             </td>
                             <td>
                                 @Html.DisplayFor(modelItem => item.User.Observation)

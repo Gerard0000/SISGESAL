@@ -4,10 +4,133 @@
 }
 <br>
 
+@* <div class="row">
+    <div class="col-lg-7">
+        <p class="text-center">
+            <h1 align="center"><b>USUARIOS</b></h1>
+        </p>
+    </div>
+    <div class="col-lg-5">
+        <p class="text-center">
+            <br />
+            <a asp-action="Create" class="btn btn-primary col-md-6"><b>CREAR NUEVO USUARIO</b></a>
+        </p>
+    </div>
+</div> *@
+
+<div class="row">
+    <div class="col-lg-5">
+        <p class="text-center">
+        <img src="~/Imagenes/PODERJUDICIAL.png" height="110" width="135">
+        </p>
+    </div>
+    <div class="col-lg-7">
+        <p class="text-center">
+            <br />
+            <h1><u>SISGESAL</u></h1>
+        </p>
+    </div>
+</div>
+
+
+
 <div class="text-center">
     <p><img src="~/Imagenes/PODERJUDICIAL.png" height="220" width="270"></p>
     <h3><u>SISGESAL</u></h3>
     <br />
+</div>
 
+<div class="card">
+    <div class="card-body">
+        <div class="row">
+            <div class="col-lg-4 col-6">
+                <div class="small-box bg-success">
+                    <div class="inner">
+                        <h3 align="center">@ViewBag.Indexcount4</h3>
+                        <p align="center">Usuarios Activos con Almacén</p>
+                    </div>
+                    <a href="#" class="small-box-footer">Más Información <i class="fas fa-arrow-circle-right"></i></a>
+                </div>
+            </div>
+            <div class="col-lg-4 col-6">
+                <div class="small-box bg-danger">
+                    <div class="inner">
+                        <h3 align="center">@ViewBag.Indexcount5</h3>
+                        <p align="center">Usuarios Bloqueados con Almacén</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-4 col-6">
+                <div class="small-box bg-info">
+                    <div class="inner">
+                        <h3 align="center">@ViewBag.Indexcount6</h3>
+                        <p align="center">Total de Usuarios con Almacén</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 
+<div class="card">
+    <div class="card-body">
+        <div class="row">
+            <div class="col-lg-4 col-6">
+                <div class="small-box bg-warning">
+                    <div class="inner">
+                        <h3 align="center">@ViewBag.Indexcount7</h3>
+                        <p align="center">Usuarios Activos sin Almacén</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-4 col-6">
+                <div class="small-box bg-dark">
+                    <div class="inner">
+                        <h3 align="center">@ViewBag.Indexcount8</h3>
+                        <p align="center">Usuarios Bloqueados sin Almacén</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-4 col-6">
+                <div class="small-box bg-danger">
+                    <div class="inner">
+                        <h3 align="center">@ViewBag.Indexcount9</h3>
+                        <p align="center">Total de Usuarios sin Almacén</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="card">
+    <div class="card-body">
+        <div class="row">
+            <div class="col-lg-4 col-6">
+                <div class="small-box bg-success">
+                    <div class="inner">
+                        <h3 align="center">@ViewBag.Indexcount2</h3>
+                        <p align="center">Total de Usuarios Activos</p>
+                    </div>
+                    <a href="#" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
+                </div>
+            </div>
+            <div class="col-lg-4 col-6">
+                <div class="small-box bg-danger">
+                    <div class="inner">
+                        <h3 align="center">@ViewBag.Indexcount3</h3>
+                        <p align="center">Total de Usuarios Bloqueados</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-4 col-6">
+                <div class="small-box bg-info">
+                    <div class="inner">
+                        <h3 align="center">@ViewBag.Indexcount</h3>
+                        <p align="center">Total de Usuarios</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
