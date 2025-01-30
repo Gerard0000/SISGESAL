@@ -287,6 +287,111 @@ namespace SISGESAL.web.Controllers
             return View(model);
         }
 
+        // GET: Customers/AsignDepot/5
+        public async Task<IActionResult> AsignDepot(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var customer = await _dataContext.Customers
+                .Include(c => c.User!)
+                .ThenInclude(z => z.Depot)
+                .ThenInclude(z => z!.Court)
+                .ThenInclude(z => z!.Municipality)
+                .ThenInclude(z => z!.Department)
+                .FirstOrDefaultAsync(c => c.Id == id.Value);
+            if (customer == null)
+            {
+                return NotFound();
+            }
+
+            var model = new EditUserViewModel
+            {
+                UserName = customer.User!.UserName,
+                FullName = customer.User.FullName,
+                DNI = customer.User.DNI,
+                Occupation = customer.User.Occupation,
+                Email = customer.User.Email,
+                PhoneNumber = customer.User.PhoneNumber,
+                Observation = customer.User.Observation,
+                CreationDate = customer.User.CreationDate,
+                Creator = customer.User.Creator,
+
+                Depot = customer.User.Depot,
+
+                Departments = _combosHelper.GetComboDepartments(),
+                Municipalities = _combosHelper.GetComboMunicipalities(),
+                Courts = _combosHelper.GetComboCourts(),
+                Depots = _combosHelper.GetComboDepots(),
+            };
+            return View(model);
+        }
+
+        // POST: Customers/AsignDepot/5
+        // To protect from overposting attacks, enable the specific properties you want to bind to.
+        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> AsignDepot(EditUserViewModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                var customer = await _dataContext.Customers
+                .Include(c => c.User)
+                .ThenInclude(z => z!.Depot)
+                .ThenInclude(z => z!.Court)
+                .ThenInclude(z => z!.Municipality)
+                .ThenInclude(z => z!.Department)
+                .FirstOrDefaultAsync(c => c.Id == model.Id);
+
+                if (customer != null)
+                {
+                    customer.User!.FullName = model.FullName?.Trim().ToUpper();
+                    customer.User.DNI = model.DNI?.Trim();
+                    customer.User.Occupation = model.Occupation?.Trim().ToUpper();
+                    customer.User.Email = model.Email?.Trim().ToLower();
+                    customer.User.PhoneNumber = model.PhoneNumber?.Trim();
+                    customer.User.Observation = model.Observation?.Trim().ToUpper();
+
+                    customer.User.Depot = await _dataContext.Depots.FindAsync(model.DepotId);
+
+                    customer.User.Creator = model.Creator;
+                    customer.User.CreationDate = model.CreationDate;
+
+                    customer.User.Modifier = User.FindFirstValue(ClaimTypes.NameIdentifier);
+                    customer.User.ModificationDate = DateTime.Now;
+                }
+                try
+                {
+                    await _userHelper.UpdateUserAsync(customer!.User!);
+                    _dataContext.Update(customer);
+                    await _dataContext.SaveChangesAsync();
+                    TempData["AlertMessageEdit"] = "Usuario Actualizado Exitosamente";
+                }
+                catch (DbUpdateConcurrencyException)
+                {
+                    if (!CustomerExists(customer!.Id))
+                    {
+                        return NotFound();
+                    }
+                    else
+                    {
+                        throw;
+                    }
+                }
+                return RedirectToAction(nameof(Index));
+            }
+
+            model.Departments = _combosHelper.GetComboDepartments();
+            model.Municipalities = _combosHelper.GetComboMunicipalities();
+            model.Courts = _combosHelper.GetComboCourts();
+            model.Depots = _combosHelper.GetComboDepots();
+
+            return View(model);
+        }
+
         // GET: Customers/Lock
         public async Task<IActionResult> Lock(int? id)
         {

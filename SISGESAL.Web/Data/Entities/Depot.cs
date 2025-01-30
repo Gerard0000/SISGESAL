@@ -38,9 +38,10 @@ namespace SISGESAL.web.Data.Entities
         [Display(Name = "Fecha de Modificación")]
         public DateTime DateLocalModification => ModificationDate.ToLocalTime();
 
-        [Display(Name = "Court")]
+        [Display(Name = "Juzgado o Tribunal")]
         public Court? Court { get; set; }
 
-        //public ICollection<User>? Users { get; set; }
+        [Display(Name = "Usuario")]
+        public ICollection<User>? Users { get; set; }
     }
 }
