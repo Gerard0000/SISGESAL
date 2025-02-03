@@ -54,7 +54,7 @@
             <!-- Right navbar links -->
             <ul class="navbar-nav ml-auto">
 
-                @if (User.Identity.IsAuthenticated && User.IsInRole("Manager"))
+                @if (User.Identity!.IsAuthenticated && User.IsInRole("Manager"))
                 {
                     <li class="nav-item dropdown">
                         <a class="nav-link disabled text-light" title="USUARIO: @User.Identity.Name">
@@ -397,7 +397,8 @@
             function timerInactivo() {
                 let timer;
                 document.onmousemove = resetearTimer;
-                document.onkeypress = resetearTimer;
+                //document.onkeypress = resetearTimer; (es el original)
+                document.keypress = resetearTimer;
                 function resetearTimer() {
                     clearTimeout(timer);
                     timer = setTimeout(logout, cantidadSegundoDeslogueo)

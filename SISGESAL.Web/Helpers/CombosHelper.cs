@@ -4,6 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using SISGESAL.web.Data;
 using SISGESAL.web.Data.Entities;
 using System.Diagnostics.Metrics;
+using System.Linq;
 
 namespace SISGESAL.web.Helpers
 {
@@ -227,12 +228,6 @@ namespace SISGESAL.web.Helpers
 
         //**************************POR LOS MOMENTOS AQUI TERMINA**********************
 
-
-
-
-
-
-
         //public async Task<Department> GetDepartmentAsync(Municipality municipality)
         //{
         //    return await _dataContext.Departments
@@ -276,10 +271,6 @@ namespace SISGESAL.web.Helpers
 
         //    return list;
         //}
-
-
-
-
 
         //PROBAR COMBOBOX DE DEPARTMENT, MUNICIPALITIES AND COURTS
 

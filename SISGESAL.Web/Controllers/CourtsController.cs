@@ -9,14 +9,9 @@ using System.Security.Claims;
 namespace SISGESAL.web.Controllers
 {
     [Authorize(Roles = "Manager")]
-    public class CourtsController : Controller
+    public class CourtsController(DataContext context) : Controller
     {
-        private readonly DataContext _dataContext;
-
-        public CourtsController(DataContext context)
-        {
-            _dataContext = context;
-        }
+        private readonly DataContext _dataContext = context;
 
         // GET: Courts/Details/5
         public async Task<IActionResult> Details(int? id)

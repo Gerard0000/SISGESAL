@@ -16,16 +16,10 @@ using SISGESAL.web.Models;
 namespace SISGESAL.web.Controllers
 {
     [Authorize(Roles = "Manager")]
-    public class ArticlesController : Controller
+    public class ArticlesController(DataContext context, ICombosHelper combosHelper) : Controller
     {
-        private readonly DataContext _dataContext;
-        private readonly ICombosHelper _combosHelper;
-
-        public ArticlesController(DataContext context, ICombosHelper combosHelper)
-        {
-            _dataContext = context;
-            _combosHelper = combosHelper;
-        }
+        private readonly DataContext _dataContext = context;
+        private readonly ICombosHelper _combosHelper = combosHelper;
 
         // GET: Articles
         public async Task<IActionResult> Index()
@@ -192,6 +186,9 @@ namespace SISGESAL.web.Controllers
                 return NotFound();
             }
             var article = await _dataContext.Articles
+                .Include(k => k.KindofArticle)
+                .Include(m => m.Supplier)
+                .Include(m => m.TradeMark)
                 .FirstOrDefaultAsync(u => u.Id == id);
             if (article == null)
             {
@@ -206,25 +203,28 @@ namespace SISGESAL.web.Controllers
         public async Task<IActionResult> LockConfirmed(int id)
         {
             var article = await _dataContext.Articles
+                 .Include(k => k.KindofArticle)
+                .Include(m => m.Supplier)
+                .Include(m => m.TradeMark)
                 .FirstOrDefaultAsync(u => u.Id == id);
             if (article != null)
             {
-                article.Status = false;
-                article.Modifier = User.FindFirstValue(ClaimTypes.NameIdentifier);
-                article.ModificationDate = DateTime.Now;
-            }
+                try
+                {
+                    article.Status = false;
+                    article.Modifier = User.FindFirstValue(ClaimTypes.NameIdentifier);
+                    article.ModificationDate = DateTime.Now;
 
-            try
-            {
-                _dataContext.Update(article);
-                await _dataContext.SaveChangesAsync();
-                TempData["AlertMessageLock"] = "Artículo Bloqueado Exitosamente";
-                return RedirectToAction(nameof(Index));
+                    _dataContext.Update(article);
+                    await _dataContext.SaveChangesAsync();
+                    TempData["AlertMessageLock"] = "Artículo Bloqueado Exitosamente";
+                }
+                catch (Exception)
+                {
+                    throw;
+                }
             }
-            catch (Exception)
-            {
-                throw;
-            }
+            return RedirectToAction(nameof(Index));
         }
 
         // GET: Article/UnLock
@@ -249,24 +249,28 @@ namespace SISGESAL.web.Controllers
         public async Task<IActionResult> UnLockConfirmed(int id)
         {
             var article = await _dataContext.Articles
+                .Include(k => k.KindofArticle)
+                .Include(m => m.Supplier)
+                .Include(m => m.TradeMark)
                 .FirstOrDefaultAsync(u => u.Id == id);
             if (article != null)
             {
-                article.Status = true;
-                article.Modifier = User.FindFirstValue(ClaimTypes.NameIdentifier);
-                article.ModificationDate = DateTime.Now;
+                try
+                {
+                    article.Status = true;
+                    article.Modifier = User.FindFirstValue(ClaimTypes.NameIdentifier);
+                    article.ModificationDate = DateTime.Now;
+
+                    _dataContext.Update(article);
+                    await _dataContext.SaveChangesAsync();
+                    TempData["AlertMessageUnLock"] = "Artículo Activado Exitosamente";
+                }
+                catch (Exception)
+                {
+                    throw;
+                }
             }
-            try
-            {
-                _dataContext.Update(article);
-                await _dataContext.SaveChangesAsync();
-                TempData["AlertMessageUnLock"] = "Artículo Activado Exitosamente";
-                return RedirectToAction(nameof(Index));
-            }
-            catch (Exception)
-            {
-                throw;
-            }
+            return RedirectToAction(nameof(Index));
         }
 
         private bool ArticleExists(int id)
@@ -342,9 +346,9 @@ namespace SISGESAL.web.Controllers
 
                 Id = article.Id,
 
-                KindofArticleId = article.KindofArticle.Id,
-                TrademarkId = article.TradeMark.Id,
-                SupplierId = article.Supplier.Id,
+                KindofArticleId = article.KindofArticle!.Id,
+                TrademarkId = article.TradeMark!.Id,
+                SupplierId = article.Supplier!.Id,
 
                 KindofArticles = _combosHelper.GetComboKindofArticles(),
                 Trademarks = _combosHelper.GetComboTradeMarks(),

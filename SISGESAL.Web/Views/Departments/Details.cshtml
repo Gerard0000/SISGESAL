@@ -67,7 +67,7 @@
     </div>
 </div>
 
-@if (Model.Municipalities.Count == 0)
+@if (Model.Municipalities!.Count == 0)
 {
     <div class="card">
         <div class="card-body">
@@ -91,16 +91,16 @@ else
                     <thead>
                         <tr>
                             <th>
-                                @Html.DisplayNameFor(model => model.Municipalities.FirstOrDefault().Name)
+                                @Html.DisplayNameFor(model => model.Municipalities!.FirstOrDefault()!.Name)
                             </th>
                             <th>
-                                @Html.DisplayNameFor(model => model.Municipalities.FirstOrDefault().CodMunHn)
+                                @Html.DisplayNameFor(model => model.Municipalities!.FirstOrDefault()!.CodMunHn)
                             </th>
                             <th>
-                                @Html.DisplayNameFor(model => model.Municipalities.FirstOrDefault().CourtsNumber)
+                                @Html.DisplayNameFor(model => model.Municipalities!.FirstOrDefault()!.CourtsNumber)
                             </th>
                             <th>
-                                @Html.DisplayNameFor(model => model.Municipalities.FirstOrDefault().Observation)
+                                @Html.DisplayNameFor(model => model.Municipalities!.FirstOrDefault()!.Observation)
                             </th>
                             <th></th>
                         </tr>

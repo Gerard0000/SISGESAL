@@ -49,19 +49,15 @@ namespace SISGESAL.web.Models
         public new string? Observation { get; set; }
 
         [Display(Name = "Departamento")]
-        //[Range(1, int.MaxValue)]
-        public int DepartmentId { get; set; }
+        public int? DepartmentId { get; set; }
 
         [Display(Name = "Municipio")]
-        //[Range(1, int.MaxValue)]
-        public int MunicipalityId { get; set; }
+        public int? MunicipalityId { get; set; }
 
         [Display(Name = "Juzgado o Tribunal")]
-        //[Range(1, int.MaxValue)]
-        public int CourtId { get; set; }
+        public int? CourtId { get; set; }
 
         [Display(Name = "Almacén")]
-        //[Range(1, int.MaxValue)]
         public int? DepotId { get; set; } = null;
 
         public IEnumerable<SelectListItem>? Depots { get; set; } = null;

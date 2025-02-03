@@ -75,7 +75,7 @@
     </div>
 </div>
 
-@if (Model.Articles.Count == 0)
+@if (Model.Articles!.Count == 0)
 {
     <div class="card">
         <div class="card-body">
@@ -104,16 +104,16 @@ else
                     <thead>
                         <tr>
                             <th>
-                                @Html.DisplayNameFor(model => model.Articles.FirstOrDefault().Name)
+                                @Html.DisplayNameFor(model => model.Articles!.FirstOrDefault()!.Name)
                             </th>
                             <th>
-                                @Html.DisplayNameFor(model => model.Articles.FirstOrDefault().Supplier.Name)
+                                @Html.DisplayNameFor(model => model.Articles!.FirstOrDefault()!.Supplier!.Name)
                             </th>
                             <th>
-                                @Html.DisplayNameFor(model => model.Articles.FirstOrDefault().TradeMark.Name)
+                                @Html.DisplayNameFor(model => model.Articles!.FirstOrDefault()!.TradeMark!.Name)
                             </th>
                             <th>
-                                @Html.DisplayNameFor(model => model.Articles.FirstOrDefault().Observation)
+                                @Html.DisplayNameFor(model => model.Articles!.FirstOrDefault()!.Observation)
                             </th>
                             <th></th>
                         </tr>
@@ -125,11 +125,11 @@ else
                                 <td>
                                     @Html.DisplayFor(modelItem => item.Name)
                                 </td>
-                                                                <td>
-                                    @Html.DisplayFor(modelItem => item.Supplier.Name)
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Supplier!.Name)
                                 </td>
                                 <td>
-                                    @Html.DisplayFor(modelItem => item.TradeMark.Name)
+                                    @Html.DisplayFor(modelItem => item.TradeMark!.Name)
                                 </td>
                                 <td>
                                     @Html.DisplayFor(modelItem => item.Observation)

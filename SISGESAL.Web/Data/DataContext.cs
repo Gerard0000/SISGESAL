@@ -5,12 +5,8 @@ using SISGESAL.web.Models;
 
 namespace SISGESAL.web.Data
 {
-    public class DataContext : IdentityDbContext<User>
+    public class DataContext(DbContextOptions<DataContext> options) : IdentityDbContext<User>(options)
     {
-        public DataContext(DbContextOptions<DataContext> options) : base(options)
-        {
-        }
-
         //CREAMOS LA PROPIEDAD DE TIPO DBSET DE LAS TABLAS
         public DbSet<Manager> Managers { get; set; }
 
@@ -57,7 +53,8 @@ namespace SISGESAL.web.Data
         }
 
         public DbSet<SISGESAL.web.Data.Entities.Depot> Supplier { get; set; } = default!;
-        public DbSet<SISGESAL.web.Models.DepotViewModel> DepotViewModel { get; set; } = default!;
+
+        //public DbSet<SISGESAL.web.Models.DepotViewModel> DepotViewModel { get; set; } = default!;
         public DbSet<SISGESAL.web.Data.Entities.Article> Article { get; set; } = default!;
     }
 }

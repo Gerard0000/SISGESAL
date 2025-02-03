@@ -5,22 +5,16 @@ using SISGESAL.web.Models;
 
 namespace SISGESAL.web.Controllers
 {
-    public class AccountController : Controller
+    public class AccountController(IUserHelper userHelper/*, DataContext dataContext*/) : Controller
     {
         public bool IsPostBack { get; private set; }
-        private readonly IUserHelper _userHelper;
-        private readonly DataContext _dataContext;
-
-        public AccountController(IUserHelper userHelper, DataContext dataContext)
-        {
-            _userHelper = userHelper;
-            _dataContext = dataContext;
-        }
+        private readonly IUserHelper _userHelper = userHelper;
+        //private readonly DataContext _dataContext = dataContext;
 
         [HttpGet]
         public IActionResult Login()
         {
-            if (User.Identity.IsAuthenticated)
+            if (User.Identity!.IsAuthenticated!)
             {
                 return RedirectToAction("Index", "Home");
             }
@@ -37,7 +31,7 @@ namespace SISGESAL.web.Controllers
                 {
                     if (Request.Query.Keys.Contains("ReturnUrl"))
                     {
-                        return Redirect(Request.Query["ReturnUrl"].First());
+                        return Redirect(Request.Query["ReturnUrl"].First()!);
                     }
                     return RedirectToAction("Index", "Home");
                 }
@@ -49,6 +43,10 @@ namespace SISGESAL.web.Controllers
 
         public async Task<IActionResult> Logout(LoginViewModel model)
         {
+            //************agregado por el sistema***********
+            ArgumentNullException.ThrowIfNull(model);
+            //**********************************************
+
             await _userHelper.LogoutAsync();
             return RedirectToAction("Login", "Account");
         }
@@ -68,17 +66,17 @@ namespace SISGESAL.web.Controllers
         {
             if (ModelState.IsValid)
             {
-                var user = await _userHelper.GetUserAsync(User.Identity.Name);
+                var user = await _userHelper.GetUserAsync(User.Identity!.Name!);
                 if (user != null)
                 {
-                    var result = await _userHelper.ChangePasswordAsync(user, model.OldPassword, model.NewPassword);
+                    var result = await _userHelper.ChangePasswordAsync(user, model.OldPassword!, model.NewPassword!);
                     if (result.Succeeded)
                     {
                         return RedirectToAction("Index", "Home");
                     }
                     else
                     {
-                        ModelState.AddModelError(string.Empty, result.Errors.FirstOrDefault().Description);
+                        ModelState.AddModelError(string.Empty, result.Errors.FirstOrDefault()!.Description);
                     }
                 }
                 else
@@ -89,6 +87,5 @@ namespace SISGESAL.web.Controllers
 
             return View(model);
         }
-
     }
 }

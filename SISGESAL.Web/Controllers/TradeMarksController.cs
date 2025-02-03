@@ -13,14 +13,9 @@ using SISGESAL.web.Data.Entities;
 namespace SISGESAL.web.Controllers
 {
     [Authorize(Roles = "Manager")]
-    public class TradeMarksController : Controller
+    public class TradeMarksController(DataContext context) : Controller
     {
-        private readonly DataContext _dataContext;
-
-        public TradeMarksController(DataContext context)
-        {
-            _dataContext = context;
-        }
+        private readonly DataContext _dataContext = context;
 
         // GET: TradeMarks
         public async Task<IActionResult> Index()

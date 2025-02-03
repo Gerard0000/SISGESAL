@@ -13,14 +13,9 @@ using SISGESAL.web.Data.Entities;
 namespace SISGESAL.web.Controllers
 {
     [Authorize(Roles = "Manager")]
-    public class KindofArticlesController : Controller
+    public class KindofArticlesController(DataContext context) : Controller
     {
-        private readonly DataContext _dataContext;
-
-        public KindofArticlesController(DataContext context)
-        {
-            _dataContext = context;
-        }
+        private readonly DataContext _dataContext = context;
 
         // GET: KindofArticles
         public async Task<IActionResult> Index()
@@ -187,22 +182,22 @@ namespace SISGESAL.web.Controllers
                 .FirstOrDefaultAsync(u => u.Id == id);
             if (kindofArticle != null)
             {
-                kindofArticle.Status = false;
-                kindofArticle.Modifier = User.FindFirstValue(ClaimTypes.NameIdentifier);
-                kindofArticle.ModificationDate = DateTime.Now;
-            }
+                try
+                {
+                    kindofArticle.Status = false;
+                    kindofArticle.Modifier = User.FindFirstValue(ClaimTypes.NameIdentifier);
+                    kindofArticle.ModificationDate = DateTime.Now;
 
-            try
-            {
-                _dataContext.Update(kindofArticle);
-                await _dataContext.SaveChangesAsync();
-                TempData["AlertMessageLock"] = "Tipo de Artículo Bloqueado Exitosamente";
-                return RedirectToAction(nameof(Index));
+                    _dataContext.Update(kindofArticle);
+                    await _dataContext.SaveChangesAsync();
+                    TempData["AlertMessageLock"] = "Tipo de Artículo Bloqueado Exitosamente";
+                }
+                catch (Exception)
+                {
+                    throw;
+                }
             }
-            catch (Exception)
-            {
-                throw;
-            }
+            return RedirectToAction(nameof(Index));
         }
 
         // GET: KindofArticle/UnLock
@@ -230,21 +225,22 @@ namespace SISGESAL.web.Controllers
                 .FirstOrDefaultAsync(u => u.Id == id);
             if (kindofArticle != null)
             {
-                kindofArticle.Status = true;
-                kindofArticle.Modifier = User.FindFirstValue(ClaimTypes.NameIdentifier);
-                kindofArticle.ModificationDate = DateTime.Now;
+                try
+                {
+                    kindofArticle.Status = true;
+                    kindofArticle.Modifier = User.FindFirstValue(ClaimTypes.NameIdentifier);
+                    kindofArticle.ModificationDate = DateTime.Now;
+
+                    _dataContext.Update(kindofArticle);
+                    await _dataContext.SaveChangesAsync();
+                    TempData["AlertMessageUnLock"] = "Tipo de Artículo Activado Exitosamente";
+                }
+                catch (Exception)
+                {
+                    throw;
+                }
             }
-            try
-            {
-                _dataContext.Update(kindofArticle);
-                await _dataContext.SaveChangesAsync();
-                TempData["AlertMessageUnLock"] = "Tipo de Artículo Activado Exitosamente";
-                return RedirectToAction(nameof(Index));
-            }
-            catch (Exception)
-            {
-                throw;
-            }
+            return RedirectToAction(nameof(Index));
         }
 
         // GET: TradeMarks/Delete/5

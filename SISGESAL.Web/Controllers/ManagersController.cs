@@ -34,7 +34,6 @@ namespace SISGESAL.web.Controllers
                 .ThenInclude(z => z!.Department));
         }
 
-
         //*******************************INTENTO DE HACER DROPDOWNLIST EN CASCADA*******************
         //*******************************REVISAR PRIMERO EL CUSTOMER*******************
         //[HttpGet]
@@ -197,7 +196,7 @@ namespace SISGESAL.web.Controllers
                         ViewBag.DuplicateMessage = "Se ha producido un error ó el valor esta duplicado con otro valor de la base de datos";
                     }
                 }
-                ModelState.AddModelError(string.Empty, response.Errors.FirstOrDefault().Description);
+                //ModelState.AddModelError(string.Empty, response.Errors.FirstOrDefault().Description);
             }
 
             model.Departments = _combosHelper.GetComboDepartments();
@@ -269,6 +268,8 @@ namespace SISGESAL.web.Controllers
 
                 if (manager != null)
                 {
+                    manager.User!.UserName = model.UserName;
+
                     manager!.User!.FullName = model.FullName?.Trim().ToUpper();
                     manager.User.DNI = model.DNI?.Trim();
                     manager.User.Occupation = model.Occupation?.Trim().ToUpper();

@@ -37,8 +37,8 @@
 
 <div>
     <h3><b>Juzgado o Tribunal: </b><b class="text-red">@Html.DisplayFor(model => model.Name)</b></h3>
-    <h4><b>Municipio: </b><b class="text-red">@Html.DisplayFor(model => model.Municipality.Name)</b></h4>
-    <h5><b>Departamento: </b><b class="text-red">@Html.DisplayFor(model => model.Municipality.Department.Name)</b></h5>
+    <h4><b>Municipio: </b><b class="text-red">@Html.DisplayFor(model => model.Municipality!.Name)</b></h4>
+    <h5><b>Departamento: </b><b class="text-red">@Html.DisplayFor(model => model.Municipality!.Department!.Name)</b></h5>
     <hr />
     <div class="card">
         <div class="card-body">
@@ -51,20 +51,18 @@
                 </dd>
 
                 <dt class="col-sm-2">
-                    @Html.DisplayNameFor(model => model.Municipality.Name)
+                    @Html.DisplayNameFor(model => model.Municipality!.Name)
                 </dt>
                 <dd class="col-sm-10">
-                    @Html.DisplayFor(model => model.Municipality.Name)
+                    @Html.DisplayFor(model => model.Municipality!.Name)
                 </dd>
 
                 <dt class="col-sm-2">
-                    @Html.DisplayNameFor(model => model.Municipality.Department.Name)
+                    @Html.DisplayNameFor(model => model.Municipality!.Department!.Name)
                 </dt>
                 <dd class="col-sm-10">
-                    @Html.DisplayFor(model => model.Municipality.Department.Name)
+                    @Html.DisplayFor(model => model.Municipality!.Department!.Name)
                 </dd>
-
-
                 <dt class="col-sm-2">
                     @Html.DisplayNameFor(model => model.Observation)
                 </dt>
@@ -98,7 +96,7 @@
             </dl>
             <div>
                 <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-warning">Editar Juzgado o Tribunal</a>
-                <a href="/Municipalities/Details/@Model.Municipality.Id" class="btn btn-dark" title="Regresar">Regresar</a>
+                <a href="/Municipalities/Details/@Model.Municipality!.Id" class="btn btn-dark" title="Regresar">Regresar</a>
             </div>
         </div>
     </div>

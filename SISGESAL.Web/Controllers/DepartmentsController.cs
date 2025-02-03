@@ -8,14 +8,9 @@ using System.Security.Claims;
 namespace SISGESAL.web.Controllers
 {
     [Authorize(Roles = "Manager")]
-    public class DepartmentsController : Controller
+    public class DepartmentsController(DataContext context) : Controller
     {
-        private readonly DataContext _dataContext;
-
-        public DepartmentsController(DataContext context)
-        {
-            _dataContext = context;
-        }
+        private readonly DataContext _dataContext = context;
 
         // GET: Departments
         public async Task<IActionResult> Index()

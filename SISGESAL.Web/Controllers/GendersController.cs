@@ -12,14 +12,9 @@ using SISGESAL.web.Data.Entities;
 namespace SISGESAL.web.Controllers
 {
     [Authorize(Roles = "Manager")]
-    public class GendersController : Controller
+    public class GendersController(DataContext context) : Controller
     {
-        private readonly DataContext _context;
-
-        public GendersController(DataContext context)
-        {
-            _context = context;
-        }
+        private readonly DataContext _context = context;
 
         // GET: Genders/Details/5
         public async Task<IActionResult> Details(int? id)
