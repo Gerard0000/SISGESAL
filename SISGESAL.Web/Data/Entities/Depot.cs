@@ -47,5 +47,8 @@ namespace SISGESAL.web.Data.Entities
 
         [Display(Name = "Usuario")]
         public User? User { get; set; } = null;
+
+        //INTENTAR
+        public int? UserId { get; set; }
     }
 }

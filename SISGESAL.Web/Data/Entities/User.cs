@@ -51,8 +51,10 @@ namespace SISGESAL.web.Data.Entities
         public DateTime DateLocalModification => ModificationDate.ToLocalTime();
 
         //SOLO ME TRAE LOS SIGUIENTES DATOS CON COMBOBOX
-
         [Display(Name = "Almacén Asignado")]
         public Depot? Depot { get; set; }
+
+        //INTENTAR
+        //public int? DepotId {  get; set; }
     }
 }

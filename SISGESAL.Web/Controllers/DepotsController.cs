@@ -24,20 +24,19 @@ namespace SISGESAL.web.Controllers
         public async Task<IActionResult> Index()
         {
             //ALMACENES ACTIVOS CON USUARIOS ACTIVOS
-            ViewBag.Indexcount1 = _dataContext.Customers.Include(x => x.User).Where(m => (m.User!.Depot != null) && (m.User.LockoutEnd == null) && (m.User!.Depot!.Status == true)).Count();
-            //ViewBag.Indexcount1 = _dataContext.Depots.Include(x => x.User).Where(m => (m.User!.Depot != null) && (m.User.LockoutEnd == null) && (m.User!.Depot!.Status == true)).Count();
+            ViewBag.Indexcount1 = _dataContext.Depots.Include(x => x.User).Where(m => (m.User!.Depot != null) && (m.User.LockoutEnd == null) && (m.User!.Depot!.Status == true)).Count();
             //USUARIOS BLOQUEADOS CON ALMACÉN ACTIVO
-            ViewBag.Indexcount2 = _dataContext.Customers.Include(x => x.User).Where(m => (m.User!.Depot != null) && (m.User!.LockoutEnd != null) && (m.User!.Depot!.Status == true)).Count();
+            ViewBag.Indexcount2 = _dataContext.Depots.Include(x => x.User).Where(m => (m.User!.Depot != null) && (m.User!.LockoutEnd != null) && (m.User!.Depot!.Status == true)).Count();
             //ALMACÉN ACTIVO SIN USUARIO
-            ViewBag.Indexcount3 = _dataContext.Depots.Include(x => x.Users).Where(m => (m.Users!.Count == 0) && (m.Status == true)).Count();
+            ViewBag.Indexcount3 = _dataContext.Depots.Include(x => x.User).Where(m => (m.User!.Depot! == null) && (m.Status == true)).Count();
             //ALMACENES ACTIVOS
             ViewBag.Indexcount4 = _dataContext.Depots.Where(x => x.Status == true).Count();
             //USUARIOS ACTIVOS CON ALMACÉN BLOQUEADO
-            ViewBag.Indexcount5 = _dataContext.Customers.Include(u => u.User).ThenInclude(d => d!.Depot).Where(x => (x.User!.Depot != null) && (x.User!.Depot!.Status == false) && (x.User.LockoutEnd == null)).Count();
+            ViewBag.Indexcount5 = _dataContext.Depots.Include(u => u.User).ThenInclude(d => d!.Depot).Where(x => (x.User!.Depot != null) && (x.User!.Depot!.Status == false) && (x.User.LockoutEnd == null)).Count();
             //USUARIOS BLOQUEADOS CON ALMACÉN BLOQUEADO
-            ViewBag.Indexcount6 = _dataContext.Customers.Include(u => u.User).ThenInclude(d => d!.Depot).Where(x => (x.User!.Depot != null) && (x.User!.Depot!.Status == false) && (x.User.LockoutEnd > DateTime.Now)).Count();
+            ViewBag.Indexcount6 = _dataContext.Depots.Include(u => u.User).ThenInclude(d => d!.Depot).Where(x => (x.User!.Depot != null) && (x.User!.Depot!.Status == false) && (x.User.LockoutEnd > DateTime.Now)).Count();
             //ALMACÉN BLOQUEADO SIN USUARIO
-            ViewBag.Indexcount7 = _dataContext.Customers.Include(x => x.User).Where(m => (m.User!.Depot == null) && (m.User!.Depot!.Status == false)).Count();
+            ViewBag.Indexcount7 = _dataContext.Depots.Include(x => x.User).Where(m => (m.User!.Depot == null) && (m.User!.Depot!.Status == false)).Count();
             //ALMACENES BLOQUEADOS
             ViewBag.Indexcount8 = _dataContext.Depots.Where(x => x.Status == false).Count();
             //TOTAL DE ALMACENES
@@ -67,32 +66,42 @@ namespace SISGESAL.web.Controllers
                 .Include(c => c.Court)
                 .ThenInclude(m => m!.Municipality)
                 .ThenInclude(d => d!.Department)
-
-                .ToListAsync());
+                .Include(u => u.User)
+                .Where(m => (m.User!.Depot != null) && (m.User.LockoutEnd == null) && (m.User!.Depot!.Status == true)));
         }
 
         //USUARIOS BLOQUEADOS CON ALMACÉN ACTIVO
         public IActionResult LockedUserWithDepotActive()
         {
-            ViewBag.Indexcount = _dataContext.Customers.Include(x => x.User).Where(m => (m.User!.Depot != null) && (m.User!.LockoutEnd != null) && (m.User!.Depot!.Status == true)).Count();
+            ViewBag.Indexcount = _dataContext.Depots.Include(x => x.User).Where(m => (m.User!.Depot != null) && (m.User!.LockoutEnd != null) && (m.User!.Depot!.Status == true)).Count();
 
-            return View(_dataContext.Customers
-                .Include(m => m.User!)
-                .ThenInclude(c => c.Depot)
-                .ThenInclude(z => z!.Court)
-                .ThenInclude(z => z!.Municipality)
-                .ThenInclude(z => z!.Department)
-                .Where(m => (m.User!.Depot != null) && (m.User!.LockoutEnd != null) && (m.User!.Depot!.Status == true)));
+            //return View(_dataContext.Customers
+            //    .Include(m => m.User!)
+            //    .ThenInclude(c => c.Depot)
+            //    .ThenInclude(z => z!.Court)
+            //    .ThenInclude(z => z!.Municipality)
+            //    .ThenInclude(z => z!.Department)
+            //    .Where(m => (m.User!.Depot != null) && (m.User!.LockoutEnd != null) && (m.User!.Depot!.Status == true)));
+            return View(_dataContext.Depots
+                .Include(c => c.Court)
+                .ThenInclude(m => m!.Municipality)
+                .ThenInclude(d => d!.Department)
+                .Include(u => u.User)
+                .Where(m => (m.User!.Depot != null) && (m.User.LockoutEnd != null) && (m.User!.Depot!.Status == true)));
+
         }
 
         //ALMACENES ACTIVOS SIN USUARIO
         public IActionResult DepotActiveWithNoUser()
         {
-            ViewBag.Indexcount = _dataContext.Depots.Include(x => x.Users).Where(m => (m.Users == null) && (m.Status == true)).Count();
+            ViewBag.Indexcount = _dataContext.Depots.Include(x => x.User).Where(m => (m.User!.Depot! == null) && (m.Status == true)).Count();
 
             return View(_dataContext.Depots
-                .Include(u => u.Users)
-                .Where(m => (m.Users == null) && (m.Status == true)));
+                .Include(c => c.Court)
+                .ThenInclude(m => m!.Municipality)
+                .ThenInclude(d => d!.Department)
+                .Include(u => u.User)
+                .Where(m => (m.User!.Depot! == null) && (m.Status == true)));
         }
 
         //ALMACENES ACTIVOS
@@ -101,47 +110,51 @@ namespace SISGESAL.web.Controllers
             ViewBag.Indexcount = _dataContext.Depots.Where(x => x.Status == true).Count();
 
             return View(_dataContext.Depots
-                .Include(u => u.Users)
+                .Include(c => c.Court)
+                .ThenInclude(m => m!.Municipality)
+                .ThenInclude(d => d!.Department)
+                .Include(u => u.User)
                 .Where(x => x.Status == true));
         }
 
         //USUARIOS ACTIVOS CON ALMACÉN BLOQUEADO
         public IActionResult ActiveUserWithDepotLock()
         {
-            ViewBag.Indexcount = _dataContext.Customers.Include(u => u.User).ThenInclude(d => d!.Depot).Where(x => (x.User!.Depot != null) && (x.User!.Depot!.Status == false) && (x.User.LockoutEnd == null)).Count();
+            ViewBag.Indexcount = _dataContext.Depots.Include(u => u.User).ThenInclude(d => d!.Depot).Where(x => (x.User!.Depot != null) && (x.User!.Depot!.Status == false) && (x.User.LockoutEnd == null)).Count();
 
-            return View(_dataContext.Customers
-                .Include(m => m.User!)
-                .ThenInclude(c => c.Depot)
-                .ThenInclude(z => z!.Court)
-                .ThenInclude(z => z!.Municipality)
-                .ThenInclude(z => z!.Department)
+            return View(_dataContext.Depots
+                .Include(c => c.Court)
+                .ThenInclude(m => m!.Municipality)
+                .ThenInclude(d => d!.Department)
+                .Include(u => u.User)
                 .Where(x => (x.User!.Depot != null) && (x.User!.Depot!.Status == false) && (x.User.LockoutEnd == null)));
         }
 
         //USUARIOS BLOQUEADOS CON ALMACÉN BLOQUEADO
         public IActionResult LockedUserWithDepotLock()
         {
-            ViewBag.Indexcount = _dataContext.Customers.Include(x => x.User).Where(m => (m.User!.Depot != null) && (m.User!.LockoutEnd != null) && (m.User!.Depot!.Status == false)).Count();
+            ViewBag.Indexcount = _dataContext.Depots.Include(u => u.User).ThenInclude(d => d!.Depot).Where(x => (x.User!.Depot != null) && (x.User!.Depot!.Status == false) && (x.User.LockoutEnd > DateTime.Now)).Count();
 
-            return View(_dataContext.Customers
-
-                .Include(m => m.User!)
-                .ThenInclude(c => c.Depot)
-                .ThenInclude(z => z!.Court)
-                .ThenInclude(z => z!.Municipality)
-                .ThenInclude(z => z!.Department)
-                .Where(m => (m.User!.Depot != null) && (m.User!.LockoutEnd != null) && (m.User!.Depot!.Status == false)));
+            return View(_dataContext.Depots
+                .Include(c => c.Court)
+                .ThenInclude(m => m!.Municipality)
+                .ThenInclude(d => d!.Department)
+                .Include(u => u.User)
+                .Where(x => (x.User!.Depot != null) && (x.User!.Depot!.Status == false) && (x.User.LockoutEnd > DateTime.Now)));
         }
 
         //ALMACÉN BLOQUEADO SIN USUARIOS
         public IActionResult DepotLockWithNoUser()
         {
-            ViewBag.Indexcount = _dataContext.Depots.Include(x => x.Users).Where(m => (m.Users == null) && (m.Status == false)).Count();
+            ViewBag.Indexcount = _dataContext.Depots.Include(x => x.User).Where(m => (m.User!.Depot == null) && (m.User!.Depot!.Status == false)).Count();
+
 
             return View(_dataContext.Depots
-                .Include(u => u.Users)
-                .Where(m => (m.Users == null) && (m.Status == false)));
+                .Include(c => c.Court)
+                .ThenInclude(m => m!.Municipality)
+                .ThenInclude(d => d!.Department)
+                .Include(u => u.User)
+                .Where(m => (m.User!.Depot == null) && (m.User!.Depot!.Status == false)));
         }
 
         //ALMACENES BLOQUEADOS
@@ -150,17 +163,24 @@ namespace SISGESAL.web.Controllers
             ViewBag.Indexcount = _dataContext.Depots.Where(x => x.Status == false).Count();
 
             return View(_dataContext.Depots
-                .Include(u => u.Users)
+                .Include(c => c.Court)
+                .ThenInclude(m => m!.Municipality)
+                .ThenInclude(d => d!.Department)
+                .Include(u => u.User)
                 .Where(x => x.Status == false));
         }
 
         //TOTAL DE ALMACENES
-        public IActionResult TotalUser()
+        public IActionResult TotalDepot()
         {
             ViewBag.Indexcount = _dataContext.Depots.Count();
 
             return View(_dataContext.Depots
-                .Include(u => u.Users));
+                .Include(c => c.Court)
+                .ThenInclude(m => m!.Municipality)
+                .ThenInclude(d => d!.Department)
+                .Include(u => u.User)
+                .ToList());
         }
 
         // GET: Depots/Details/5
@@ -175,7 +195,7 @@ namespace SISGESAL.web.Controllers
                 .Include(c => c.Court)
                 .ThenInclude(m => m!.Municipality)
                 .ThenInclude(d => d!.Department)
-                .Include(u => u.Users)
+                .Include(u => u.User)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (depot == null)
             {
@@ -247,7 +267,7 @@ namespace SISGESAL.web.Controllers
                 .Include(c => c.Court)
                 .ThenInclude(m => m!.Municipality)
                 .ThenInclude(d => d!.Department)
-                .Include(u => u.Users)
+                .Include(u => u.User)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (depot == null)
             {

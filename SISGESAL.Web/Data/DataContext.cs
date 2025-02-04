@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using SISGESAL.web.Data.Entities;
 using SISGESAL.web.Models;
+using System.Reflection.Metadata;
 
 namespace SISGESAL.web.Data
 {
@@ -51,7 +52,12 @@ namespace SISGESAL.web.Data
 
             modelBuilder.Entity<Article>().HasIndex(x => x.Name).IsUnique();
 
-            modelBuilder.Entity<User>().HasOne(x => x.Depota).WithOne(e => e.User).HasForeignKey<Depot>("UserId");
+            //modelBuilder.Entity<User>().HasOne(x => x.Depotuser}).WithOne(e => e.User).HasForeignKey<Depot>("UserId");
+
+            modelBuilder.Entity<User>().HasOne(e => e.Depot).WithOne(e => e.User).HasForeignKey<Depot>(e => e.UserId).IsRequired(false);
+
+            //EJEMPLO DE LA PAGINA
+            //modelBuilder.Entity<Blog>().HasOne(e => e.Header).WithOne(e => e.Blog).HasForeignKey<BlogHeader>(e => e.BlogId).IsRequired(false);
         }
     }
 }
