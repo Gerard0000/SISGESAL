@@ -37,9 +37,9 @@ namespace SISGESAL.web.Controllers
             }
 
             var kindofArticle = await _dataContext.KindofArticles
-                .Include(x => x.Articles)
+                .Include(x => x.Articles!)
                 .ThenInclude(x => x.TradeMark)
-                .Include(x => x.Articles)
+                .Include(x => x.Articles!)
                 .ThenInclude(x => x.Supplier)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (kindofArticle == null)

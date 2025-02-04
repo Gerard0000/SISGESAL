@@ -13,14 +13,9 @@ using SISGESAL.web.Data.Entities;
 namespace SISGESAL.web.Controllers
 {
     [Authorize(Roles = "Manager")]
-    public class SuppliersController : Controller
+    public class SuppliersController(DataContext context) : Controller
     {
-        private readonly DataContext _dataContext;
-
-        public SuppliersController(DataContext context)
-        {
-            _dataContext = context;
-        }
+        private readonly DataContext _dataContext = context;
 
         // GET: Suppliers
         public async Task<IActionResult> Index()
@@ -42,9 +37,9 @@ namespace SISGESAL.web.Controllers
             }
 
             var supplier = await _dataContext.Suppliers
-                .Include(x => x.Articles)
+                .Include(x => x.Articles!)
                 .ThenInclude(x => x.TradeMark)
-                .Include(x => x.Articles)
+                .Include(x => x.Articles!)
                 .ThenInclude(x => x.KindofArticle)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (supplier == null)
@@ -187,22 +182,22 @@ namespace SISGESAL.web.Controllers
                 .FirstOrDefaultAsync(u => u.Id == id);
             if (supplier != null)
             {
-                supplier.Status = false;
-                supplier.Modifier = User.FindFirstValue(ClaimTypes.NameIdentifier);
-                supplier.ModificationDate = DateTime.Now;
-            }
+                try
+                {
+                    supplier.Status = false;
+                    supplier.Modifier = User.FindFirstValue(ClaimTypes.NameIdentifier);
+                    supplier.ModificationDate = DateTime.Now;
 
-            try
-            {
-                _dataContext.Update(supplier);
-                await _dataContext.SaveChangesAsync();
-                TempData["AlertMessageLock"] = "Proveedor Bloqueado Exitosamente";
-                return RedirectToAction(nameof(Index));
+                    _dataContext.Update(supplier);
+                    await _dataContext.SaveChangesAsync();
+                    TempData["AlertMessageLock"] = "Proveedor Bloqueado Exitosamente";
+                }
+                catch (Exception)
+                {
+                    throw;
+                }
             }
-            catch (Exception)
-            {
-                throw;
-            }
+            return RedirectToAction(nameof(Index));
         }
 
         // GET: Suppliers/UnLock
@@ -230,21 +225,22 @@ namespace SISGESAL.web.Controllers
                 .FirstOrDefaultAsync(u => u.Id == id);
             if (supplier != null)
             {
-                supplier.Status = true;
-                supplier.Modifier = User.FindFirstValue(ClaimTypes.NameIdentifier);
-                supplier.ModificationDate = DateTime.Now;
+                try
+                {
+                    supplier.Status = true;
+                    supplier.Modifier = User.FindFirstValue(ClaimTypes.NameIdentifier);
+                    supplier.ModificationDate = DateTime.Now;
+
+                    _dataContext.Update(supplier);
+                    await _dataContext.SaveChangesAsync();
+                    TempData["AlertMessageUnLock"] = "Proveedor Activado Exitosamente";
+                }
+                catch (Exception)
+                {
+                    throw;
+                }
             }
-            try
-            {
-                _dataContext.Update(supplier);
-                await _dataContext.SaveChangesAsync();
-                TempData["AlertMessageUnLock"] = "Proveedor Activado Exitosamente";
-                return RedirectToAction(nameof(Index));
-            }
-            catch (Exception)
-            {
-                throw;
-            }
+            return RedirectToAction(nameof(Index));
         }
 
         // GET: TradeMarks/Delete/5

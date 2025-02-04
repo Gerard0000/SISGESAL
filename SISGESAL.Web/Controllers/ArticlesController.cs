@@ -28,7 +28,7 @@ namespace SISGESAL.web.Controllers
             ViewBag.Indexcount2 = _dataContext.Articles.Where(m => m.Status == true).Count();
             ViewBag.Indexcount3 = _dataContext.Articles.Where(m => m.Status == false).Count();
 
-            return View(await _dataContext.Article
+            return View(await _dataContext.Articles
                 .Include(m => m.KindofArticle)
                 .Include(m => m.Supplier)
                 .Include(m => m.TradeMark)
@@ -43,7 +43,7 @@ namespace SISGESAL.web.Controllers
                 return NotFound();
             }
 
-            var article = await _dataContext.Article
+            var article = await _dataContext.Articles
                 .Include(m => m.KindofArticle)
                 .Include(m => m.Supplier)
                 .Include(m => m.TradeMark)
@@ -104,7 +104,7 @@ namespace SISGESAL.web.Controllers
                 return NotFound();
             }
 
-            var article = await _dataContext.Article
+            var article = await _dataContext.Articles
                 .Include(k => k.KindofArticle)
                 .Include(m => m.Supplier)
                 .Include(m => m.TradeMark)
@@ -150,7 +150,7 @@ namespace SISGESAL.web.Controllers
                 return NotFound();
             }
 
-            var article = await _dataContext.Article
+            var article = await _dataContext.Articles
                 .Include(k => k.KindofArticle)
                 .Include(m => m.Supplier)
                 .Include(m => m.TradeMark)
@@ -168,10 +168,10 @@ namespace SISGESAL.web.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var article = await _dataContext.Article.FindAsync(id);
+            var article = await _dataContext.Articles.FindAsync(id);
             if (article != null)
             {
-                _dataContext.Article.Remove(article);
+                _dataContext.Articles.Remove(article);
             }
 
             await _dataContext.SaveChangesAsync();
@@ -235,6 +235,9 @@ namespace SISGESAL.web.Controllers
                 return NotFound();
             }
             var article = await _dataContext.Articles
+                .Include(k => k.KindofArticle)
+                .Include(m => m.Supplier)
+                .Include(m => m.TradeMark)
                 .FirstOrDefaultAsync(u => u.Id == id);
             if (article == null)
             {
@@ -275,7 +278,7 @@ namespace SISGESAL.web.Controllers
 
         private bool ArticleExists(int id)
         {
-            return _dataContext.Article.Any(e => e.Id == id);
+            return _dataContext.Articles.Any(e => e.Id == id);
         }
 
         //OTROS MÉTODOS PRIVADOS

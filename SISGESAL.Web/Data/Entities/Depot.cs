@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace SISGESAL.web.Data.Entities
 {
@@ -38,10 +39,13 @@ namespace SISGESAL.web.Data.Entities
         [Display(Name = "Fecha de Modificación")]
         public DateTime DateLocalModification => ModificationDate.ToLocalTime();
 
-        [Display(Name = "Juzgado o Tribunal")]
+        [Display(Name = "Dirección")]
         public Court? Court { get; set; } = null;
 
+        //[Display(Name = "Usuario")]
+        //public ICollection<User>? Users { get; set; }
+
         [Display(Name = "Usuario")]
-        public ICollection<User>? Users { get; set; }
+        public User? User { get; set; } = null;
     }
 }

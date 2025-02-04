@@ -50,11 +50,8 @@ namespace SISGESAL.web.Data
             modelBuilder.Entity<TradeMark>().HasIndex(x => x.Name).IsUnique();
 
             modelBuilder.Entity<Article>().HasIndex(x => x.Name).IsUnique();
+
+            modelBuilder.Entity<User>().HasOne(x => x.Depota).WithOne(e => e.User).HasForeignKey<Depot>("UserId");
         }
-
-        public DbSet<SISGESAL.web.Data.Entities.Depot> Supplier { get; set; } = default!;
-
-        //public DbSet<SISGESAL.web.Models.DepotViewModel> DepotViewModel { get; set; } = default!;
-        public DbSet<SISGESAL.web.Data.Entities.Article> Article { get; set; } = default!;
     }
 }

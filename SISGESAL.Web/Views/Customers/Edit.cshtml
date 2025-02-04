@@ -41,7 +41,7 @@
                     </div>
 
                     <div class="form-group">
-                        <label asp-for="CourtId" class="control-label">Juzgado o Tribunal al que Pertenece @* <b style="color:red">(*)</b> *@</label>
+                        <label asp-for="CourtId" class="control-label">Juzgado o Tribunal al que Pertenece <b style="color:red">(*)</b></label>
                         <select asp-for="CourtId" asp-items="Model.Courts" class="form-control" value=0></select>
                         <b><span asp-validation-for="CourtId" class="text-danger"></span></b>
                     </div>

@@ -37,9 +37,9 @@ namespace SISGESAL.web.Controllers
             }
 
             var tradeMark = await _dataContext.TradeMarks
-                .Include(x => x.Articles)
+                .Include(x => x.Articles!)
                 .ThenInclude(x => x.KindofArticle)
-                .Include(x => x.Articles)
+                .Include(x => x.Articles!)
                 .ThenInclude(x => x.Supplier)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (tradeMark == null)
@@ -181,22 +181,22 @@ namespace SISGESAL.web.Controllers
                 .FirstOrDefaultAsync(u => u.Id == id);
             if (tradeMark != null)
             {
-                tradeMark.Status = false;
-                tradeMark.Modifier = User.FindFirstValue(ClaimTypes.NameIdentifier);
-                tradeMark.ModificationDate = DateTime.Now;
-            }
+                try
+                {
+                    tradeMark.Status = false;
+                    tradeMark.Modifier = User.FindFirstValue(ClaimTypes.NameIdentifier);
+                    tradeMark.ModificationDate = DateTime.Now;
 
-            try
-            {
-                _dataContext.Update(tradeMark);
-                await _dataContext.SaveChangesAsync();
-                TempData["AlertMessageLock"] = "Marca de Artículo Bloqueado Exitosamente";
-                return RedirectToAction(nameof(Index));
+                    _dataContext.Update(tradeMark);
+                    await _dataContext.SaveChangesAsync();
+                    TempData["AlertMessageLock"] = "Marca de Artículo Bloqueado Exitosamente";
+                }
+                catch (Exception)
+                {
+                    throw;
+                }
             }
-            catch (Exception)
-            {
-                throw;
-            }
+            return RedirectToAction(nameof(Index));
         }
 
         // GET: TradeMarks/UnLock
@@ -224,21 +224,22 @@ namespace SISGESAL.web.Controllers
                 .FirstOrDefaultAsync(u => u.Id == id);
             if (trademark != null)
             {
-                trademark.Status = true;
-                trademark.Modifier = User.FindFirstValue(ClaimTypes.NameIdentifier);
-                trademark.ModificationDate = DateTime.Now;
+                try
+                {
+                    trademark.Status = true;
+                    trademark.Modifier = User.FindFirstValue(ClaimTypes.NameIdentifier);
+                    trademark.ModificationDate = DateTime.Now;
+
+                    _dataContext.Update(trademark);
+                    await _dataContext.SaveChangesAsync();
+                    TempData["AlertMessageUnLock"] = "Marca de Artículo Activado Exitosamente";
+                }
+                catch (Exception)
+                {
+                    throw;
+                }
             }
-            try
-            {
-                _dataContext.Update(trademark);
-                await _dataContext.SaveChangesAsync();
-                TempData["AlertMessageUnLock"] = "Marca de Artículo Activado Exitosamente";
-                return RedirectToAction(nameof(Index));
-            }
-            catch (Exception)
-            {
-                throw;
-            }
+            return RedirectToAction(nameof(Index));
         }
 
         // GET: TradeMarks/Delete/5
