@@ -158,6 +158,24 @@
             <dd class="col-sm-10">
                 @Html.DisplayFor(model => model.User!.Depot!.Name)
             </dd>
+            <dt class="col-sm-2">
+                Dirección del Almacén
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.User!.Depot!.Court!.Name)
+            </dd>
+            <dt class="col-sm-2">
+                Municipío del Almacén
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.User!.Depot!.Court!.Municipality!.Name)
+            </dd>
+            <dt class="col-sm-2">
+                Departamento del Almacén
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.User!.Depot!.Court!.Municipality!.Department!.Name)
+            </dd>
         </dl>
         <div>
             <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-warning">Editar</a>

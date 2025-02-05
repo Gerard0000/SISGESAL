@@ -404,7 +404,7 @@ namespace SISGESAL.web.Controllers
                 Creator = customer.User.Creator,
 
                 Depot = customer.User.Depot,
-                DepotId = customer!.User!.Depot!.Id!,
+                DepotId = customer!.User!.DepotId,
 
                 Departments = _combosHelper.GetComboDepartments(),
                 Municipalities = _combosHelper.GetComboMunicipalities(),
@@ -442,7 +442,11 @@ namespace SISGESAL.web.Controllers
                     customer.User.PhoneNumber = model.PhoneNumber?.Trim();
                     customer.User.Observation = model.Observation?.Trim().ToUpper();
 
-                    customer.User.Depot = await _dataContext.Depots.FindAsync(model.DepotId);
+                    //customer.User.Depot = await _dataContext.Depots.FindAsync(model.DepotId);
+
+                    //customer.User.DepotId = model.DepotId;
+
+                    //customer.User.Depot = await _dataContext.Depots.FindAsync(model.DepotId);
 
                     customer.User.Creator = model.Creator;
                     customer.User.CreationDate = model.CreationDate;

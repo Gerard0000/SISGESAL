@@ -16,6 +16,7 @@
                 <form asp-action="Edit">
                     <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                     <div class="row"><label style="color:red"><b>@ViewBag.DuplicateMessage</b></label></div>
+                    <div class="row"><label style="color:red"><b>@ViewBag.Error</b></label></div>
 
                     <input type="hidden" asp-for="Id" />
                     <input type="hidden" asp-for="UserName" />
