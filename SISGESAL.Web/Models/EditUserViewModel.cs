@@ -58,9 +58,8 @@ namespace SISGESAL.web.Models
         public int? CourtId { get; set; }
 
         [Display(Name = "Almacén")]
-        public int? DepotId { get; set; } = null;
-
         public IEnumerable<SelectListItem>? Depots { get; set; } = null;
+
         public IEnumerable<SelectListItem>? Departments { get; set; } = null;
         public IEnumerable<SelectListItem>? Municipalities { get; set; } = null;
         public IEnumerable<SelectListItem>? Courts { get; set; } = null;

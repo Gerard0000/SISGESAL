@@ -158,7 +158,8 @@ namespace SISGESAL.web.Helpers
             list.Insert(0, new SelectListItem
             {
                 Text = "--Seleccione una Opción",
-                Value = "0"
+                //Value = "0"
+                Value = null
             });
 
             return list;
@@ -209,7 +210,7 @@ namespace SISGESAL.web.Helpers
         //DROPDOWNLIST O COMBOBOX **PROVISIONAL** DE ALMACENES
         public IEnumerable<SelectListItem> GetComboDepots()
         {
-            var list = _dataContext.Depots.Where(type => type.Status == true).Select(type => new SelectListItem
+            var list = _dataContext.Depots.Where(type => (type.Status == true) && (type.User!.Depot! == null)).Select(type => new SelectListItem
             {
                 Text = type.Name,
                 Value = $"{type.Id}"

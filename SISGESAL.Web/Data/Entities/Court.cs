@@ -7,7 +7,7 @@ namespace SISGESAL.web.Data.Entities
         public int Id { get; set; }
 
         [MaxLength(100)]
-        [Display(Name = "Juzgado o Tribunal")]
+        [Display(Name = "Dirección")]
         [Required(ErrorMessage = "El {0} es requerido.")]
         public string? Name { get; set; }
 

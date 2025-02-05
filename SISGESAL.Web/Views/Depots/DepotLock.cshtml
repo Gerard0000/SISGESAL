@@ -1,4 +1,4 @@
-﻿@model IEnumerable<SISGESAL.web.Data.Entities.Customer>
+﻿@model IEnumerable<SISGESAL.web.Data.Entities.Depot>
 
 <!-- Font Awesome Icons -->
 <link rel="stylesheet" href="~/ArchivosAdminLTE/plugins/fontawesome-free/css/all.min.css">
@@ -20,14 +20,14 @@
 <div class="row">
     <div class="col-lg-7">
         <p class="text-center">
-            <h1 align="center"><b>ALMACENES ACTIVOS</b></h1>
+            <h1 align="center"><b>ALMACENES BLOQUEADOS</b></h1>
         </p>
     </div>
     <div class="col-lg-5">
         <p class="text-center">
             <br />
-            <a href="/Depots/Create" class="btn btn-primary col-md-6"><b>CREAR NUEVO ALMACÉN</b></a>
-            <a class="btn btn-dark" title="Regresar" href="@Url.Action("Index","Customers")"><b>REGRESAR</b></a>
+            <a asp-action="Create" class="btn btn-primary col-md-6"><b>CREAR NUEVO ALMACÉN</b></a>
+            <a class="btn btn-dark" title="Regresar" href="@Url.Action("Index","Depots")"><b>REGRESAR</b></a>
         </p>
     </div>
 </div>
@@ -36,12 +36,15 @@
 
 <div class="card">
     <div class="card-header bg-info">
-        <h5 style="text-align:center;"><b>TOTAL DE ALMACENES ACTIVOS: @ViewBag.Indexcount</b></h5>
+        <h5 style="text-align:center;"><b>TOTAL DE ALMACENES BLOQUEADOS: @ViewBag.Indexcount</b></h5>
     </div>
     <div class="card-body" style="text-align: center;">
         <table id="tabla" class="table table-bordered table-striped" style="width:100%">
             <thead class="thead-success">
                 <tr>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Name)
+                    </th>
                     <th>
                         @Html.DisplayNameFor(model => model.User!.UserName)
                     </th>
@@ -49,16 +52,13 @@
                         @Html.DisplayNameFor(model => model.User!.FullName)
                     </th>
                     <th>
-                        @Html.DisplayNameFor(model => model.User!.Occupation)
+                        @Html.DisplayNameFor(model => model.Status)
                     </th>
                     <th>
-                        @Html.DisplayNameFor(model => model.User!.Email)
+                        @Html.DisplayNameFor(model => model.Court!.Name)
                     </th>
                     <th>
-                        @Html.DisplayNameFor(model => model.User!.Depot!.Name)
-                    </th>
-                    <th>
-                        @Html.DisplayNameFor(model => model.User!.Observation)
+                        @Html.DisplayNameFor(model => model.Observation)
                     </th>
                     <th>
 
@@ -70,22 +70,22 @@
                 {
                     <tr>
                         <td>
+                            @Html.DisplayFor(modelItem => item.Name)
+                        </td>
+                        <td>
                             @Html.DisplayFor(modelItem => item.User!.UserName)
                         </td>
                         <td>
                             @Html.DisplayFor(modelItem => item.User!.FullName)
                         </td>
                         <td>
-                            @Html.DisplayFor(modelItem => item.User!.Occupation)
+                            @Html.DisplayFor(modelItem => item.Status)
                         </td>
                         <td>
-                            @Html.DisplayFor(modelItem => item.User!.Email)
+                            @Html.DisplayFor(modelItem => item.Court!.Name)
                         </td>
                         <td>
-                            @Html.DisplayFor(modelItem => item.User!.Depot!.Name)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.User!.Observation)
+                            @Html.DisplayFor(modelItem => item.Observation)
                         </td>
                         <td>
                             <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-warning fa fa-solid fa-edit" title="EDITAR"></a>

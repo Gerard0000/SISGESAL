@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using SISGESAL.web.Enums;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace SISGESAL.web.Data.Entities
 {
@@ -53,6 +54,9 @@ namespace SISGESAL.web.Data.Entities
         //SOLO ME TRAE LOS SIGUIENTES DATOS CON COMBOBOX
         [Display(Name = "Almacén Asignado")]
         public Depot? Depot { get; set; }
+
+        [ForeignKey("Depot")]
+        public int? DepotId { get; set; }
 
         //INTENTAR
         //public int? DepotId {  get; set; }

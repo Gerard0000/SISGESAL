@@ -1,4 +1,4 @@
-﻿@model IEnumerable<SISGESAL.web.Data.Entities.Customer>
+﻿@model IEnumerable<SISGESAL.web.Data.Entities.Depot>
 
 <!-- Font Awesome Icons -->
 <link rel="stylesheet" href="~/ArchivosAdminLTE/plugins/fontawesome-free/css/all.min.css">
@@ -26,8 +26,8 @@
     <div class="col-lg-5">
         <p class="text-center">
             <br />
-            <a href="/Depots/Create" class="btn btn-primary col-md-6"><b>CREAR NUEVO ALMACÉN</b></a>
-            <a class="btn btn-dark" title="Regresar" href="@Url.Action("Index","Customers")"><b>REGRESAR</b></a>
+            <a asp-action="Create" class="btn btn-primary col-md-6"><b>CREAR NUEVO ALMACÉN</b></a>
+            <a class="btn btn-dark" title="Regresar" href="@Url.Action("Index","Depots")"><b>REGRESAR</b></a>
         </p>
     </div>
 </div>
@@ -43,7 +43,7 @@
             <thead class="thead-success">
                 <tr>
                     <th>
-                        @Html.DisplayNameFor(model => model.User!.Depot!.Name)
+                        @Html.DisplayNameFor(model => model.Name)
                     </th>
                     <th>
                         @Html.DisplayNameFor(model => model.User!.UserName)
@@ -52,7 +52,13 @@
                         @Html.DisplayNameFor(model => model.User!.FullName)
                     </th>
                     <th>
-                        @Html.DisplayNameFor(model => model.User!.Depot!.Observation)
+                        @Html.DisplayNameFor(model => model.Status)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Court!.Name)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Observation)
                     </th>
                     <th>
 
@@ -64,7 +70,7 @@
                 {
                     <tr>
                         <td>
-                            @Html.DisplayFor(modelItem => item.User!.Depot!.Name)
+                            @Html.DisplayFor(modelItem => item.Name)
                         </td>
                         <td>
                             @Html.DisplayFor(modelItem => item.User!.UserName)
@@ -73,7 +79,13 @@
                             @Html.DisplayFor(modelItem => item.User!.FullName)
                         </td>
                         <td>
-                            @Html.DisplayFor(modelItem => item.User!.Depot!.Observation)
+                            @Html.DisplayFor(modelItem => item.Status)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Court!.Name)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Observation)
                         </td>
                         <td>
                             <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-warning fa fa-solid fa-edit" title="EDITAR"></a>

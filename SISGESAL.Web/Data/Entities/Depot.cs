@@ -49,6 +49,6 @@ namespace SISGESAL.web.Data.Entities
         public User? User { get; set; } = null;
 
         //INTENTAR
-        public int? UserId { get; set; }
+        //public int? UserId { get; set; }
     }
 }

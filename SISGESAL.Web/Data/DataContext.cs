@@ -54,7 +54,9 @@ namespace SISGESAL.web.Data
 
             //modelBuilder.Entity<User>().HasOne(x => x.Depotuser}).WithOne(e => e.User).HasForeignKey<Depot>("UserId");
 
-            modelBuilder.Entity<User>().HasOne(e => e.Depot).WithOne(e => e.User).HasForeignKey<Depot>(e => e.UserId).IsRequired(false);
+            //bueno
+            //modelBuilder.Entity<User>().HasOne(e => e.Depot).WithOne(e => e.User).HasForeignKey<Depot>(e => e.UserId).IsRequired(false);
+            //modelBuilder.Entity<User>().HasOne(e => e.Depot).WithOne(e => e.User).HasForeignKey<Depot>(e => e.UserId).IsRequired(false);
 
             //EJEMPLO DE LA PAGINA
             //modelBuilder.Entity<Blog>().HasOne(e => e.Header).WithOne(e => e.Blog).HasForeignKey<BlogHeader>(e => e.BlogId).IsRequired(false);

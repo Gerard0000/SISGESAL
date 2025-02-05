@@ -299,10 +299,21 @@ namespace SISGESAL.web.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(AddUserViewModel model)
         {
-            //if (_dataContext.Users.Any(x => x.Depot == model.Depots))
+            if (_dataContext.Users.Any(x => x.UserName == model.UserName))
+            {
+                ViewBag.DuplicateMessage1 = $"El Nombre de Usuario ya esta asignado a otro usuario";
+            }
+            if (_dataContext.Users.Any(x => x.DNI == model.DNI))
+            {
+                ViewBag.DuplicateMessage2 = $"El DNI ya esta asignado a otro usuario";
+            }
+            if (_dataContext.Users.Any(x => x.Email == model.Email))
+            {
+                ViewBag.DuplicateMessage3 = $"El Correo Electrónico ya esta asignado a otro usuario";
+            }
             if (_dataContext.Users.Any(x => x.Depot!.Id == model.DepotId))
             {
-                ViewBag.DuplicateMessage = $"El Almacén ya esta asignado a otro usuario";
+                ViewBag.DuplicateMessage4 = $"El Almacén ya esta asignado a otro usuario";
             }
             else if (ModelState.IsValid)
             {
@@ -374,6 +385,7 @@ namespace SISGESAL.web.Controllers
                 .ThenInclude(z => z!.Municipality)
                 .ThenInclude(z => z!.Department)
                 .FirstOrDefaultAsync(c => c.Id == id.Value);
+
             if (customer == null)
             {
                 return NotFound();
