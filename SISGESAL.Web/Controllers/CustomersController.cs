@@ -442,6 +442,8 @@ namespace SISGESAL.web.Controllers
                     customer.User.PhoneNumber = model.PhoneNumber?.Trim();
                     customer.User.Observation = model.Observation?.Trim().ToUpper();
 
+                    //tratar de arreglar
+
                     //customer.User.Depot = await _dataContext.Depots.FindAsync(model.DepotId);
 
                     //customer.User.DepotId = model.DepotId;
