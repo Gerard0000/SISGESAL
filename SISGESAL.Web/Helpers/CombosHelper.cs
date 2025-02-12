@@ -210,10 +210,13 @@ namespace SISGESAL.web.Helpers
         //DROPDOWNLIST O COMBOBOX **PROVISIONAL** DE ALMACENES
         public IEnumerable<SelectListItem> GetComboDepots()
         {
-            var list = _dataContext.Depots.Where(type => (type.Status == true) && (type.User!.Depot! == null)).Select(type => new SelectListItem
+            //var list = _dataContext.Depots.Where(type => (type.Status == true) && (type.User!.Depot! == null)).Select(type => new SelectListItem
+            var list = _dataContext.Depots.Select(type => new SelectListItem
             {
                 Text = type.Name,
-                Value = $"{type.Id}"
+                Value = $"{type.Id}",
+                //ASIGNAR DISABLED PARA BLOQUEAR ALGUNOS ELEMENTOS
+                Disabled = (type.Status == false) || (type.User!.Depot! != null)
             })
                 .OrderBy(type => type.Text)
                 .ToList();
