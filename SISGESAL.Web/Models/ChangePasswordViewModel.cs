@@ -2,7 +2,8 @@
 
 namespace SISGESAL.web.Models
 {
-    public class ChangePasswordViewModel : NewPasswordforResetViewModel
+    //public class ChangePasswordViewModel : NewPasswordforResetViewModel
+    public class ChangePasswordViewModel : AddUserViewModel
     {
         [Display(Name = "Contraseña Actual")]
         [Required(ErrorMessage = "La {0} es requerida.")]

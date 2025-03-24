@@ -40,6 +40,10 @@ namespace SISGESAL.web.Data.Entities
 
         public ICollection<Depot>? Depots { get; set; }
 
+        //CONTARME MUNICIPIOS
+        //[Display(Name = "Número de Almacenes")]
+        //public int DepotsNumber => Depots == null ? 0 : Depots.Count;
+
         //public ICollection<User>? Users { get; set; }
 
         //CONTARME JUZGADOS

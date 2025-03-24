@@ -27,7 +27,15 @@ namespace SISGESAL.web.Helpers
 
         Task<IdentityResult> ChangePasswordAsync(User user, string oldPassword, string newPassword);
 
-        //Task<IdentityResult> RemovePasswordAsync(User user);
+        Task<IdentityResult> RemovePasswordAsync(User user);
+
+        Task<IdentityResult> AddPasswordAsync(User user, string password);
+
+        object RemovePasswordAsync(int id);
+
+        object AddPasswordAsync(int id, string? password);
+
+        object AddPasswordAsync(ResetPasswordViewModel model1, ResetPasswordViewModel model2);
 
         //Task<User> GetUserIdAsync(string id);
     }

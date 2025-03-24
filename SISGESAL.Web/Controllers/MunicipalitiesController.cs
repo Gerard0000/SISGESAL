@@ -23,6 +23,7 @@ namespace SISGESAL.web.Controllers
 
             var municipality = await _dataContext.Municipalities
                 .Include(x => x.Courts!)
+                .ThenInclude(x => x.Depots)
                 .Include(d => d.Department)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (municipality == null)

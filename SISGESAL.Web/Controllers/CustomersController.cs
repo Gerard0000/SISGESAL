@@ -1,14 +1,12 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using SISGESAL.web.Data.Entities;
 using SISGESAL.web.Data;
+using SISGESAL.web.Data.Entities;
 using SISGESAL.web.Enums;
 using SISGESAL.web.Helpers;
 using SISGESAL.web.Models;
 using System.Security.Claims;
-using Microsoft.AspNetCore.Mvc.Rendering;
-using System.Linq;
 
 namespace SISGESAL.web.Controllers
 {
@@ -590,6 +588,124 @@ namespace SISGESAL.web.Controllers
 
             return View(model);
         }
+
+        // GET: Customers/ResetPassword/5
+        public async Task<IActionResult> ResetPassword(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+            var customer = await _dataContext.Customers
+                .Include(c => c.User)
+                .ThenInclude(z => z!.Depot)
+                .ThenInclude(z => z!.Court)
+                .ThenInclude(z => z!.Municipality)
+                .ThenInclude(z => z!.Department)
+                .FirstOrDefaultAsync(i => i.Id == id);
+            if (customer == null)
+            {
+                return NotFound();
+            }
+
+            var model = new ResetPasswordViewModel()
+            {
+                Id = customer.Id
+            };
+            return View(model);
+        }
+
+        // POST: Customers/ResetPassword/5
+        // To protect from overposting attacks, enable the specific properties you want to bind to.
+        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> ResetPassword(ResetPasswordViewModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                var customer = await _dataContext.Customers
+                    .Include(c => c.User)
+                    .ThenInclude(z => z!.Depot)
+                    .ThenInclude(z => z!.Court)
+                    .ThenInclude(z => z!.Municipality)
+                    .ThenInclude(z => z!.Department)
+                    .FirstOrDefaultAsync(i => i.Id == model.Id);
+
+                if (customer != null)
+                {
+                    customer.User!.UserName = model.UserName;
+                    customer.User!.FullName = model.FullName;
+                    customer.User.DNI = model.DNI;
+                    customer.User.Occupation = model.Occupation;
+                    customer.User.Email = model.Email;
+                    customer.User.PhoneNumber = model.PhoneNumber;
+                    customer.User.Observation = model.Observation;
+
+                    customer.User.Depot = await _dataContext.Depots.FindAsync(model.DepotId);
+
+                    customer.User.Creator = model.Creator;
+                    customer.User.CreationDate = model.CreationDate;
+
+                    customer.User.Modifier = User.FindFirstValue(ClaimTypes.NameIdentifier);
+                    customer.User.ModificationDate = DateTime.Now;
+
+                    var removePassword = await _userHelper.RemovePasswordAsync(model);
+                    //var removePassword = await _userHelper.RemovePasswordAsync(model.Id);
+                    if (removePassword.Succeeded)
+                    {
+                        var addPassword = _userHelper.AddPasswordAsync(model.Id, model.Password);
+                        if (addPassword.Succeeded)
+                        {
+                            return View("Index");
+                        }
+                        else
+                        {
+                            ModelState.AddModelError(string.Empty, removePassword.Errors.FirstOrDefault()!.Description);
+                        }
+                    }
+                    return View(model);
+                }
+            }
+        }
+
+        //var removePassword = _userHelper.RemovePasswordAsync(model.Id);
+        //if (removePassword.Succeeded)
+        //{
+        //    var addPassword = _userHelper.AddPasswordAsync(model.Id, model.Password);
+        //    if (addPassword.Succeeded)
+        //    {
+        //        return View("Index");
+        //    }
+        //}
+
+        //if (removePassword != null)
+        //{
+        //    var addPassword = _userHelper.AddPasswordAsync(model.Id, model.NewPassword);
+        //    if (addPassword.IsCompleted)
+        //    {
+        //        return View("Index");
+        //    }
+        //}
+        //if (removePassword.Succeeded)
+        //{
+        //    var addPassword = _userHelper.AddPasswordAsync(model.Id, model.NewPassword);
+        //    if (addPassword.IsCompleted)
+        //    {
+        //        return View("Index");
+        //    }
+        //}
+
+        //var removePassword = _userHelper.RemovePasswordAsync(model.Id);
+        //if (removePassword.)
+        //{
+        //    var addPassword = _userHelperAddPasswordAsync(model.Id, model.NewPassword);
+        //    if (addPassword.IsCompleted)
+        //    {
+        //        return View("Index");
+        //    }
+        //}
+        //return View(model);
 
         // GET: Customers/Lock
         public async Task<IActionResult> Lock(int? id)

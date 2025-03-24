@@ -83,6 +83,16 @@ namespace SISGESAL.web.Helpers
             return await _userManager!.UpdateAsync(user);
         }
 
+        public async Task<IdentityResult> RemovePasswordAsync(User user)
+        {
+            return await _userManager!.RemovePasswordAsync(user);
+        }
+
+        public async Task<IdentityResult> AddPasswordAsync(User user, string password)
+        {
+            return await _userManager!.AddPasswordAsync(user, password);
+        }
+
         //public async Task<User> GetUserIdAsync(string id)
         //{
         //    var iduser = await _context.Users.FirstOrDefaultAsync(x => x.Id == id);
