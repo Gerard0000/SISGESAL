@@ -29,13 +29,15 @@ namespace SISGESAL.web.Helpers
 
         Task<IdentityResult> RemovePasswordAsync(User user);
 
-        Task<IdentityResult> AddPasswordAsync(User user, string password);
+        Task<IdentityResult> AddPasswordAsync(User user, string newPassword);
 
-        object RemovePasswordAsync(int id);
+        //Task RemovePasswordAsync(string? userName);
 
-        object AddPasswordAsync(int id, string? password);
+        //object RemovePasswordAsync(int id);
 
-        object AddPasswordAsync(ResetPasswordViewModel model1, ResetPasswordViewModel model2);
+        //object AddPasswordAsync(int id, string? password);
+
+        //object AddPasswordAsync(ResetPasswordViewModel model1, ResetPasswordViewModel model2);
 
         //Task<User> GetUserIdAsync(string id);
     }

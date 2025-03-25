@@ -441,11 +441,8 @@ namespace SISGESAL.web.Controllers
                     customer.User.Observation = model.Observation?.Trim().ToUpper();
 
                     //tratar de arreglar
-
                     //customer.User.Depot = await _dataContext.Depots.FindAsync(model.DepotId);
-
                     //customer.User.DepotId = model.DepotId;
-
                     //customer.User.Depot = await _dataContext.Depots.FindAsync(model.DepotId);
 
                     customer.User.Creator = model.Creator;
@@ -603,6 +600,7 @@ namespace SISGESAL.web.Controllers
                 .ThenInclude(z => z!.Municipality)
                 .ThenInclude(z => z!.Department)
                 .FirstOrDefaultAsync(i => i.Id == id);
+
             if (customer == null)
             {
                 return NotFound();
@@ -610,7 +608,23 @@ namespace SISGESAL.web.Controllers
 
             var model = new ResetPasswordViewModel()
             {
-                Id = customer.Id
+                UserName = customer.User!.UserName,
+                FullName = customer.User.FullName,
+                DNI = customer.User.DNI,
+                Occupation = customer.User.Occupation,
+                Email = customer.User.Email,
+                PhoneNumber = customer.User.PhoneNumber,
+                Observation = customer.User.Observation,
+                CreationDate = customer.User.CreationDate,
+                Creator = customer.User.Creator,
+
+                Depot = customer.User.Depot,
+                DepotId = customer!.User!.DepotId,
+
+                Departments = _combosHelper.GetComboDepartments(),
+                Municipalities = _combosHelper.GetComboMunicipalities(),
+                Courts = _combosHelper.GetComboCourts(),
+                Depots = _combosHelper.GetComboDepots(),
             };
             return View(model);
         }
@@ -641,7 +655,6 @@ namespace SISGESAL.web.Controllers
                     customer.User.Email = model.Email;
                     customer.User.PhoneNumber = model.PhoneNumber;
                     customer.User.Observation = model.Observation;
-
                     customer.User.Depot = await _dataContext.Depots.FindAsync(model.DepotId);
 
                     customer.User.Creator = model.Creator;
@@ -650,23 +663,32 @@ namespace SISGESAL.web.Controllers
                     customer.User.Modifier = User.FindFirstValue(ClaimTypes.NameIdentifier);
                     customer.User.ModificationDate = DateTime.Now;
 
-                    var removePassword = await _userHelper.RemovePasswordAsync(model);
-                    //var removePassword = await _userHelper.RemovePasswordAsync(model.Id);
-                    if (removePassword.Succeeded)
+                    try
                     {
-                        var addPassword = _userHelper.AddPasswordAsync(model.Id, model.Password);
-                        if (addPassword.Succeeded)
+                        var user = await _userHelper.GetUserAsync(customer.User.UserName!);
+                        var removePassword = await _userHelper.RemovePasswordAsync(user);
+                        if (removePassword.Succeeded)
                         {
-                            return View("Index");
-                        }
-                        else
-                        {
-                            ModelState.AddModelError(string.Empty, removePassword.Errors.FirstOrDefault()!.Description);
+                            var addPassword = await _userHelper.AddPasswordAsync(user, model.NewPassword!);
+                            if (addPassword.Succeeded)
+                            {
+                                await _dataContext.SaveChangesAsync();
+                                TempData["AlertMessageEdit"] = "Contraseña del Usuario Restablecida Exitosamente";
+                                return View("Index");
+                            }
+                            else
+                            {
+                                ModelState.AddModelError(string.Empty, removePassword.Errors.FirstOrDefault()!.Description);
+                            }
                         }
                     }
-                    return View(model);
+                    catch (Exception)
+                    {
+                        throw;
+                    }
                 }
             }
+            return View(model);
         }
 
         //var removePassword = _userHelper.RemovePasswordAsync(model.Id);
