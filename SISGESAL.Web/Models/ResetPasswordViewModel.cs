@@ -8,13 +8,13 @@ namespace SISGESAL.web.Models
         [Required(ErrorMessage = "La {0} es requerida.")]
         [DataType(DataType.Password)]
         [StringLength(20, MinimumLength = 12, ErrorMessage = "La {0} debe tener entre {2} y {1} carácteres.")]
-        public string? NewPassword { get; set; }
+        public string? ResetPassword { get; set; }
 
         [Display(Name = "Confirmación de Contraseña")]
         [Required(ErrorMessage = "La {0} es requerida.")]
         [DataType(DataType.Password)]
         [StringLength(20, MinimumLength = 6, ErrorMessage = "La {0} debe tener entre {2} y {1} carácteres.")]
-        [Compare("NewPassword", ErrorMessage = "La Nueva Contraseña y la {0} no coinciden.")]
-        public string? Confirm { get; set; }
+        [Compare("ResetPassword", ErrorMessage = "La Nueva Contraseña y la {0} no coinciden.")]
+        public string? ResetPasswordConfirm { get; set; }
     }
 }

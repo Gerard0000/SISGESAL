@@ -640,56 +640,181 @@ namespace SISGESAL.web.Controllers
             {
                 var customer = await _dataContext.Customers
                     .Include(c => c.User)
-                    .ThenInclude(z => z!.Depot)
-                    .ThenInclude(z => z!.Court)
-                    .ThenInclude(z => z!.Municipality)
-                    .ThenInclude(z => z!.Department)
                     .FirstOrDefaultAsync(i => i.Id == model.Id);
+
+                var user = await _userHelper.GetUserAsync(customer!.User!.UserName!);
 
                 if (customer != null)
                 {
                     customer.User!.UserName = model.UserName;
-                    customer.User!.FullName = model.FullName;
-                    customer.User.DNI = model.DNI;
-                    customer.User.Occupation = model.Occupation;
-                    customer.User.Email = model.Email;
-                    customer.User.PhoneNumber = model.PhoneNumber;
-                    customer.User.Observation = model.Observation;
-                    customer.User.Depot = await _dataContext.Depots.FindAsync(model.DepotId);
-
-                    customer.User.Creator = model.Creator;
-                    customer.User.CreationDate = model.CreationDate;
-
+                    customer.User!.LockoutEnd = null;
                     customer.User.Modifier = User.FindFirstValue(ClaimTypes.NameIdentifier);
                     customer.User.ModificationDate = DateTime.Now;
+                }
 
-                    try
+                try
+                {
+                    if (user != null)
                     {
-                        var user = await _userHelper.GetUserAsync(customer.User.UserName!);
                         var removePassword = await _userHelper.RemovePasswordAsync(user);
                         if (removePassword.Succeeded)
                         {
-                            var addPassword = await _userHelper.AddPasswordAsync(user, model.NewPassword!);
-                            if (addPassword.Succeeded)
+                            var addPassword = await _userHelper.AddPasswordAsync(user, model.ResetPassword!);
+                            if (!addPassword.Succeeded)
                             {
+                                await _userHelper.UpdateUserAsync(customer!.User!);
                                 await _dataContext.SaveChangesAsync();
                                 TempData["AlertMessageEdit"] = "Contraseña del Usuario Restablecida Exitosamente";
-                                return View("Index");
+                                return RedirectToAction(nameof(Index));
                             }
                             else
                             {
-                                ModelState.AddModelError(string.Empty, removePassword.Errors.FirstOrDefault()!.Description);
+                                ModelState.AddModelError(string.Empty, addPassword.Errors.FirstOrDefault()!.Description);
                             }
                         }
+                        else
+                        {
+                            ModelState.AddModelError(string.Empty, removePassword.Errors.FirstOrDefault()!.Description);
+                        }
                     }
-                    catch (Exception)
-                    {
-                        throw;
-                    }
+                }
+                catch (Exception)
+                {
+                    ViewBag.DuplicateMessage = "Se ha producido un error ó el valor esta duplicado con otro valor de la base de datos";
                 }
             }
             return View(model);
         }
+
+        //*****************************************************************************************************************
+        //CASI PERO NO
+
+        //// POST: Customers/ResetPassword/5
+        //// To protect from overposting attacks, enable the specific properties you want to bind to.
+        //// For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+        //[HttpPost]
+        //[ValidateAntiForgeryToken]
+        //public async Task<IActionResult> ResetPassword(ResetPasswordViewModel model)
+        //{
+        //    if (ModelState.IsValid)
+        //    {
+        //        var customer = await _dataContext.Customers
+        //            .Include(c => c.User)
+        //            .FirstOrDefaultAsync(i => i.Id == model.Id);
+
+        //        if (customer != null)
+        //        {
+        //            customer.User!.UserName = model.UserName;
+        //            customer.User!.LockoutEnd = null;
+        //            customer.User.Modifier = User.FindFirstValue(ClaimTypes.NameIdentifier);
+        //            customer.User.ModificationDate = DateTime.Now;
+        //        }
+
+        //        try
+        //        {
+        //            var user = await _userHelper.GetUserAsync(customer!.User!.UserName!);
+        //            if (user != null)
+        //            {
+        //                var removePassword = await _userHelper.RemovePasswordAsync(user);
+        //                if (removePassword.Succeeded)
+        //                {
+        //                    var addPassword = await _userHelper.AddPasswordAsync(user, model.NewPassword!);
+        //                    if (!addPassword.Succeeded)
+        //                    {
+        //                        await _userHelper.UpdateUserAsync(customer!.User!);
+        //                        await _dataContext.SaveChangesAsync();
+        //                        TempData["AlertMessageEdit"] = "Contraseña del Usuario Restablecida Exitosamente";
+        //                        return RedirectToAction(nameof(Index));
+        //                    }
+        //                }
+        //            }
+        //        }
+        //        catch (Exception)
+        //        {
+        //            throw;
+        //        }
+        //    }
+        //    return View(model);
+        //}
+
+        //***************************************************************************************************************
+
+        //var user = await _userHelper.GetUserAsync(customer!.User!.UserName!);
+        //var removePassword = await _userHelper.RemovePasswordAsync(user);
+        //if (removePassword.Succeeded)
+        //{
+        //    var addPassword = await _userHelper.AddPasswordAsync(user, model.NewPassword!);
+        //    if (addPassword.Succeeded)
+        //    {
+        //        await _userHelper.UpdateUserAsync(customer!.User!);
+        //        await _dataContext.SaveChangesAsync();
+        //        TempData["AlertMessageEdit"] = "Contraseña del Usuario Restablecida Exitosamente";
+        //        return RedirectToAction(nameof(Index));
+        //    }
+        //    else
+        //    {
+        //        ModelState.AddModelError(string.Empty, removePassword.Errors.FirstOrDefault()!.Description);
+        //    }
+        //}
+
+        //[HttpPost]
+        //[ValidateAntiForgeryToken]
+        //public async Task<IActionResult> ResetPassword(ResetPasswordViewModel model)
+        //{
+        //if (ModelState.IsValid)
+        //{
+        //    var customer = await _dataContext.Customers
+        //        .Include(c => c.User)
+        //        .ThenInclude(z => z!.Depot)
+        //        .ThenInclude(z => z!.Court)
+        //        .ThenInclude(z => z!.Municipality)
+        //        .ThenInclude(z => z!.Department)
+        //        .FirstOrDefaultAsync(i => i.Id == model.Id);
+
+        //    if (customer != null)
+        //    {
+        //        customer.User!.UserName = model.UserName;
+        //        customer.User!.FullName = model.FullName;
+        //        customer.User.DNI = model.DNI;
+        //        customer.User.Occupation = model.Occupation;
+        //        customer.User.Email = model.Email;
+        //        customer.User.PhoneNumber = model.PhoneNumber;
+        //        customer.User.Observation = model.Observation;
+        //        customer.User.Depot = await _dataContext.Depots.FindAsync(model.DepotId);
+
+        //        customer.User.Creator = model.Creator;
+        //        customer.User.CreationDate = model.CreationDate;
+
+        //        customer.User.Modifier = User.FindFirstValue(ClaimTypes.NameIdentifier);
+        //        customer.User.ModificationDate = DateTime.Now;
+
+        //        try
+        //        {
+        //            var user = await _userHelper.GetUserAsync(customer.User.UserName!);
+        //            var removePassword = await _userHelper.RemovePasswordAsync(user);
+        //            if (removePassword.Succeeded)
+        //            {
+        //                var addPassword = await _userHelper.AddPasswordAsync(user, model.NewPassword!);
+        //                if (addPassword.Succeeded)
+        //                {
+        //                    await _dataContext.SaveChangesAsync();
+        //                    TempData["AlertMessageEdit"] = "Contraseña del Usuario Restablecida Exitosamente";
+        //                    return View("Index");
+        //                }
+        //                else
+        //                {
+        //                    ModelState.AddModelError(string.Empty, removePassword.Errors.FirstOrDefault()!.Description);
+        //                }
+        //            }
+        //        }
+        //        catch (Exception)
+        //        {
+        //            throw;
+        //        }
+        //    }
+        //}
+        //return View(model);
+        //}
 
         //var removePassword = _userHelper.RemovePasswordAsync(model.Id);
         //if (removePassword.Succeeded)
