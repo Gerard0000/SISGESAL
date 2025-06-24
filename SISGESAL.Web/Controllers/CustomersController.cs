@@ -586,8 +586,9 @@ namespace SISGESAL.web.Controllers
             return View(model);
         }
 
+        //************************************probando**********************************************
         // GET: Customers/ResetPassword/5
-        public async Task<IActionResult> ResetPassword(int? id)
+        public async Task<IActionResult> ResetPasswordAsync(int? id)
         {
             if (id == null)
             {
@@ -595,96 +596,238 @@ namespace SISGESAL.web.Controllers
             }
             var customer = await _dataContext.Customers
                 .Include(c => c.User)
-                .ThenInclude(z => z!.Depot)
-                .ThenInclude(z => z!.Court)
-                .ThenInclude(z => z!.Municipality)
-                .ThenInclude(z => z!.Department)
-                .FirstOrDefaultAsync(i => i.Id == id);
-
+                .FirstOrDefaultAsync(u => u.Id == id);
             if (customer == null)
             {
                 return NotFound();
             }
-
-            var model = new ResetPasswordViewModel()
-            {
-                UserName = customer.User!.UserName,
-                FullName = customer.User.FullName,
-                DNI = customer.User.DNI,
-                Occupation = customer.User.Occupation,
-                Email = customer.User.Email,
-                PhoneNumber = customer.User.PhoneNumber,
-                Observation = customer.User.Observation,
-                CreationDate = customer.User.CreationDate,
-                Creator = customer.User.Creator,
-
-                Depot = customer.User.Depot,
-                DepotId = customer!.User!.DepotId,
-
-                Departments = _combosHelper.GetComboDepartments(),
-                Municipalities = _combosHelper.GetComboMunicipalities(),
-                Courts = _combosHelper.GetComboCourts(),
-                Depots = _combosHelper.GetComboDepots(),
-            };
-            return View(model);
+            return View(customer);
         }
 
         // POST: Customers/ResetPassword/5
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> ResetPassword(ResetPasswordViewModel model)
-        {
-            if (ModelState.IsValid)
-            {
-                var customer = await _dataContext.Customers
-                    .Include(c => c.User)
-                    .FirstOrDefaultAsync(i => i.Id == model.Id);
+        //[HttpPost]
+        //[ValidateAntiForgeryToken]
+        //public async Task<IActionResult> ResetPassword(ResetPasswordViewModel model)
+        //{
+        //    if (ModelState.IsValid)
+        //    {
+        //        var customer = await _dataContext.Customers
+        //            .Include(c => c.User)
+        //            .FirstOrDefaultAsync(u => u.Id == model.Id);
+        //        var token = await _userHelper.GeneratePasswordResetTokenAsync(customer);
+        //        if (customer != null)
+        //        {
+        //            customer.User!.LockoutEnd = null;
+        //            customer.User!.Modifier = User.FindFirstValue(ClaimTypes.NameIdentifier);
+        //            customer.User.ModificationDate = DateTime.Now;
+        //        }
+        //    }
+        //}
 
-                var user = await _userHelper.GetUserAsync(customer!.User!.UserName!);
+        //public async Task<IActionResult> ResetPassword(int? id)
+        //{
+        //    if (id == null)
+        //    {
+        //        return NotFound();
+        //    }
+        //    var customer = await _dataContext.Customers
+        //        .Include(c => c.User)
+        //        .ThenInclude(z => z!.Depot)
+        //        .ThenInclude(z => z!.Court)
+        //        .ThenInclude(z => z!.Municipality)
+        //        .ThenInclude(z => z!.Department)
+        //        .FirstOrDefaultAsync(i => i.Id == id);
 
-                if (customer != null)
-                {
-                    customer.User!.UserName = model.UserName;
-                    customer.User!.LockoutEnd = null;
-                    customer.User.Modifier = User.FindFirstValue(ClaimTypes.NameIdentifier);
-                    customer.User.ModificationDate = DateTime.Now;
-                }
+        //    if (customer == null)
+        //    {
+        //        return NotFound();
+        //    }
 
-                try
-                {
-                    if (user != null)
-                    {
-                        var removePassword = await _userHelper.RemovePasswordAsync(user);
-                        if (removePassword.Succeeded)
-                        {
-                            var addPassword = await _userHelper.AddPasswordAsync(user, model.ResetPassword!);
-                            if (!addPassword.Succeeded)
-                            {
-                                await _userHelper.UpdateUserAsync(customer!.User!);
-                                await _dataContext.SaveChangesAsync();
-                                TempData["AlertMessageEdit"] = "Contraseña del Usuario Restablecida Exitosamente";
-                                return RedirectToAction(nameof(Index));
-                            }
-                            else
-                            {
-                                ModelState.AddModelError(string.Empty, addPassword.Errors.FirstOrDefault()!.Description);
-                            }
-                        }
-                        else
-                        {
-                            ModelState.AddModelError(string.Empty, removePassword.Errors.FirstOrDefault()!.Description);
-                        }
-                    }
-                }
-                catch (Exception)
-                {
-                    ViewBag.DuplicateMessage = "Se ha producido un error ó el valor esta duplicado con otro valor de la base de datos";
-                }
-            }
-            return View(model);
-        }
+        //    var model = new ResetPasswordViewModel()
+        //    {
+        //        UserName = customer.User!.UserName,
+        //        FullName = customer.User.FullName,
+        //        DNI = customer.User.DNI,
+        //        Occupation = customer.User.Occupation,
+        //        Email = customer.User.Email,
+        //        PhoneNumber = customer.User.PhoneNumber,
+        //        Observation = customer.User.Observation,
+        //        CreationDate = customer.User.CreationDate,
+        //        Creator = customer.User.Creator,
+
+        //        Depot = customer.User.Depot,
+        //        DepotId = customer!.User!.DepotId,
+
+        //        Departments = _combosHelper.GetComboDepartments(),
+        //        Municipalities = _combosHelper.GetComboMunicipalities(),
+        //        Courts = _combosHelper.GetComboCourts(),
+        //        Depots = _combosHelper.GetComboDepots(),
+        //    };
+        //    return View(model);
+        //}
+
+        // POST: Customers/ResetPassword/5
+        // To protect from overposting attacks, enable the specific properties you want to bind to.
+        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+        //[HttpPost]
+        //[ValidateAntiForgeryToken]
+        //public async Task<IActionResult> ResetPassword(ResetPasswordViewModel model)
+        //{
+        //    if (ModelState.IsValid)
+        //    {
+        //        var customer = await _dataContext.Customers
+        //            .Include(c => c.User)
+        //            .FirstOrDefaultAsync(i => i.Id == model.Id);
+
+        //        var user = await _userHelper.GetUserAsync(customer!.User!.UserName!);
+
+        //        if (customer != null)
+        //        {
+        //            customer.User!.UserName = model.UserName;
+        //            customer.User!.LockoutEnd = null;
+        //            customer.User.Modifier = User.FindFirstValue(ClaimTypes.NameIdentifier);
+        //            customer.User.ModificationDate = DateTime.Now;
+        //        }
+
+        //        try
+        //        {
+        //            if (user != null)
+        //            {
+        //                var token = await _userHelper.GeneratePasswordResetTokenAsync(user);
+        //                await _userHelper.ResetPasswordAsync(user, token, newPassword)
+
+        //                var removePassword = await _userHelper.RemovePasswordAsync(user);
+        //                if (removePassword.Succeeded)
+        //                {
+        //                    var addPassword = await _userHelper.AddPasswordAsync(user, model.ResetPassword!);
+        //                    if (!addPassword.Succeeded)
+        //                    {
+        //                        await _userHelper.UpdateUserAsync(customer!.User!);
+        //                        await _dataContext.SaveChangesAsync();
+        //                        TempData["AlertMessageEdit"] = "Contraseña del Usuario Restablecida Exitosamente";
+        //                        return RedirectToAction(nameof(Index));
+        //                    }
+        //                    else
+        //                    {
+        //                        ModelState.AddModelError(string.Empty, addPassword.Errors.FirstOrDefault()!.Description);
+        //                    }
+        //                }
+        //                else
+        //                {
+        //                    ModelState.AddModelError(string.Empty, removePassword.Errors.FirstOrDefault()!.Description);
+        //                }
+        //            }
+        //        }
+        //        catch (Exception)
+        //        {
+        //            ViewBag.DuplicateMessage = "Se ha producido un error ó el valor esta duplicado con otro valor de la base de datos";
+        //        }
+        //    }
+        //    return View(model);
+        //}
+
+        //******************************************************************************************
+        // GET: Customers/ResetPassword/5
+        //public async Task<IActionResult> ResetPassword(int? id)
+        //{
+        //    if (id == null)
+        //    {
+        //        return NotFound();
+        //    }
+        //    var customer = await _dataContext.Customers
+        //        .Include(c => c.User)
+        //        .ThenInclude(z => z!.Depot)
+        //        .ThenInclude(z => z!.Court)
+        //        .ThenInclude(z => z!.Municipality)
+        //        .ThenInclude(z => z!.Department)
+        //        .FirstOrDefaultAsync(i => i.Id == id);
+
+        //    if (customer == null)
+        //    {
+        //        return NotFound();
+        //    }
+
+        //    var model = new ResetPasswordViewModel()
+        //    {
+        //        UserName = customer.User!.UserName,
+        //        FullName = customer.User.FullName,
+        //        DNI = customer.User.DNI,
+        //        Occupation = customer.User.Occupation,
+        //        Email = customer.User.Email,
+        //        PhoneNumber = customer.User.PhoneNumber,
+        //        Observation = customer.User.Observation,
+        //        CreationDate = customer.User.CreationDate,
+        //        Creator = customer.User.Creator,
+
+        //        Depot = customer.User.Depot,
+        //        DepotId = customer!.User!.DepotId,
+
+        //        Departments = _combosHelper.GetComboDepartments(),
+        //        Municipalities = _combosHelper.GetComboMunicipalities(),
+        //        Courts = _combosHelper.GetComboCourts(),
+        //        Depots = _combosHelper.GetComboDepots(),
+        //    };
+        //    return View(model);
+        //}
+
+        // POST: Customers/ResetPassword/5
+        // To protect from overposting attacks, enable the specific properties you want to bind to.
+        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+        //[HttpPost]
+        //[ValidateAntiForgeryToken]
+        //public async Task<IActionResult> ResetPassword(ResetPasswordViewModel model)
+        //{
+        //    if (ModelState.IsValid)
+        //    {
+        //        var customer = await _dataContext.Customers
+        //            .Include(c => c.User)
+        //            .FirstOrDefaultAsync(i => i.Id == model.Id);
+
+        //        var user = await _userHelper.GetUserAsync(customer!.User!.UserName!);
+
+        //        if (customer != null)
+        //        {
+        //            customer.User!.UserName = model.UserName;
+        //            customer.User!.LockoutEnd = null;
+        //            customer.User.Modifier = User.FindFirstValue(ClaimTypes.NameIdentifier);
+        //            customer.User.ModificationDate = DateTime.Now;
+        //        }
+
+        //        try
+        //        {
+        //            if (user != null)
+        //            {
+        //                var removePassword = await _userHelper.RemovePasswordAsync(user);
+        //                if (removePassword.Succeeded)
+        //                {
+        //                    var addPassword = await _userHelper.AddPasswordAsync(user, model.ResetPassword!);
+        //                    if (!addPassword.Succeeded)
+        //                    {
+        //                        await _userHelper.UpdateUserAsync(customer!.User!);
+        //                        await _dataContext.SaveChangesAsync();
+        //                        TempData["AlertMessageEdit"] = "Contraseña del Usuario Restablecida Exitosamente";
+        //                        return RedirectToAction(nameof(Index));
+        //                    }
+        //                    else
+        //                    {
+        //                        ModelState.AddModelError(string.Empty, addPassword.Errors.FirstOrDefault()!.Description);
+        //                    }
+        //                }
+        //                else
+        //                {
+        //                    ModelState.AddModelError(string.Empty, removePassword.Errors.FirstOrDefault()!.Description);
+        //                }
+        //            }
+        //        }
+        //        catch (Exception)
+        //        {
+        //            ViewBag.DuplicateMessage = "Se ha producido un error ó el valor esta duplicado con otro valor de la base de datos";
+        //        }
+        //    }
+        //    return View(model);
+        //}
 
         //*****************************************************************************************************************
         //CASI PERO NO

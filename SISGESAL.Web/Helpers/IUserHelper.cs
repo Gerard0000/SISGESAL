@@ -31,6 +31,11 @@ namespace SISGESAL.web.Helpers
 
         Task<IdentityResult> AddPasswordAsync(User user, string newPassword);
 
+        //resetear password
+        Task<string> GeneratePasswordResetTokenAsync(User user);
+
+        Task<IdentityResult> ResetPasswordAsync(User user, string token, string password);
+
         //Task RemovePasswordAsync(string? userName);
 
         //object RemovePasswordAsync(int id);

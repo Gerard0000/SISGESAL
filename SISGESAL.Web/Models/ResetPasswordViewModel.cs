@@ -3,6 +3,7 @@
 namespace SISGESAL.web.Models
 {
     public class ResetPasswordViewModel : AddUserViewModel
+    //public class ResetPasswordViewModel
     {
         [Display(Name = "Nueva Contraseña")]
         [Required(ErrorMessage = "La {0} es requerida.")]
@@ -16,5 +17,8 @@ namespace SISGESAL.web.Models
         [StringLength(20, MinimumLength = 6, ErrorMessage = "La {0} debe tener entre {2} y {1} carácteres.")]
         [Compare("ResetPassword", ErrorMessage = "La Nueva Contraseña y la {0} no coinciden.")]
         public string? ResetPasswordConfirm { get; set; }
+
+        [Required]
+        public string? Token { get; set; }
     }
 }
