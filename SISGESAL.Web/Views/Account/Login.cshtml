@@ -28,8 +28,15 @@
 
             <div class="form-group">
                 <b><label asp-for="Password">CONTRASEÑA</label></b> <b style="color:red">(*)</b>
-                <br>
+                <br />
                 <input asp-for="Password" type="password" title="CONTRASEÑA" class="form-control" />
+                <br />
+                <div class="form-check">
+                    <input class="form-check-input" type="checkbox" value="" id="checkDefault" onclick="Password.type = this.checked ? 'text' : 'Password'">
+                    <label class="form-check-label" for="checkDefault">
+                        Mostrar Contraseña
+                    </label>
+                </div>
                 <b><span asp-validation-for="Password" class="text-danger"></span></b>
             </div>
 
@@ -54,15 +61,5 @@
 @section Scripts {
     @{
         await Html.RenderPartialAsync("_ValidationScriptsPartial");
-
-        <script>
-            $('#vercontraseña').on('mousedown', function () {
-                $('#contraseña').attr("type", "text");
-            });
-
-            $('#vercontraseña').on('mouseup mouseleave', function () {
-                $('#contraseña').attr("type", "password");
-            });
-        </script>
     }
 }

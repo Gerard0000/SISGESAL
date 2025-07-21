@@ -22,8 +22,8 @@ namespace SISGESAL.web.Models
 
         [Display(Name = "DNI")]
         [Required(ErrorMessage = "El {0} es requerido.")]
-        [MaxLength(13)]
-        [MinLength(13, ErrorMessage = "El {0} no puede tener menos de {1} caracteres.")]
+        [MaxLength(15)]
+        [MinLength(15, ErrorMessage = "El {0} no puede tener menos de {1} caracteres.")]
         public new string? DNI { get; set; }
 
         [MaxLength(97)]
@@ -39,8 +39,8 @@ namespace SISGESAL.web.Models
 
         [Display(Name = "Número de Teléfono")]
         [DataType(DataType.PhoneNumber)]
-        [MaxLength(8, ErrorMessage = "El {0} no puede tener mas de {1} caracteres.")]
-        [MinLength(8, ErrorMessage = "El {0} no puede tener menos de {1} caracteres.")]
+        [MaxLength(14)]
+        [MinLength(14, ErrorMessage = "El {0} no puede tener menos de {1} caracteres.")]
         [Required(ErrorMessage = "El {0} es requerido.")]
         public new string? PhoneNumber { get; set; }
 

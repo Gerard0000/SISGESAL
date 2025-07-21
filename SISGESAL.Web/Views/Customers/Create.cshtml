@@ -21,7 +21,7 @@
 
                     <div class="form-group">
                         <label asp-for="UserName" class="control-label">Usuario <b style="color:red">(*)</b></label>
-                        <input asp-for="UserName" class="form-control" style="text-transform: lowercase" />
+                        <input asp-for="UserName" class="form-control" style="text-transform: lowercase" autofocus />
                         <b><span asp-validation-for="UserName" class="text-danger"></span></b>
                     </div>
 
@@ -57,7 +57,7 @@
 
                     <div class="form-group">
                         <label asp-for="DNI" class="control-label">DNI <b style="color:red">(*)</b></label>
-                        <input asp-for="DNI" class="form-control" onKeypress="if (event.keyCode < 48 || event.keyCode > 57) event.returnValue = false;" />
+                        <input asp-for="DNI" class="form-control" id="DNI" minlength="15"/>
                         <b><span asp-validation-for="DNI" class="text-danger"></span></b>
                     </div>
 
@@ -75,7 +75,7 @@
 
                     <div class="form-group">
                         <label asp-for="PhoneNumber" class="control-label">Número Teléfonico <b style="color:red">(*)</b></label>
-                        <input asp-for="PhoneNumber" class="form-control" id="PhoneNumber" onKeypress="if (event.keyCode < 48 || event.keyCode > 57) event.returnValue = false;" maxlength="8" />
+                        <input asp-for="PhoneNumber" class="form-control" id="PhoneNumber" minlength="14" />
                         <b><span asp-validation-for="PhoneNumber" class="text-danger"></span></b>
                     </div>
 
@@ -87,13 +87,25 @@
 
                     <div class="form-group">
                         <label asp-for="Password" class="control-label">Contraseña <b style="color:red">(*)</b></label>
-                        <input asp-for="Password" class="form-control" />
+                            <input asp-for="Password" class="form-control" />
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" value="" id="checkDefault" onclick="Password.type = this.checked ? 'text' : 'Password'">
+                            <label class="form-check-label" for="checkDefault">
+                                Mostrar Contraseña
+                            </label>
+                        </div>
                         <b><span asp-validation-for="Password" class="text-danger"></span></b>
                     </div>
 
                     <div class="form-group">
                         <label asp-for="PasswordConfirm" class="control-label">Confirmación de Contraseña <b style="color:red">(*)</b></label>
                         <input asp-for="PasswordConfirm" class="form-control" />
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" value="" id="checkDefault" onclick="PasswordConfirm.type = this.checked ? 'text' : 'Password'">
+                            <label class="form-check-label" for="checkDefault">
+                                Mostrar Contraseña
+                            </label>
+                        </div>
                         <b><span asp-validation-for="PasswordConfirm" class="text-danger"></span></b>
                     </div>
 
@@ -108,15 +120,152 @@
 </div>
 <hr />
 @section Scripts {
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.inputmask/3.3.4/jquery.inputmask.bundle.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            $("#DNI").inputmask("9999-9999-99999")
+        });
+    </script>
+    <script>
+        $(document).ready(function () {
+            $("#PhoneNumber").inputmask("+504-9999-9999")
+        });
+    </script>
+
+     <script>
+        $(document).ready(function () {
+            $('#DepartmentId').change(function () {
+                var departmentId = $(this).val();
+                $.getJSON('@Url.Action("GetMunicipalities")', { departmentId: departmentId }, function (municipalities) {
+                    var municipalitiesSelect = $('#MunicipalityId');
+                    municipalitiesSelect.empty();
+                    $.each(municipalities, function (index, municipality) {
+                        municipalitiesSelect.append($('<option/>', {
+                            value: municipality.value,
+                            text: municipality.text
+                        }));
+                    });
+                });
+            });
+
+            $('#Municipalities').change(function () {
+                var municipalityId = $(this).val();
+                $.getJSON('@Url.Action("GetCourts")', { municipalityId: municipalityId }, function (courts) {
+                    var courtsSelect = $('#Courts');
+                    courtsSelect.empty();
+                    $.each(courts, function (index, court) {
+                        courtsSelect.append($('<option/>', {
+                            value: court.value,
+                            text: court.text
+                        }));
+                    });
+                });
+            });
+        });
+    </script>
+
+@*     <script type="text/javascript">
+        $(document).ready(function () {
+            $("#DepartmentId").change(function () {
+                $("#MunicipalityId").empty();
+                $.ajax({
+                    type: 'POST',
+                    url: '@Url.Action("GetMunicipalitiesAsync")',
+                    dataType: 'json',
+                    data: { departmentId: $("#DepartmentId").val() },
+                    success: function (municipalities) {
+                        debugger;
+                        $("#MunicipalityId").append('<option value="0">(--Seleccione una Opción)</option>');
+                        $.each(municipalities, function (i, municipality) {
+                            $("#MunicipalityId").append('<option value="'
+                                + municipality.id + '">'
+                                + municipality.name + '</option>');
+                        });
+                    },
+                    error: function (ex) {
+                        alert('Error al traer ciudades' + ex);
+                    }
+                });
+                return false;
+            })
+        });
+    </script> *@
+
+
+
+@*     <script>
+        $(document).ready(function () {
+            $('#DepartmentId').change(function () {
+                var departmentId = $(this).val();
+                $.getJSON('@Url.Action("GetMunicipalities")', { departmentId: departmentId }, function (municipalities) {
+                    var municipalitiesSelect = $('#MunicipalityId');
+                    municipalitiesSelect.empty();
+                    $.each(municipalities, function (index, municipality) {
+                        municipalitiesSelect.append($('<option/>', {
+                            value: municipality.value,
+                            text: municipality.text
+                        }));
+                    });
+                });
+            });
+
+            $('#Municipalities').change(function () {
+                var municipalityId = $(this).val();
+                $.getJSON('@Url.Action("GetCourts")', { municipalityId: municipalityId }, function (courts) {
+                    var courtsSelect = $('#Courts');
+                    courtsSelect.empty();
+                    $.each(courts, function (index, court) {
+                        courtsSelect.append($('<option/>', {
+                            value: court.value,
+                            text: court.text
+                        }));
+                    });
+                });
+            });
+        });
+    </script> *@
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    @*     <script>
+        $(document).ready(function () {
+            getMunicipalitiesByDepartmentId();
+        });
+        var getMunicipalitiesByDepartmentId = function(){
+            $.ajax({
+                url: '@Url.Action("GetMunicipalitiesByDepartmentId","Create")',
+                type:'Get',
+                data:{
+                    departmentId: $('departmentId').val(),
+                },
+                success:function(data){
+                    $('#municipalityId').find('option').remove()
+                    $(data).each(
+                        function(index,item){
+                            $(#municipalityId).append('<option value="'+item.id+'">'+ item.name+ '</option>')
+                        }
+                    );
+                }
+            })
+        }
+    </script> *@
     @{
         await Html.RenderPartialAsync("_ValidationScriptsPartial");
     }
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.inputmask/3.3.4/jquery.inputmask.bundle.min.js"></script>
-
-    <script>
-        $(document).ready(function () {
-            $("#PhoneNumber").inputmask("9999-9999")
-        });
-    </script>
 }

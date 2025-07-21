@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using SISGESAL.web.Data;
 using SISGESAL.web.Data.Entities;
@@ -225,6 +226,11 @@ namespace SISGESAL.web.Controllers
         }
 
         //*******************************************INTENTAR DROPDOWNLIST EN CASCADA****************************
+        public JsonResult GetMunicipalitiesByDepartmentId(int departmentId)
+        {
+            return Json(_dataContext.Municipalities.Where(u => u.Department!.Id == departmentId).ToList());
+        }
+
         //[HttpGet]
         //public IActionResult GetDepartments()
         //{
@@ -245,6 +251,7 @@ namespace SISGESAL.web.Controllers
         //    var courts = _dataContext.Courts.Where(x => x.Municipality!.Id == Id).ToList();
         //    return Json(new SelectList(courts, "Id", "Name"));
         //}
+
         //********************************************************************************************************
 
         // GET: Customers/Details/5

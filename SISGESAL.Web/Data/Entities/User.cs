@@ -14,8 +14,8 @@ namespace SISGESAL.web.Data.Entities
         public string? FullName { get; set; } = null;
 
         [Display(Name = "DNI")]
-        [MaxLength(15)]
-        [MinLength(15, ErrorMessage = "El {0} no puede tener menos de {1} caracteres.")]
+        [MaxLength(17)]
+        [MinLength(17, ErrorMessage = "El {0} no puede tener menos de {1} caracteres.")]
         public string? DNI { get; set; } = null;
 
         [MaxLength(97)]

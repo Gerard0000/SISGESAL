@@ -30,7 +30,7 @@
 
                     <div class="form-group">
                         <label asp-for="DNI" class="control-label">DNI <b style="color:red">(*)</b></label>
-                        <input asp-for="DNI" class="form-control" id="DNI" name="DNI" onKeypress="if (event.keyCode < 48 || event.keyCode > 57) event.returnValue = false;" />
+                        <input asp-for="DNI" class="form-control" id="DNI" minlength="15" />
                         <b><span asp-validation-for="DNI" class="text-danger"></span></b>
                     </div>
 
@@ -48,7 +48,7 @@
 
                     <div class="form-group">
                         <label asp-for="PhoneNumber" class="control-label">Número Teléfonico <b style="color:red">(*)</b></label>
-                        <input asp-for="PhoneNumber" class="form-control" id="PhoneNumber" onKeypress="if (event.keyCode < 48 || event.keyCode > 57) event.returnValue = false;" maxlength="8" />
+                        <input asp-for="PhoneNumber" class="form-control" id="PhoneNumber" minlength="14" />
                         <b><span asp-validation-for="PhoneNumber" class="text-danger"></span></b>
                     </div>
 
@@ -85,7 +85,20 @@
         await Html.RenderPartialAsync("_ValidationScriptsPartial");
     }
 
-    <script type="text/javascript">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.inputmask/3.3.4/jquery.inputmask.bundle.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            $("#DNI").inputmask("9999-9999-99999")
+        });
+    </script>
+    <script>
+        $(document).ready(function () {
+            $("#PhoneNumber").inputmask("+504-9999-9999")
+        });
+    </script>
+
+@*     <script type="text/javascript">
         $(document).ready(function () {
             $("#DepartmentId").change(function () {
                 $("#MunicipalityId").empty();
@@ -110,28 +123,9 @@
                 return false;
             })
         });
-    </script>
+    </script> *@
 
-    <script src="~/Ajax/jquery-3.6.0.min.js"></script>
-
-    <script src="~/mask/jquery.min.js"></script>
-    <script src="~/mask/jquery.inputmask.bundle.min.js"></script>
-
-    <script type="text/javascript">
-        $(document).ready(function () {
-            $("#DNI").inputmask("9999-99999999")
-        });
-    </script>
-}
-
-    <script src="~/Mask/jquery.min.js"></script>
-    <script src="~/Mask/jquery.inputmask.bundle.min.js"></script>
-
-
-
-
-
-@*     <script>
+         <script>
         $(document).ready(function () {
             $('#DepartmentId').change(function () {
                 var departmentId = $(this).val();
@@ -161,7 +155,21 @@
                 });
             });
         });
-    </script> *@
+    </script> 
+
+
+
+
+
+
+
+
+
+}
+
+
+
+
 
 
 @* 
@@ -196,9 +204,3 @@
             });
         });
     </script> *@
-
-    <script>
-        $(document).ready(function () {
-            $("#PhoneNumber").inputmask("9999-9999")
-        });
-    </script>

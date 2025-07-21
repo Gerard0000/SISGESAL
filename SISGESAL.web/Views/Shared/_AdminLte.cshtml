@@ -12,25 +12,13 @@
     <link rel="stylesheet" href="~/ArchivosAdminLTE/plugins/fontawesome-free/css/all.min.css">
 
     <!-- IonIcons -->
-    <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
+    <link rel="stylesheet" href="~/css/ionicons.min.css">
 
     <!-- Theme style -->
     <link rel="stylesheet" href="~/ArchivosAdminLTE/dist/css/adminlte.min.css">
 
     <!-- Bootstrap CSS only -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css">
-
-    <!-- datatable -->
-    <link href="https://cdn.datatables.net/1.13.1/css/jquery.dataTables.min.css" rel="stylesheet">
-    <link href="https://cdn.datatables.net/responsive/2.4.0/css/responsive.dataTables.min.css" rel="stylesheet">
-    <link href="https://cdn.datatables.net/datetime/1.2.0/css/dataTables.dateTime.min.css" rel="stylesheet">
-    <link href="https://cdn.datatables.net/buttons/2.2.3/css/buttons.dataTables.min.css" rel="stylesheet">
-    <link href="https://cdn.datatables.net/select/1.4.0/css/select.dataTables.min.css" rel="stylesheet">
-
-
-    @*     <link href="https://cdn.datatables.net/2.1.5/css/dataTables.dataTables.css" rel=stylesheet">
-    <link href="https://cdn.datatables.net/buttons/3.1.2/css/buttons.dataTables.css" rel=stylesheet"> *@
-
 
 </head>
 <body class="hold-transition sidebar-mini layout-fixed layout-navbar-fixed">
@@ -62,8 +50,8 @@
                         </a>
                     </li>
                     <li class="nav-item dropdown">
-                        <a class="nav-link text-light" title="CAMBIAR CONTRASE√ëA" href="@Url.Action("ChangePassword","Account")">
-                            CAMBIAR CONTRASE√ëA
+                        <a class="nav-link text-light" title="CAMBIAR CONTRASE—A" href="@Url.Action("ChangePassword", "Account")">
+                            CAMBIAR CONTRASE—A
                         </a>
                     </li>
                 }
@@ -76,15 +64,15 @@
                         </a>
                     </li>
                     <li class="nav-item dropdown">
-                        <a class="nav-link text-light" title="CAMBIAR CONTRASE√ëA" href="@Url.Action("ChangePassword","Account")">
-                            CAMBIAR CONTRASE√ëA
+                        <a class="nav-link text-light" title="CAMBIAR CONTRASE—A" href="@Url.Action("ChangePassword", "Account")">
+                            CAMBIAR CONTRASE—A
                         </a>
                     </li>
                 }
 
                 <li class="nav-item dropdown">
-                    <a class="nav-link text-light" id="form-logout" title="CERRAR SESI√ìN" href="@Url.Action("Logout","Account")">
-                        CERRAR SESI√ìN
+                    <a class="nav-link text-light" id="form-logout" title="CERRAR SESI”N" href="@Url.Action("Logout", "Account")">
+                        CERRAR SESI”N
                     </a>
                 </li>
             </ul>
@@ -162,17 +150,16 @@
                                     </p>
                                 </a>
                             </li>
-
                             <li class="nav-item">
-                                <a href="/Articles/Index" class="nav-link text-light" title="Art√≠culos">
+                                <a href="/Articles/Index" class="nav-link text-light" title="ArtÌculos">
                                     <i class="nav-icon far fa-circle text-light"></i>
                                     <p>
-                                        ART√çCULOS
+                                        ARTÕCULOS
                                     </p>
                                 </a>
                             </li>
 
-                             <li class="nav-item">
+                            <li class="nav-item">
                                 <a href="/Suppliers/Index" class="nav-link text-light" title="PROVEEDORES">
                                     <i class="nav-icon far fa-circle text-light"></i>
                                     <p>
@@ -180,7 +167,6 @@
                                     </p>
                                 </a>
                             </li>
-
                             <li class="nav-item">
                                 <a href="/TradeMarks/Index" class="nav-link text-light" title="MARCAS DE PRODUCTOS">
                                     <i class="nav-icon far fa-circle text-light"></i>
@@ -191,48 +177,13 @@
                             </li>
 
                             <li class="nav-item">
-                                <a href="/KindofArticles/Index" class="nav-link text-light" title="TIPOS DE ART√çCULOS">
+                                <a href="/KindofArticles/Index" class="nav-link text-light" title="TIPOS DE ARTÕCULOS">
                                     <i class="nav-icon far fa-circle text-light"></i>
                                     <p>
-                                        TIPOS DE ART√çCULOS
+                                        TIPOS DE ARTÕCULOS
                                     </p>
                                 </a>
                             </li>
-
-                            @*
-
-
-
-
-
-
-                            <li class="nav-item">
-                                <a href="/States/Index" class="nav-link text-light" title="ESTADOS DE NOTIFICACIONES">
-                                    <i class="nav-icon far fa-circle text-light"></i>
-                                    <p>
-                                        ESTADOS DE NOTIFICACIONES
-                                    </p>
-                                </a>
-                            </li>
-
-                            <li class="nav-item">
-                                <a href="/NotificationForms/Index" class="nav-link text-light" title="FORMAS DE NOTIFICACI√ìN">
-                                    <i class="nav-icon far fa-circle text-light"></i>
-                                    <p>
-                                        FORMAS DE NOTIFICACI√ìN
-                                    </p>
-                                </a>
-                            </li>
-
-                            <li class="nav-item">
-                                <a href="/ExpedientStates/Index" class="nav-link text-light" title="ESTADOS DE EXPEDIENTES">
-                                    <i class="nav-icon far fa-circle text-light"></i>
-                                    <p>
-                                        ESTADOS DE EXPEDIENTES
-                                    </p>
-                                </a>
-                            </li> *@
-
                         }
 
                         @if (User.Identity.IsAuthenticated && User.IsInRole("Customer"))
@@ -248,10 +199,10 @@
                             </li>
 
                             <li class="nav-item">
-                                <a href="/Notifications/Create" class="nav-link text-light" title="REGISTRAR NOTIFICACI√ìN">
+                                <a href="/Notifications/Create" class="nav-link text-light" title="REGISTRAR NOTIFICACI”N">
                                     <i class="nav-icon far fa-circle text-light"></i>
                                     <p>
-                                        AGREGAR NOTIFICACI√ìN
+                                        AGREGAR NOTIFICACI”N
                                     </p>
                                 </a>
                             </li>
@@ -266,10 +217,10 @@
                             </li>
 
                             <li class="nav-item">
-                                <a href="/Notifications/Statistics" class="nav-link text-light" title="ESTAD√çSTICA NOTIFICACI√ìN">
+                                <a href="/Notifications/Statistics" class="nav-link text-light" title="ESTADÕSTICA NOTIFICACI”N">
                                     <i class="nav-icon far fa-circle text-light"></i>
                                     <p>
-                                        ESTAD√çSTICAS NOTIFICACI√ìN
+                                        ESTADÕSTICAS NOTIFICACI”N
                                     </p>
                                 </a>
                             </li>
@@ -310,6 +261,10 @@
         <!-- /.control-sidebar -->
     </div>
 
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+
     @await RenderSectionAsync("Scripts", required: false)
 
     <!-- ./wrapper -->
@@ -317,70 +272,11 @@
     <!-- IconAwesome -->
     <script src="https://kit.fontawesome.com/002b47a391.js"></script>
 
-    <!-- jQuery -->
-    <script src="https://code.jquery.com/jquery-3.6.1.min.js"></script>
-
-    <!-- Mask -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.inputmask/3.3.4/jquery.inputmask.bundle.min.js"></script>
-
-    <!-- Bootstrap JavaScript Bundle with Popper -->
-    <script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.slim.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.min.js"></script>
-
     <!-- sweet alert 2 -->
     <script src="_content/CurrieTechnologies.Razor.SweetAlert2/sweetAlert2.min.js"></script>
-    @*     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script> *@
 
     <!-- AdminLTE -->
     <script src="~/ArchivosAdminLTE/dist/js/adminlte.js"></script>
-
-    <!-- Chart -->
-    <script src="~/ArchivosAdminLTE/plugins/chart.js/Chart.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-
-    <!-- AdminLTE for demo purposes -->
-    <!--<script src="~/ArchivosAdminLTE/dist/js/demo.js"></script> ->
-
-    <!-- AdminLTE dashboard demo (This is only for demo purposes) -->
-    <script src="~/ArchivosAdminLTE/dist/js/pages/dashboard3.js"></script>
-
-    <!-- Controles datatable -->
-    @*     <script src="~/ArchivosAdminLte\plugins\datatables-buttons\js\dataTables.buttons.min.js"></script>
-
-    <script src="https://code.jquery.com/jquery-3.7.1.js"></script>
-    @*     <script src="~/ArchivosAdminLte\plugins\datatables-buttons\js\buttons.bootstrap4.min.js"></script> *@
-
-    <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
-    <script src="https://cdn.datatables.net/1.13.1/js/jquery.dataTables.min.js"></script>
-    <script src="https://cdn.datatables.net/buttons/2.2.3/js/dataTables.buttons.min.js"></script>
-    <script src="https://cdn.datatables.net/select/1.4.0/js/dataTables.select.min.js"></script>
-    <script src="https://cdn.datatables.net/datetime/1.2.0/js/dataTables.dateTime.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/pdfmake.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/vfs_fonts.js"></script>
-    <script src="https://cdn.datatables.net/buttons/2.2.3/js/buttons.html5.min.js"></script>
-    <script src="https://cdn.datatables.net/buttons/2.2.3/js/buttons.print.min.js"></script>
-    <script src="https://cdn.datatables.net/buttons/2.2.3/js/buttons.colVis.min.js"></script>
-    <script src="https://cdn.datatables.net/plug-ins/1.10.15/i18n/Spanish.json"></script>
-
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/dayjs/1.11.5/dayjs.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/dayjs/1.11.5/plugin/utc.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/dayjs/1.11.5/plugin/customParseFormat.min.js"></script>
-
-    @*<script src="https://cdn.datatables.net/plug-ins/1.13.1/i18n/es-MX.json"></script>*@
-
-    <script src="https://cdn.datatables.net/plug-ins/1.13.1/dataRender/datetime.js"></script>
-
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.2/moment.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.19.4/locale/es.js"></script>
-    <script src="https://cdn.datatables.net/plug-ins/1.10.20/sorting/datetime-moment.js"></script>
-
-    @*<script src="https://cdnjs.cloudflare.com/ajax/libs/luxon/2.3.1/luxon.min.js"></script>*@
-
-    <script src="https://cdn.datatables.net/1.12.1/js/dataTables.bootstrap5.min.js"></script>
-    <script src="https://cdn.datatables.net/responsive/2.4.0/js/dataTables.responsive.min.js"></script>
 
     <!-- Ionicons -->
 
