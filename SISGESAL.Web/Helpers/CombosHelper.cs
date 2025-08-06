@@ -1,11 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.CodeAnalysis.CSharp.Syntax;
-using Microsoft.EntityFrameworkCore;
 using SISGESAL.web.Data;
-using SISGESAL.web.Data.Entities;
-using SISGESAL.web.Models;
-using System.Diagnostics.Metrics;
-using System.Linq;
 
 namespace SISGESAL.web.Helpers
 {

@@ -1,8 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc.Rendering;
-using System.ComponentModel.DataAnnotations.Schema;
-using System.ComponentModel.DataAnnotations;
 using SISGESAL.web.Data.Entities;
-using Microsoft.AspNetCore.Mvc;
+using System.ComponentModel.DataAnnotations;
 
 namespace SISGESAL.web.Models
 {
@@ -48,6 +46,10 @@ namespace SISGESAL.web.Models
         [Display(Name = "Observación")]
         public new string? Observation { get; set; }
 
+        //TODO:OCCUPATION
+        //[Display(Name = "Cargo")]
+        //public int? OccupationId { get; set; }
+
         [Display(Name = "Departamento")]
         public int? DepartmentId { get; set; }
 
@@ -63,5 +65,8 @@ namespace SISGESAL.web.Models
         public IEnumerable<SelectListItem>? Departments { get; set; } = null;
         public IEnumerable<SelectListItem>? Municipalities { get; set; } = null;
         public IEnumerable<SelectListItem>? Courts { get; set; } = null;
+
+        //TODO:OCCUPATION
+        //public IEnumerable<SelectListItem>? Occupations { get; set; } = null;
     }
 }

@@ -1,8 +1,7 @@
-using System.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using SISGESAL.web.Data;
 using SISGESAL.web.Models;
+using System.Diagnostics;
 
 namespace SISGESAL.Web.Controllers
 {

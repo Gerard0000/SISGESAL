@@ -33,18 +33,18 @@
 
                     <div class="form-group">
                         <label asp-for="DepartmentId" class="control-label">Departamento al que Pertenece</label>
-                        <select asp-for="DepartmentId" asp-items="Model.Departments" class="form-control"></select>
+                        <select asp-for="DepartmentId" asp-items="@ViewBag.Departments" class="form-control" id="DepartmentId"><option disabled selected>--Seleccione una Opción</option></select>
                         <b><span asp-validation-for="DepartmentId" class="text-danger"></span></b>
                     </div>
 
                     <div class="form-group">
                         <label asp-for="MunicipalityId" class="control-label">Municipio al que Pertenece</label>
-                        <select asp-for="MunicipalityId" asp-items="Model.Municipalities" class="form-control"></select>
+                        <select asp-for="MunicipalityId" asp-items="@ViewBag.Municipalities" class="form-control" id="MunicipalityId"></select>
                         <b><span asp-validation-for="MunicipalityId" class="text-danger"></span></b>
                     </div>
 
                     <div class="form-group">
-                        <label asp-for="CourtId" class="control-label">Juzgado o Tribunal al que Pertenece </label>
+                        <label asp-for="CourtId" class="control-label">Juzgado, Tribunal o Lugar al que Pertenece </label>
                         <select asp-for="CourtId" asp-items="Model.Courts" class="form-control"></select>
                         <b><span asp-validation-for="CourtId" class="text-danger"></span></b>
                     </div>
@@ -103,7 +103,7 @@
                         <div class="form-check">
                             <input class="form-check-input" type="checkbox" value="" id="checkDefault" onclick="PasswordConfirm.type = this.checked ? 'text' : 'Password'">
                             <label class="form-check-label" for="checkDefault">
-                                Mostrar Contraseña
+                                Mostrar Confirmar Contraseña
                             </label>
                         </div>
                         <b><span asp-validation-for="PasswordConfirm" class="text-danger"></span></b>
@@ -122,149 +122,94 @@
 @section Scripts {
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.inputmask/3.3.4/jquery.inputmask.bundle.min.js"></script>
-    <script>
+
+    <script type="text/javascript">
         $(document).ready(function () {
             $("#DNI").inputmask("9999-9999-99999")
         });
     </script>
-    <script>
+
+    <script type="text/javascript">
         $(document).ready(function () {
             $("#PhoneNumber").inputmask("+504-9999-9999")
         });
     </script>
 
-     <script>
-        $(document).ready(function () {
-            $('#DepartmentId').change(function () {
-                var departmentId = $(this).val();
-                $.getJSON('@Url.Action("GetMunicipalities")', { departmentId: departmentId }, function (municipalities) {
-                    var municipalitiesSelect = $('#MunicipalityId');
-                    municipalitiesSelect.empty();
-                    $.each(municipalities, function (index, municipality) {
-                        municipalitiesSelect.append($('<option/>', {
-                            value: municipality.value,
-                            text: municipality.text
-                        }));
-                    });
-                });
-            });
-
-            $('#Municipalities').change(function () {
-                var municipalityId = $(this).val();
-                $.getJSON('@Url.Action("GetCourts")', { municipalityId: municipalityId }, function (courts) {
-                    var courtsSelect = $('#Courts');
-                    courtsSelect.empty();
-                    $.each(courts, function (index, court) {
-                        courtsSelect.append($('<option/>', {
-                            value: court.value,
-                            text: court.text
-                        }));
-                    });
-                });
-            });
-        });
-    </script>
-
-@*     <script type="text/javascript">
+    <script type="text/javascript">
         $(document).ready(function () {
             $("#DepartmentId").change(function () {
                 $("#MunicipalityId").empty();
                 $.ajax({
-                    type: 'POST',
-                    url: '@Url.Action("GetMunicipalitiesAsync")',
+                    type: 'GET',
+                    url: '@Url.Action("GetMunicipalitiesByDepartmentId", "Customers")',
                     dataType: 'json',
                     data: { departmentId: $("#DepartmentId").val() },
                     success: function (municipalities) {
                         debugger;
                         $("#MunicipalityId").append('<option value="0">(--Seleccione una Opción)</option>');
                         $.each(municipalities, function (i, municipality) {
-                            $("#MunicipalityId").append('<option value="'
-                                + municipality.id + '">'
-                                + municipality.name + '</option>');
+                            $("#MunicipalityId").append('<option value="'+municipality.id+'">'+municipality.name+'</option>');
                         });
                     },
                     error: function (ex) {
-                        alert('Error al traer ciudades' + ex);
+                        alert('Error al traer municipios' + ex);
                     }
                 });
                 return false;
             })
         });
-    </script> *@
+    </script>
 
-
-
-@*     <script>
+    <script type="text/javascript">
         $(document).ready(function () {
-            $('#DepartmentId').change(function () {
-                var departmentId = $(this).val();
-                $.getJSON('@Url.Action("GetMunicipalities")', { departmentId: departmentId }, function (municipalities) {
-                    var municipalitiesSelect = $('#MunicipalityId');
-                    municipalitiesSelect.empty();
-                    $.each(municipalities, function (index, municipality) {
-                        municipalitiesSelect.append($('<option/>', {
-                            value: municipality.value,
-                            text: municipality.text
-                        }));
-                    });
+            $("#MunicipalityId").change(function () {
+                $("#CourtId").empty();
+                $.ajax({
+                    type: 'GET',
+                    url: '@Url.Action("GetCourtsByMunicipalityId", "Customers")',
+                    dataType: 'json',
+                    data: { municipalityId: $("#MunicipalityId").val() },
+                    success: function (courts) {
+                        debugger;
+                        $("#CourtId").append('<option value="0">(--Seleccione una Opción)</option>');
+                        $.each(courts, function (i, court) {
+                            $("#CourtId").append('<option value="'+court.id+'">'+court.name+'</option>');
+                        });
+                    },
+                    error: function (ex) {
+                        alert('Error al traer Juzgados,Tribunales o Otros Lugares' + ex);
+                    }
                 });
-            });
-
-            $('#Municipalities').change(function () {
-                var municipalityId = $(this).val();
-                $.getJSON('@Url.Action("GetCourts")', { municipalityId: municipalityId }, function (courts) {
-                    var courtsSelect = $('#Courts');
-                    courtsSelect.empty();
-                    $.each(courts, function (index, court) {
-                        courtsSelect.append($('<option/>', {
-                            value: court.value,
-                            text: court.text
-                        }));
-                    });
-                });
-            });
-        });
-    </script> *@
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    @*     <script>
-        $(document).ready(function () {
-            getMunicipalitiesByDepartmentId();
-        });
-        var getMunicipalitiesByDepartmentId = function(){
-            $.ajax({
-                url: '@Url.Action("GetMunicipalitiesByDepartmentId","Create")',
-                type:'Get',
-                data:{
-                    departmentId: $('departmentId').val(),
-                },
-                success:function(data){
-                    $('#municipalityId').find('option').remove()
-                    $(data).each(
-                        function(index,item){
-                            $(#municipalityId).append('<option value="'+item.id+'">'+ item.name+ '</option>')
-                        }
-                    );
-                }
+                return false;
             })
-        }
-    </script> *@
+        });
+    </script>
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $("#CourtId").change(function () {
+                $("#DepotId").empty();
+                $.ajax({
+                    type: 'GET',
+                    url: '@Url.Action("GetDepotsByCourtId", "Customers")',
+                    dataType: 'json',
+                    data: { courtId: $("#CourtId").val() },
+                    success: function (depots) {
+                        debugger;
+                        $("#DepotId").append('<option value="0">(--Seleccione una Opción)</option>');
+                        $.each(depots, function (i, depot) {
+                            $("#DepotId").append('<option value="'+depot.id+'">'+depot.name+'</option>');
+                        });
+                    },
+                    error: function (ex) {
+                        alert('Error al traer álmacenes' + ex);
+                    }
+                });
+                return false;
+            })
+        });
+    </script>
+
     @{
         await Html.RenderPartialAsync("_ValidationScriptsPartial");
     }

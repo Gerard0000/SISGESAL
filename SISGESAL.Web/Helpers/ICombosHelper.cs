@@ -1,6 +1,4 @@
 ﻿using Microsoft.AspNetCore.Mvc.Rendering;
-using SISGESAL.web.Data.Entities;
-using System.Diagnostics.Metrics;
 
 namespace SISGESAL.web.Helpers
 {

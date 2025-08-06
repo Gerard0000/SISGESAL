@@ -1,5 +1,4 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using SISGESAL.web.Data;
 using SISGESAL.web.Helpers;
 using SISGESAL.web.Models;
 

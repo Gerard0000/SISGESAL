@@ -1,9 +1,9 @@
 ﻿using Microsoft.AspNetCore.Identity;
-using SISGESAL.web.Data.Entities;
+using Microsoft.EntityFrameworkCore;
 using SISGESAL.web.Data;
+using SISGESAL.web.Data.Entities;
 using SISGESAL.web.Enums;
 using SISGESAL.web.Models;
-using Microsoft.EntityFrameworkCore;
 
 namespace SISGESAL.web.Helpers
 {

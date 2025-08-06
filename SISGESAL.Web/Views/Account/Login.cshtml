@@ -3,63 +3,83 @@
     ViewData["Title"] = "Login";
 }
 
-<br>
-<br>
-<br>
-<div class="row">
-    <div class="col-md-4 offset-md-4">
-        <form method="post">
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+<body class="hold-transition login-page" onload="deshabilitaRetroceso();">
+    <br>
+    <br>
+    <br>
+    <div class="row">
+        <div class="col-md-4 offset-md-4">
+            <form method="post">
 
-            <div class="form-group text-center">
-                <p><img src="~/Imagenes/PODERJUDICIAL.png" height="220" width="270"></p>
-            </div>
+                <div class="form-group text-center">
+                    <p><img src="~/Imagenes/PODERJUDICIAL.png" height="220" width="270"></p>
+                </div>
 
-            <div class="form-group">
-                <b><label asp-for="Username">USUARIO</label></b> <b style="color:red">(*)</b>
+                <div class="form-group">
+                    <b><label asp-for="Username">USUARIO</label></b> <b style="color:red">(*)</b>
+                    <br>
+
+                    <input asp-for="Username" title="USUARIO" class="form-control" style="text-transform: lowercase" />
+                    <b><span asp-validation-for="Username" class="text-danger"></span></b>
+                </div>
+
                 <br>
 
-                <input asp-for="Username" title="USUARIO" class="form-control" style="text-transform: lowercase" />
-                <b><span asp-validation-for="Username" class="text-danger"></span></b>
-            </div>
+                <script src="~/lib/jquery-validation/dist/jquery.validate.js"></script>
 
-            <br>
-
-            <script src="~/lib/jquery-validation/dist/jquery.validate.js"></script>
-
-            <div class="form-group">
-                <b><label asp-for="Password">CONTRASEÑA</label></b> <b style="color:red">(*)</b>
-                <br />
-                <input asp-for="Password" type="password" title="CONTRASEÑA" class="form-control" />
-                <br />
-                <div class="form-check">
-                    <input class="form-check-input" type="checkbox" value="" id="checkDefault" onclick="Password.type = this.checked ? 'text' : 'Password'">
-                    <label class="form-check-label" for="checkDefault">
-                        Mostrar Contraseña
-                    </label>
+                <div class="form-group">
+                    <b><label asp-for="Password">CONTRASEÑA</label></b> <b style="color:red">(*)</b>
+                    <br />
+                    <input asp-for="Password" type="password" title="CONTRASEÑA" class="form-control" />
+                    <br />
+                    <b><span asp-validation-for="Password" class="text-danger"></span></b>
                 </div>
-                <b><span asp-validation-for="Password" class="text-danger"></span></b>
-            </div>
 
-            @*             <div class="form-group">
-                <div class="form-check">
-                    <input asp-for="RememberMe" type="checkbox" class="form-check-input" />
-                    <label asp-for="RememberMe" class="form-check-label">Recuerdame?</label>
+                <br>
+
+                <div class="row">
+                    <div class="col-1">
+                    </div>
+                    <div class="col-5">
+                        <button type="button" id="vercontraseña" class="btn btn-secondary btn-block">Ver Contraseña</button>
+                    </div>
+                    <div class="col-6">
+                        <input type="submit" title="INICIAR SESIÓN" value="Iniciar Sesión" class="btn btn-success col-md-12" />
+                    </div>
                 </div>
-                <span asp-validation-for="RememberMe" class="text-warning"></span>
-            </div> *@
-
-            <br>
-
-            <div class="form-group">
-                <input type="submit" title="INICIAR SESIÓN" value="Iniciar Sesión" class="btn btn-success col-md-12" />
-            </div>
-            <b><div asp-validation-summary="ModelOnly" class="text-danger"></div></b>
-        </form>
+                <b><div asp-validation-summary="ModelOnly" class="text-danger"></div></b>
+            </form>
+        </div>
     </div>
-</div>
+</body>
+</html>
 
 @section Scripts {
     @{
+        <script type="text/javascript">
+            $('#vercontraseña').on('mousedown', function () {
+                $('#Password').attr("type", "text");
+            });
+
+            $('#vercontraseña').on('mouseup mouseleave', function () {
+                $('#Password').attr("type", "password");
+            });
+        </script>
+
+        <script type="text/javascript">
+            function deshabilitaRetroceso() {
+                window.location.hash = "no-back-button";
+                window.location.hash = "Again-No-back-button" //chrome
+                window.onhashchange = function () { window.location.hash = "no-back-button"; }
+            }
+        </script>
+
         await Html.RenderPartialAsync("_ValidationScriptsPartial");
     }
 }

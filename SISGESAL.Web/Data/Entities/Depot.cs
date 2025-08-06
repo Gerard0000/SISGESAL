@@ -1,5 +1,4 @@
 ﻿using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
 
 namespace SISGESAL.web.Data.Entities
 {
@@ -48,7 +47,7 @@ namespace SISGESAL.web.Data.Entities
         [Display(Name = "Usuario")]
         public User? User { get; set; } = null;
 
-        //INTENTAR
+        //TODO: INTENTAR
         //public int? UserId { get; set; }
     }
 }

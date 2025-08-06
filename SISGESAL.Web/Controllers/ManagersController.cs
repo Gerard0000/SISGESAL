@@ -1,14 +1,12 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using SISGESAL.web.Data.Entities;
 using SISGESAL.web.Data;
+using SISGESAL.web.Data.Entities;
 using SISGESAL.web.Enums;
 using SISGESAL.web.Helpers;
 using SISGESAL.web.Models;
 using System.Security.Claims;
-using Microsoft.AspNetCore.Authorization;
-using System.Runtime.InteropServices;
 
 namespace SISGESAL.web.Controllers
 {

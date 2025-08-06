@@ -1,8 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using SISGESAL.web.Data.Entities;
-using SISGESAL.web.Models;
-using System.Reflection.Metadata;
 
 namespace SISGESAL.web.Data
 {
@@ -26,6 +24,9 @@ namespace SISGESAL.web.Data
         public DbSet<Gender> Genders { get; set; }
 
         public DbSet<Article> Articles { get; set; }
+
+        //TODO:OCCUPATION
+        //public DbSet<Occupation> Occupations { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -51,6 +52,9 @@ namespace SISGESAL.web.Data
             modelBuilder.Entity<TradeMark>().HasIndex(x => x.Name).IsUnique();
 
             modelBuilder.Entity<Article>().HasIndex(x => x.Name).IsUnique();
+
+            //TODO:
+            //modelBuilder.Entity<Occupation>().HasIndex(x => x.Name).IsUnique();
 
             //modelBuilder.Entity<User>().HasOne(x => x.Depotuser}).WithOne(e => e.User).HasForeignKey<Depot>("UserId");
 

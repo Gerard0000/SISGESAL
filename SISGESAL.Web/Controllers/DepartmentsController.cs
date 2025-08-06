@@ -2,8 +2,6 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using SISGESAL.web.Data;
-using SISGESAL.web.Data.Entities;
-using System.Security.Claims;
 
 namespace SISGESAL.web.Controllers
 {

@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using SISGESAL.web.Data;
 using SISGESAL.web.Data.Entities;
 using SISGESAL.web.Enums;
@@ -225,35 +226,6 @@ namespace SISGESAL.web.Controllers
             .ThenInclude(z => z!.Department));
         }
 
-        //*******************************************INTENTAR DROPDOWNLIST EN CASCADA****************************
-        public JsonResult GetMunicipalitiesByDepartmentId(int departmentId)
-        {
-            return Json(_dataContext.Municipalities.Where(u => u.Department!.Id == departmentId).ToList());
-        }
-
-        //[HttpGet]
-        //public IActionResult GetDepartments()
-        //{
-        //    var countries = _dataContext.Departments.ToList();
-        //    return Json(new SelectList(countries, "Id", "Name"));
-        //}
-
-        //[HttpGet]
-        //public IActionResult GetMunicipalities(int Id)
-        //{
-        //    var municipalities = _dataContext.Municipalities.Where(x => x.Department!.Id == Id).ToList();
-        //    return Json(new SelectList(municipalities, "Id", "Name"));
-        //}
-
-        //[HttpGet]
-        //public IActionResult GetCourts(int Id)
-        //{
-        //    var courts = _dataContext.Courts.Where(x => x.Municipality!.Id == Id).ToList();
-        //    return Json(new SelectList(courts, "Id", "Name"));
-        //}
-
-        //********************************************************************************************************
-
         // GET: Customers/Details/5
         public async Task<IActionResult> Details(int? id)
         {
@@ -280,21 +252,64 @@ namespace SISGESAL.web.Controllers
         // GET: Customers/Create
         public IActionResult Create()
         {
+            var departments = _dataContext.Departments.ToList();
+            var municipalities = new List<Municipality>();
+            var courts = new List<Court>();
+            var depots = new List<Depot>();
+
+            departments.Add(new Department()
+            {
+                Id = 0,
+                Name = "--Seleccione una Opción"
+            });
+
+            municipalities.Add(new Municipality()
+            {
+                Id = 0,
+                Name = "--Seleccione una Opción"
+            });
+
+            courts.Add(new Court()
+            {
+                Id = 0,
+                Name = "--Seleccione una Opción"
+            });
+
+            depots.Add(new Depot()
+            {
+                Id = 0,
+                Name = "--Seleccione una Opción"
+            });
+
+            ViewBag.Departments = new SelectList(departments, "Id", "Name");
+            ViewBag.Municipalities = new SelectList(municipalities, "Id", "Name");
+            ViewBag.Courts = new SelectList(courts, "Id", "Name");
+            ViewBag.Depots = new SelectList(depots, "Id", "Name");
+
             var model = new AddUserViewModel
             {
-                //TODO: ******DESCOMENTAR CUANDO SE CORRIJA EL DROPDOWNLIST EN CASCADA******
-                //Departments = _combosHelper.GetComboDepartments(),
-                //Municipalities = _combosHelper.GetComboMunicipalities(0),
-                //Courts = _combosHelper.GetComboCourts(0),
-                //Depots = _combosHelper.GetComboDepots(0),
-
-                //TODO: ******ELIMINAR CUANDO SE CORRIJA EL DROPDOWNLIST EN CASCADA******
                 Departments = _combosHelper.GetComboDepartments(),
-                Municipalities = _combosHelper.GetComboMunicipalities(),
-                Courts = _combosHelper.GetComboCourts(),
-                Depots = _combosHelper.GetComboDepots(),
+                Municipalities = _combosHelper.GetComboMunicipalities(0),
+                Courts = _combosHelper.GetComboCourts(0),
+                Depots = _combosHelper.GetComboDepots(0),
             };
             return View(model);
+        }
+
+        //DROPDOWNLIST IN CASCADE
+        public JsonResult GetMunicipalitiesByDepartmentId(int departmentId)
+        {
+            return Json(_dataContext.Municipalities.Where(u => u.Department!.Id == departmentId).OrderBy(x => x.Name).ToList());
+        }
+
+        public JsonResult GetCourtsByMunicipalityId(int municipalityId)
+        {
+            return Json(_dataContext.Courts.Where(u => u.Municipality!.Id == municipalityId).OrderBy(x => x.Name).ToList());
+        }
+
+        public JsonResult GetDepotsByCourtId(int courtId)
+        {
+            return Json(_dataContext.Depots.Where(u => u.Court!.Id == courtId).OrderBy(x => x.Name).ToList());
         }
 
         // POST: Customers/Create
@@ -447,7 +462,7 @@ namespace SISGESAL.web.Controllers
                     customer.User.PhoneNumber = model.PhoneNumber?.Trim();
                     customer.User.Observation = model.Observation?.Trim().ToUpper();
 
-                    //tratar de arreglar
+                    //TODO: tratar de arreglar
                     //customer.User.Depot = await _dataContext.Depots.FindAsync(model.DepotId);
                     //customer.User.DepotId = model.DepotId;
                     //customer.User.Depot = await _dataContext.Depots.FindAsync(model.DepotId);

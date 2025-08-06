@@ -58,7 +58,8 @@ namespace SISGESAL.web.Data.Entities
         [ForeignKey("Depot")]
         public int? DepotId { get; set; }
 
-        //INTENTAR
-        //public int? DepotId {  get; set; }
+        //TODO:OCCUPATION
+        //[Display(Name = "Cargo")]
+        //public Occupation? Occupation { get; set; }
     }
 }
