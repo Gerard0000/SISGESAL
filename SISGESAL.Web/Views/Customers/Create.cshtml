@@ -94,6 +94,8 @@
                                 Mostrar Contraseña
                             </label>
                         </div>
+                            <p class="control-label" id="copy">Sugerencia de Contraseña:   </p>
+                            <input type="text" id="pw" placeholder="Password" readonly size="30" hidden>
                         <b><span asp-validation-for="Password" class="text-danger"></span></b>
                     </div>
 
@@ -122,6 +124,24 @@
 @section Scripts {
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.inputmask/3.3.4/jquery.inputmask.bundle.min.js"></script>
+
+
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz1234567890!#$%&*@@'
+            let pw = '';
+            for (let i = 0; i < 20; i++) pw += chars[Math.floor(Math.random() * chars.length)];
+            document.getElementById('pw').value = pw;
+            const p =document.getElementById("copy");
+            p.textContent = "Sugerencia de Contraseña: " + pw;
+            document.addEventListener("copy", ()=>alert("Este texto no se puede copiar."))
+        });
+    </script>
+
+    <script>
+        document.addEventListener('pw', ()=>alert("no copies"))
+    </script>
 
     <script type="text/javascript">
         $(document).ready(function () {
