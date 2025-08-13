@@ -76,7 +76,7 @@
                             @Html.DisplayFor(modelItem => item.User!.FullName)
                         </td>
                         <td>
-                            @Html.DisplayFor(modelItem => item.User!.Occupation)
+                            @Html.DisplayFor(modelItem => item.User!.Occupation!.Name)
                         </td>
                         <td>
                             @Html.DisplayFor(modelItem => item.User!.Email)

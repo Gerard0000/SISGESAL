@@ -18,10 +18,6 @@ namespace SISGESAL.web.Data.Entities
         [MinLength(17, ErrorMessage = "El {0} no puede tener menos de {1} caracteres.")]
         public string? DNI { get; set; } = null;
 
-        [MaxLength(97)]
-        [Display(Name = "Cargo")]
-        public string? Occupation { get; set; } = null;
-
         [Display(Name = "Tipo de usuario")]
         public UserType UserType { get; set; }
 
@@ -55,11 +51,14 @@ namespace SISGESAL.web.Data.Entities
         [Display(Name = "Almacén Asignado")]
         public Depot? Depot { get; set; }
 
+        //SOLO ME TRAE LOS SIGUIENTES DATOS CON COMBOBOX
+        [Display(Name = "Cargo o Puesto de Trabajo")]
+        public Occupation? Occupation { get; set; }
+
         [ForeignKey("Depot")]
         public int? DepotId { get; set; }
 
-        //TODO:OCCUPATION
-        //[Display(Name = "Cargo")]
-        //public Occupation? Occupation { get; set; }
+        [ForeignKey("Occupatrion")]
+        public int? OccupationId { get; set; }
     }
 }

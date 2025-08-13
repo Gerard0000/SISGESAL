@@ -83,7 +83,6 @@ namespace SISGESAL.web.Controllers
                 .ThenInclude(d => d!.Department)
                 .Include(u => u.User)
                 .Where(m => (m.User!.Depot != null) && (m.User.LockoutEnd != null) && (m.User!.Depot!.Status == true)));
-
         }
 
         //ALMACENES ACTIVOS SIN USUARIO
@@ -142,7 +141,6 @@ namespace SISGESAL.web.Controllers
         public IActionResult DepotLockWithNoUser()
         {
             ViewBag.Indexcount = _dataContext.Depots.Include(x => x.User).Where(m => (m.User!.Depot == null) && (m.Status == false)).Count();
-
 
             return View(_dataContext.Depots
                 .Include(c => c.Court)
@@ -213,8 +211,8 @@ namespace SISGESAL.web.Controllers
 
                 //TODO: ******ELIMINAR CUANDO SE CORRIJA EL DROPDOWNLIST EN CASCADA******
                 Departments = _combosHelper.GetComboDepartments(),
-                Municipalities = _combosHelper.GetComboMunicipalities(),
-                Courts = _combosHelper.GetComboCourts(),
+                Municipalities = _combosHelper.GetComboMunicipalities(0),
+                Courts = _combosHelper.GetComboCourts(0),
             };
             return View(model);
         }
@@ -244,8 +242,8 @@ namespace SISGESAL.web.Controllers
             }
 
             model.Departments = _combosHelper.GetComboDepartments();
-            model.Municipalities = _combosHelper.GetComboMunicipalities();
-            model.Courts = _combosHelper.GetComboCourts();
+            model.Municipalities = _combosHelper.GetComboMunicipalities(0);
+            model.Courts = _combosHelper.GetComboCourts(0);
 
             return View(model);
         }
@@ -295,8 +293,8 @@ namespace SISGESAL.web.Controllers
             }
 
             model.Departments = _combosHelper.GetComboDepartments();
-            model.Municipalities = _combosHelper.GetComboMunicipalities();
-            model.Courts = _combosHelper.GetComboCourts();
+            model.Municipalities = _combosHelper.GetComboMunicipalities(0);
+            model.Courts = _combosHelper.GetComboCourts(0);
 
             return View(model);
         }

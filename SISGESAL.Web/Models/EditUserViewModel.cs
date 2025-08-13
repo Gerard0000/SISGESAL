@@ -24,11 +24,6 @@ namespace SISGESAL.web.Models
         [MinLength(15, ErrorMessage = "El {0} no puede tener menos de {1} caracteres.")]
         public new string? DNI { get; set; }
 
-        [MaxLength(97)]
-        [Display(Name = "Cargo")]
-        [Required(ErrorMessage = "El {0} es requerido.")]
-        public new string? Occupation { get; set; }
-
         [Display(Name = "Email")]
         [DataType(DataType.EmailAddress)]
         [MaxLength(255, ErrorMessage = "El {0} no puede tener mas de {1} caracteres.")]
@@ -46,9 +41,8 @@ namespace SISGESAL.web.Models
         [Display(Name = "Observación")]
         public new string? Observation { get; set; }
 
-        //TODO:OCCUPATION
-        //[Display(Name = "Cargo")]
-        //public int? OccupationId { get; set; }
+        [Display(Name = "Cargo o Puesto de Trabajo")]
+        public IEnumerable<SelectListItem>? Occupations { get; set; } = null;
 
         [Display(Name = "Departamento")]
         public int? DepartmentId { get; set; }
@@ -65,8 +59,5 @@ namespace SISGESAL.web.Models
         public IEnumerable<SelectListItem>? Departments { get; set; } = null;
         public IEnumerable<SelectListItem>? Municipalities { get; set; } = null;
         public IEnumerable<SelectListItem>? Courts { get; set; } = null;
-
-        //TODO:OCCUPATION
-        //public IEnumerable<SelectListItem>? Occupations { get; set; } = null;
     }
 }

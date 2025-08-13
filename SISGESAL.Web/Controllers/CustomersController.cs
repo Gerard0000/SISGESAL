@@ -52,7 +52,9 @@ namespace SISGESAL.web.Controllers
                 .ThenInclude(c => c.Depot)
                 .ThenInclude(z => z!.Court)
                 .ThenInclude(z => z!.Municipality)
-                .ThenInclude(z => z!.Department));
+                .ThenInclude(z => z!.Department)
+                .Include(z => z.User)
+                .ThenInclude(z => z!.Occupation));
         }
 
         //USUARIOS ACTIVOS CON ALMACÉN ACTIVO
@@ -66,6 +68,8 @@ namespace SISGESAL.web.Controllers
                 .ThenInclude(z => z!.Court)
                 .ThenInclude(z => z!.Municipality)
                 .ThenInclude(z => z!.Department)
+                .Include(z => z.User)
+                .ThenInclude(z => z!.Occupation)
                 .Where(m => (m.User!.Depot != null) && (m.User.LockoutEnd == null) && (m.User!.Depot!.Status == true)));
         }
 
@@ -81,6 +85,8 @@ namespace SISGESAL.web.Controllers
                 .ThenInclude(z => z!.Court)
                 .ThenInclude(z => z!.Municipality)
                 .ThenInclude(z => z!.Department)
+                .Include(z => z.User)
+                .ThenInclude(z => z!.Occupation)
                 .Where(m => (m.User!.Depot != null) && (m.User!.LockoutEnd != null) && (m.User!.Depot!.Status == true)));
         }
 
@@ -95,6 +101,8 @@ namespace SISGESAL.web.Controllers
                 .ThenInclude(z => z!.Court)
                 .ThenInclude(z => z!.Municipality)
                 .ThenInclude(z => z!.Department)
+                .Include(z => z.User)
+                .ThenInclude(z => z!.Occupation)
                 .Where(m => (m.User!.Depot != null) && (m.User!.Depot!.Status == true)));
         }
 
@@ -109,6 +117,8 @@ namespace SISGESAL.web.Controllers
                 .ThenInclude(z => z!.Court)
                 .ThenInclude(z => z!.Municipality)
                 .ThenInclude(z => z!.Department)
+                .Include(z => z.User)
+                .ThenInclude(z => z!.Occupation)
                 .Where(m => (m.User!.Depot != null) && (m.User.LockoutEnd == null) && (m.User!.Depot!.Status == false)));
         }
 
@@ -124,6 +134,8 @@ namespace SISGESAL.web.Controllers
                 .ThenInclude(z => z!.Court)
                 .ThenInclude(z => z!.Municipality)
                 .ThenInclude(z => z!.Department)
+                .Include(z => z.User)
+                .ThenInclude(z => z!.Occupation)
                 .Where(m => (m.User!.Depot != null) && (m.User!.LockoutEnd != null) && (m.User!.Depot!.Status == false)));
         }
 
@@ -138,6 +150,8 @@ namespace SISGESAL.web.Controllers
                 .ThenInclude(z => z!.Court)
                 .ThenInclude(z => z!.Municipality)
                 .ThenInclude(z => z!.Department)
+                .Include(z => z.User)
+                .ThenInclude(z => z!.Occupation)
                 .Where(m => (m.User!.Depot != null) && (m.User!.Depot!.Status == false)));
         }
 
@@ -152,6 +166,8 @@ namespace SISGESAL.web.Controllers
                 .ThenInclude(z => z!.Court)
                 .ThenInclude(z => z!.Municipality)
                 .ThenInclude(z => z!.Department)
+                .Include(z => z.User)
+                .ThenInclude(z => z!.Occupation)
                 .Where(m => (m.User!.Depot == null) && (m.User.LockoutEnd == null)));
         }
 
@@ -167,6 +183,8 @@ namespace SISGESAL.web.Controllers
                 .ThenInclude(z => z!.Court)
                 .ThenInclude(z => z!.Municipality)
                 .ThenInclude(z => z!.Department)
+                .Include(z => z.User)
+                .ThenInclude(z => z!.Occupation)
                 .Where(m => (m.User!.Depot == null) && (m.User!.LockoutEnd != null)));
         }
 
@@ -181,6 +199,8 @@ namespace SISGESAL.web.Controllers
                 .ThenInclude(z => z!.Court)
                 .ThenInclude(z => z!.Municipality)
                 .ThenInclude(z => z!.Department)
+                .Include(z => z.User)
+                .ThenInclude(z => z!.Occupation)
                 .Where(m => m.User!.Depot == null));
         }
 
@@ -195,6 +215,8 @@ namespace SISGESAL.web.Controllers
                 .ThenInclude(z => z!.Court)
                 .ThenInclude(z => z!.Municipality)
                 .ThenInclude(z => z!.Department)
+                .Include(z => z.User)
+                .ThenInclude(z => z!.Occupation)
                 .Where(m => m.User!.LockoutEnd == null));
         }
 
@@ -210,6 +232,8 @@ namespace SISGESAL.web.Controllers
                 .ThenInclude(z => z!.Court)
                 .ThenInclude(z => z!.Municipality)
                 .ThenInclude(z => z!.Department)
+                .Include(z => z.User)
+                .ThenInclude(z => z!.Occupation)
                 .Where(m => m.User!.LockoutEnd != null));
         }
 
@@ -223,7 +247,9 @@ namespace SISGESAL.web.Controllers
             .ThenInclude(c => c.Depot)
             .ThenInclude(z => z!.Court)
             .ThenInclude(z => z!.Municipality)
-            .ThenInclude(z => z!.Department));
+            .ThenInclude(z => z!.Department)
+            .Include(z => z.User)
+                .ThenInclude(z => z!.Occupation));
         }
 
         // GET: Customers/Details/5
@@ -240,6 +266,8 @@ namespace SISGESAL.web.Controllers
                 .ThenInclude(z => z!.Court)
                 .ThenInclude(z => z!.Municipality)
                 .ThenInclude(z => z!.Department)
+                .Include(z => z.User)
+                .ThenInclude(z => z!.Occupation)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (customer == null)
             {
@@ -252,39 +280,43 @@ namespace SISGESAL.web.Controllers
         // GET: Customers/Create
         public IActionResult Create()
         {
-            var departments = _dataContext.Departments.ToList();
-            var municipalities = new List<Municipality>();
-            var courts = new List<Court>();
-            var depots = new List<Depot>();
+            //var departments = _dataContext.Departments.ToList();
+            //var municipalities = new List<Municipality>();
+            //var courts = new List<Court>();
+            //var depots = new List<Depot>();
 
-            departments.Add(new Department()
-            {
-                Id = 0,
-                Name = "--Seleccione una Opción"
-            });
+            //departments.Add(new Department()
+            //{
+            //    Id = 0,
+            //    Name = "--Seleccione una Opción"
+            //});
 
-            municipalities.Add(new Municipality()
-            {
-                Id = 0,
-                Name = "--Seleccione una Opción"
-            });
+            //municipalities.Add(new Municipality()
+            //{
+            //    Id = 0,
+            //    Name = "--Seleccione una Opción"
+            //});
 
-            courts.Add(new Court()
-            {
-                Id = 0,
-                Name = "--Seleccione una Opción"
-            });
+            //courts.Add(new Court()
+            //{
+            //    Id = 0,
+            //    Name = "--Seleccione una Opción"
+            //});
 
-            depots.Add(new Depot()
-            {
-                Id = 0,
-                Name = "--Seleccione una Opción"
-            });
+            //depots.Add(new Depot()
+            //{
+            //    Id = 0,
+            //    Name = "--Seleccione una Opción"
+            //});
 
-            ViewBag.Departments = new SelectList(departments, "Id", "Name");
-            ViewBag.Municipalities = new SelectList(municipalities, "Id", "Name");
-            ViewBag.Courts = new SelectList(courts, "Id", "Name");
-            ViewBag.Depots = new SelectList(depots, "Id", "Name");
+            //ViewBag.Departments = new SelectList(departments, "Id", "Name");
+            //ViewBag.Municipalities = new SelectList(municipalities, "Id", "Name");
+            //ViewBag.Courts = new SelectList(courts, "Id", "Name");
+            //ViewBag.Depots = new SelectList(depots, "Id", "Name");
+            ViewBag.Departments = _combosHelper.GetComboDepartments();
+            ViewBag.Municipalities = _combosHelper.GetComboMunicipalities(0);
+            ViewBag.Courts = _combosHelper.GetComboCourts(0);
+            ViewBag.Depots = _combosHelper.GetComboDepots(0);
 
             var model = new AddUserViewModel
             {
@@ -292,6 +324,7 @@ namespace SISGESAL.web.Controllers
                 Municipalities = _combosHelper.GetComboMunicipalities(0),
                 Courts = _combosHelper.GetComboCourts(0),
                 Depots = _combosHelper.GetComboDepots(0),
+                Occupations = _combosHelper.GetComboOccupations(),
             };
             return View(model);
         }
@@ -331,10 +364,10 @@ namespace SISGESAL.web.Controllers
             {
                 ViewBag.DuplicateMessage3 = $"El Correo Electrónico ya esta asignado a otro usuario";
             }
-            if (_dataContext.Users.Any(x => x.Depot!.Id == model.DepotId))
-            {
-                ViewBag.DuplicateMessage4 = $"El Almacén ya esta asignado a otro usuario";
-            }
+            //if (_dataContext.Users.Any(x => x.Depot!.Id == model.DepotId))
+            //{
+            //    ViewBag.DuplicateMessage4 = $"El Almacén ya esta asignado a otro usuario";
+            //}
             else if (ModelState.IsValid)
             {
                 var user = new User
@@ -342,12 +375,12 @@ namespace SISGESAL.web.Controllers
                     UserName = model.UserName?.Trim().ToLower(),
                     FullName = model.FullName?.Trim().ToUpper(),
                     DNI = model.DNI?.Trim(),
-                    Occupation = model.Occupation?.Trim().ToUpper(),
                     Email = model.Email?.Trim().ToLower(),
                     PhoneNumber = model.PhoneNumber?.Trim(),
                     Observation = model.Observation?.Trim().ToUpper(),
 
                     Depot = await _dataContext.Depots.FindAsync(model.DepotId),
+                    Occupation = await _dataContext.Occupations.FindAsync(model.OccupationId),
 
                     CreationDate = DateTime.Now,
                     ModificationDate = DateTime.Now,
@@ -379,13 +412,13 @@ namespace SISGESAL.web.Controllers
                         ViewBag.DuplicateMessage = "Se ha producido un error ó el valor esta duplicado con otro valor de la base de datos";
                     }
                 }
-                //ModelState.AddModelError(string.Empty, response.Errors.FirstOrDefault().Description);
             }
 
             model.Departments = _combosHelper.GetComboDepartments();
-            model.Municipalities = _combosHelper.GetComboMunicipalities();
-            model.Courts = _combosHelper.GetComboCourts();
-            model.Depots = _combosHelper.GetComboDepots();
+            model.Municipalities = _combosHelper.GetComboMunicipalities(0);
+            model.Courts = _combosHelper.GetComboCourts(0);
+            model.Depots = _combosHelper.GetComboDepots(0);
+            model.Occupations = _combosHelper.GetComboOccupations();
 
             return View(model);
         }
@@ -404,6 +437,8 @@ namespace SISGESAL.web.Controllers
                 .ThenInclude(z => z!.Court)
                 .ThenInclude(z => z!.Municipality)
                 .ThenInclude(z => z!.Department)
+                .Include(c => c.User)
+                .ThenInclude(z => z!.Occupation)
                 .FirstOrDefaultAsync(c => c.Id == id.Value);
 
             if (customer == null)
@@ -416,7 +451,6 @@ namespace SISGESAL.web.Controllers
                 UserName = customer.User!.UserName,
                 FullName = customer.User.FullName,
                 DNI = customer.User.DNI,
-                Occupation = customer.User.Occupation,
                 Email = customer.User.Email,
                 PhoneNumber = customer.User.PhoneNumber,
                 Observation = customer.User.Observation,
@@ -425,11 +459,14 @@ namespace SISGESAL.web.Controllers
 
                 Depot = customer.User.Depot,
                 DepotId = customer!.User!.DepotId,
+                Occupation = customer.User.Occupation,
+                OccupationId = customer.User.OccupationId,
 
                 Departments = _combosHelper.GetComboDepartments(),
-                Municipalities = _combosHelper.GetComboMunicipalities(),
-                Courts = _combosHelper.GetComboCourts(),
-                Depots = _combosHelper.GetComboDepots(),
+                Municipalities = _combosHelper.GetComboMunicipalities(0),
+                Courts = _combosHelper.GetComboCourts(0),
+                Depots = _combosHelper.GetComboDepots(0),
+                Occupations = _combosHelper.GetComboOccupations(),
             };
 
             return View(model);
@@ -450,6 +487,8 @@ namespace SISGESAL.web.Controllers
                 .ThenInclude(z => z!.Court)
                 .ThenInclude(z => z!.Municipality)
                 .ThenInclude(z => z!.Department)
+                .Include(c => c.User)
+                .ThenInclude(z => z!.Occupation)
                 .FirstOrDefaultAsync(c => c.Id == model.Id);
 
                 if (customer != null)
@@ -457,15 +496,15 @@ namespace SISGESAL.web.Controllers
                     customer.User!.UserName = model.UserName;
                     customer.User!.FullName = model.FullName?.Trim().ToUpper();
                     customer.User.DNI = model.DNI?.Trim();
-                    customer.User.Occupation = model.Occupation?.Trim().ToUpper();
                     customer.User.Email = model.Email?.Trim().ToLower();
                     customer.User.PhoneNumber = model.PhoneNumber?.Trim();
                     customer.User.Observation = model.Observation?.Trim().ToUpper();
 
                     //TODO: tratar de arreglar
-                    //customer.User.Depot = await _dataContext.Depots.FindAsync(model.DepotId);
-                    //customer.User.DepotId = model.DepotId;
-                    //customer.User.Depot = await _dataContext.Depots.FindAsync(model.DepotId);
+                    customer.User.Depot = await _dataContext.Depots.FindAsync(model.DepotId);
+                    customer.User.DepotId = model.DepotId;
+                    customer.User.Occupation = await _dataContext.Occupations.FindAsync(model.OccupationId);
+                    customer.User.OccupationId = model.OccupationId;
 
                     customer.User.Creator = model.Creator;
                     customer.User.CreationDate = model.CreationDate;
@@ -495,9 +534,10 @@ namespace SISGESAL.web.Controllers
             }
 
             model.Departments = _combosHelper.GetComboDepartments();
-            model.Municipalities = _combosHelper.GetComboMunicipalities();
-            model.Courts = _combosHelper.GetComboCourts();
-            model.Depots = _combosHelper.GetComboDepots();
+            model.Municipalities = _combosHelper.GetComboMunicipalities(0);
+            model.Courts = _combosHelper.GetComboCourts(0);
+            model.Depots = _combosHelper.GetComboDepots(0);
+            model.Occupations = _combosHelper.GetComboOccupations();
 
             return View(model);
         }
@@ -516,6 +556,8 @@ namespace SISGESAL.web.Controllers
                 .ThenInclude(z => z!.Court)
                 .ThenInclude(z => z!.Municipality)
                 .ThenInclude(z => z!.Department)
+                .Include(c => c.User)
+                .ThenInclude(z => z!.Occupation)
                 .FirstOrDefaultAsync(c => c.Id == id.Value);
             if (customer == null)
             {
@@ -527,7 +569,6 @@ namespace SISGESAL.web.Controllers
                 UserName = customer.User!.UserName,
                 FullName = customer.User.FullName,
                 DNI = customer.User.DNI,
-                Occupation = customer.User.Occupation,
                 Email = customer.User.Email,
                 PhoneNumber = customer.User.PhoneNumber,
                 Observation = customer.User.Observation,
@@ -535,11 +576,13 @@ namespace SISGESAL.web.Controllers
                 Creator = customer.User.Creator,
 
                 DepotId = customer.User.Depot!.Id,
+                OccupationId = customer.User.Occupation!.Id,
 
                 Departments = _combosHelper.GetComboDepartments(),
-                Municipalities = _combosHelper.GetComboMunicipalities(),
-                Courts = _combosHelper.GetComboCourts(),
-                Depots = _combosHelper.GetComboDepots(),
+                Municipalities = _combosHelper.GetComboMunicipalities(0),
+                Courts = _combosHelper.GetComboCourts(0),
+                Depots = _combosHelper.GetComboDepots(0),
+                Occupations = _combosHelper.GetComboOccupations(),
             };
             return View(model);
         }
@@ -559,6 +602,8 @@ namespace SISGESAL.web.Controllers
                 .ThenInclude(z => z!.Court)
                 .ThenInclude(z => z!.Municipality)
                 .ThenInclude(z => z!.Department)
+                .Include(c => c.User)
+                .ThenInclude(z => z!.Occupation)
                 .FirstOrDefaultAsync(c => c.Id == model.Id);
 
                 if (customer != null)
@@ -566,12 +611,12 @@ namespace SISGESAL.web.Controllers
                     customer.User!.UserName = model.UserName;
                     customer.User!.FullName = model.FullName;
                     customer.User.DNI = model.DNI;
-                    customer.User.Occupation = model.Occupation;
                     customer.User.Email = model.Email;
                     customer.User.PhoneNumber = model.PhoneNumber;
                     customer.User.Observation = model.Observation;
 
                     customer.User.Depot = await _dataContext.Depots.FindAsync(model.DepotId);
+                    customer.User.Occupation = await _dataContext.Occupations.FindAsync(model.OccupationId);
 
                     customer.User.Creator = model.Creator;
                     customer.User.CreationDate = model.CreationDate;
@@ -601,9 +646,10 @@ namespace SISGESAL.web.Controllers
             }
 
             model.Departments = _combosHelper.GetComboDepartments();
-            model.Municipalities = _combosHelper.GetComboMunicipalities();
-            model.Courts = _combosHelper.GetComboCourts();
-            model.Depots = _combosHelper.GetComboDepots();
+            model.Municipalities = _combosHelper.GetComboMunicipalities(0);
+            model.Courts = _combosHelper.GetComboCourts(0);
+            model.Depots = _combosHelper.GetComboDepots(0);
+            model.Occupations = _combosHelper.GetComboOccupations();
 
             return View(model);
         }

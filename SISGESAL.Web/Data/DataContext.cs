@@ -25,8 +25,7 @@ namespace SISGESAL.web.Data
 
         public DbSet<Article> Articles { get; set; }
 
-        //TODO:OCCUPATION
-        //public DbSet<Occupation> Occupations { get; set; }
+        public DbSet<Occupation> Occupations { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -53,17 +52,7 @@ namespace SISGESAL.web.Data
 
             modelBuilder.Entity<Article>().HasIndex(x => x.Name).IsUnique();
 
-            //TODO:
-            //modelBuilder.Entity<Occupation>().HasIndex(x => x.Name).IsUnique();
-
-            //modelBuilder.Entity<User>().HasOne(x => x.Depotuser}).WithOne(e => e.User).HasForeignKey<Depot>("UserId");
-
-            //bueno
-            //modelBuilder.Entity<User>().HasOne(e => e.Depot).WithOne(e => e.User).HasForeignKey<Depot>(e => e.UserId).IsRequired(false);
-            //modelBuilder.Entity<User>().HasOne(e => e.Depot).WithOne(e => e.User).HasForeignKey<Depot>(e => e.UserId).IsRequired(false);
-
-            //EJEMPLO DE LA PAGINA
-            //modelBuilder.Entity<Blog>().HasOne(e => e.Header).WithOne(e => e.Blog).HasForeignKey<BlogHeader>(e => e.BlogId).IsRequired(false);
+            modelBuilder.Entity<Occupation>().HasIndex(x => x.Name).IsUnique();
         }
     }
 }

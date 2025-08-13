@@ -123,9 +123,9 @@ namespace SISGESAL.web.Controllers
 
                 //TODO: ELIMINAR CUANDO SE CORRIJA EL DROPDOWNLIST EN CASCADA
                 Departments = _combosHelper.GetComboDepartments(),
-                Municipalities = _combosHelper.GetComboMunicipalities(),
-                Courts = _combosHelper.GetComboCourts(),
-                Depots = _combosHelper.GetComboDepots(),
+                Municipalities = _combosHelper.GetComboMunicipalities(0),
+                Courts = _combosHelper.GetComboCourts(0),
+                Depots = _combosHelper.GetComboDepots(0),
             };
             return View(model);
         }
@@ -156,12 +156,12 @@ namespace SISGESAL.web.Controllers
                     UserName = model.UserName?.Trim().ToLower(),
                     FullName = model.FullName?.Trim().ToUpper(),
                     DNI = model.DNI?.Trim(),
-                    Occupation = model.Occupation?.Trim().ToUpper(),
                     Email = model.Email?.Trim().ToLower(),
                     PhoneNumber = model.PhoneNumber?.Trim(),
                     Observation = model.Observation?.Trim().ToUpper(),
 
                     Depot = await _dataContext.Depots.FindAsync(model.DepotId),
+                    Occupation = await _dataContext.Occupations.FindAsync(model.OccupationId),
 
                     CreationDate = DateTime.Now,
                     ModificationDate = DateTime.Now,
@@ -198,9 +198,9 @@ namespace SISGESAL.web.Controllers
             }
 
             model.Departments = _combosHelper.GetComboDepartments();
-            model.Municipalities = _combosHelper.GetComboMunicipalities();
-            model.Courts = _combosHelper.GetComboCourts();
-            model.Depots = _combosHelper.GetComboDepots();
+            model.Municipalities = _combosHelper.GetComboMunicipalities(0);
+            model.Courts = _combosHelper.GetComboCourts(0);
+            model.Depots = _combosHelper.GetComboDepots(0);
 
             return View(model);
         }
@@ -230,7 +230,7 @@ namespace SISGESAL.web.Controllers
                 UserName = manager.User!.UserName,
                 FullName = manager.User.FullName,
                 DNI = manager.User.DNI,
-                Occupation = manager.User.Occupation,
+
                 Email = manager.User.Email,
                 PhoneNumber = manager.User.PhoneNumber,
                 Observation = manager.User.Observation,
@@ -238,11 +238,12 @@ namespace SISGESAL.web.Controllers
                 Creator = manager.User.Creator,
 
                 Depot = manager.User.Depot,
+                Occupation = manager.User.Occupation,
 
                 Departments = _combosHelper.GetComboDepartments(),
-                Municipalities = _combosHelper.GetComboMunicipalities(),
-                Courts = _combosHelper.GetComboCourts(),
-                Depots = _combosHelper.GetComboDepots(),
+                Municipalities = _combosHelper.GetComboMunicipalities(0),
+                Courts = _combosHelper.GetComboCourts(0),
+                Depots = _combosHelper.GetComboDepots(0),
             };
             return View(model);
         }
@@ -270,12 +271,12 @@ namespace SISGESAL.web.Controllers
 
                     manager!.User!.FullName = model.FullName?.Trim().ToUpper();
                     manager.User.DNI = model.DNI?.Trim();
-                    manager.User.Occupation = model.Occupation?.Trim().ToUpper();
                     manager.User.Email = model.Email?.Trim().ToLower();
                     manager.User.PhoneNumber = model.PhoneNumber?.Trim();
                     manager.User.Observation = model.Observation?.Trim().ToUpper();
 
                     manager.User.Depot = await _dataContext.Depots.FindAsync(model.DepotId);
+                    manager.User.Occupation = await _dataContext.Occupations.FindAsync(model.OccupationId);
 
                     manager.User.Creator = model.Creator;
                     manager.User.CreationDate = model.CreationDate;
@@ -306,9 +307,9 @@ namespace SISGESAL.web.Controllers
             }
 
             model.Departments = _combosHelper.GetComboDepartments();
-            model.Municipalities = _combosHelper.GetComboMunicipalities();
-            model.Courts = _combosHelper.GetComboCourts();
-            model.Depots = _combosHelper.GetComboDepots();
+            model.Municipalities = _combosHelper.GetComboMunicipalities(0);
+            model.Courts = _combosHelper.GetComboCourts(0);
+            model.Depots = _combosHelper.GetComboDepots(0);
 
             return View(model);
         }

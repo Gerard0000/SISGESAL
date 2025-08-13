@@ -67,6 +67,26 @@ namespace SISGESAL.web.Helpers
             return list;
         }
 
+        //DROPDOWNLIST O COMBOBOX DE CARGO O PUESTO DE TRABAJO
+        public IEnumerable<SelectListItem> GetComboOccupations()
+        {
+            var list = _dataContext.Occupations.Select(type => new SelectListItem
+            {
+                Text = type.Name,
+                Value = $"{type.Id}"
+            })
+                .OrderBy(type => type.Text)
+                .ToList();
+
+            list.Insert(0, new SelectListItem
+            {
+                Text = "--Seleccione una Opción",
+                Value = "0"
+            });
+
+            return list;
+        }
+
         //DROPDOWNLIST O COMBOBOX DE DEPARTAMENTO
         public IEnumerable<SelectListItem> GetComboDepartments()
         {
@@ -159,168 +179,5 @@ namespace SISGESAL.web.Helpers
 
             return list;
         }
-
-        //TODO:*********************ELIMINAR CUANDO SE ARREGLE EL AJAX Y ENCUENTRE SOLUCIÓN**********************
-
-        //DROPDOWNLIST O COMBOBOX **PROVISIONAL** DE MUNICIPIOS
-        public IEnumerable<SelectListItem> GetComboMunicipalities()
-        {
-            var list = _dataContext.Municipalities.Select(type => new SelectListItem
-            {
-                Text = type.Name,
-                Value = $"{type.Id}"
-            })
-                .OrderBy(type => type.Text)
-                .ToList();
-
-            list.Insert(0, new SelectListItem
-            {
-                Text = "--Seleccione una Opción",
-                Value = "0"
-            });
-
-            return list;
-        }
-
-        //DROPDOWNLIST O COMBOBOX **PROVISIONAL** DE JUZGADOS O TRIBUNALES
-        public IEnumerable<SelectListItem> GetComboCourts()
-        {
-            var list = _dataContext.Courts.Select(type => new SelectListItem
-            {
-                Text = type.Name,
-                Value = $"{type.Id}"
-            })
-                .OrderBy(type => type.Text)
-                .ToList();
-
-            list.Insert(0, new SelectListItem
-            {
-                Text = "--Seleccione una Opción",
-                Value = "0"
-            });
-
-            return list;
-        }
-
-        //DROPDOWNLIST O COMBOBOX **PROVISIONAL** DE ALMACENES
-        public IEnumerable<SelectListItem> GetComboDepots()
-        {
-            //INTENTOS
-            //var list = _dataContext.Depots.Where(type => (type.Status == true) && (type.User!.Depot! == null)).Select(type => new SelectListItem
-            //var list = _dataContext.Depots.Select(type => new SelectListItem
-            var list = _dataContext.Depots.Where(type => (type.Status == true)).Select(type => new SelectListItem
-            {
-                Text = type.Name,
-                Value = $"{type.Id}",
-                //ASIGNAR DISABLED PARA BLOQUEAR ALGUNOS ELEMENTOS
-                Disabled = (type.Status == false) || (type.User!.Depot! != null)
-                //Disabled = (type.Status == false)
-                //Disabled = (type.Status == false) || (type.User!.DepotId == type.User!.DepotId)
-            })
-                .OrderBy(type => type.Text)
-                .ToList();
-
-            list.Insert(0, new SelectListItem
-            {
-                Text = "--Seleccione una Opción",
-                Value = "0"
-            });
-
-            return list;
-        }
-
-        //**************************POR LOS MOMENTOS AQUI TERMINA**********************
-
-        //public async Task<Department> GetDepartmentAsync(Municipality municipality)
-        //{
-        //    return await _dataContext.Departments
-        //        .Where(d => d.Municipalities.Any(m => m.Id == municipality.Id))
-        //        .FirstOrDefaultAsync();
-        //}
-
-        //public async Task<Municipality> GetMunicipalityAsync(Court court)
-        //{
-        //    return await _dataContext.Municipalities
-        //        .Where(d => d.Courts.Any(m => m.Id == court.Id))
-        //        .FirstOrDefaultAsync();
-        //}
-
-        //public async Task<Municipality> GetMunicipalityAsync(int id)
-        //{
-        //    return await _dataContext.Municipalities.FindAsync(id);
-        //}
-
-        //public async Task<Court> GetCourtAsync(int id)
-        //{
-        //    return await _dataContext.Courts.FindAsync(id);
-        //}
-
-        //DROPDOWNLIST O COMBOBOX DE MUNICIPIO
-        //public IEnumerable<SelectListItem> GetComboMunicipalities()
-        //{
-        //    var list = _dataContext.Municipalities.Select(type => new SelectListItem
-        //    {
-        //        Text = type.Name,
-        //        Value = $"{type.Id}"
-        //    })
-        //        .OrderBy(type => type.Text)
-        //        .ToList();
-
-        //    list.Insert(0, new SelectListItem
-        //    {
-        //        Text = "--Seleccione una Opción",
-        //        Value = "0"
-        //    });
-
-        //    return list;
-        //}
-
-        //PROBAR COMBOBOX DE DEPARTMENT, MUNICIPALITIES AND COURTS
-
-        //****************************************************************
-
-        //****************************************************************
-
-        //****************************************************************para el json
-        //public async Task<Department> GetDepartmentWithMunicipalityAsync(int id)
-        //{
-        //    return await _dataContext.Departments
-        //        .Include(c => c.Municipalities)
-        //        .Where(c => c.Id == id)
-        //        .FirstOrDefaultAsync();
-        //}
-
-        //public async Task<Municipality> GetMunicipalityWithCourtsAsync(int id)
-        //{
-        //    return await _dataContext.Municipalities
-        //        .Include(c => c.Courts)
-        //        .Where(c => c.Id == id)
-        //        .FirstOrDefaultAsync();
-        //}
-
-        //Task<Court> ICombosHelper.GetMunicipalityAsync(int municipalityId)
-        //{
-        //    throw new NotImplementedException();
-        //}
-
-        //public IEnumerable<SelectListItem> GetComboUserWithNoDepot()
-        //{
-        //    //TODO: REVISAR
-        //    var list = _dataContext.Depots.Where(x => x.User != ).Select(type => new SelectListItem
-        //    {
-        //        Text = type.Name,
-        //        Value = $"{type.Id}"
-        //    })
-        //        .OrderBy(type => type.Text)
-        //        .ToList();
-
-        //    list.Insert(0, new SelectListItem
-        //    {
-        //        Text = "--Seleccione una Opción",
-        //        Value = "0"
-        //    });
-
-        //    return list;
-        //}
     }
 }

@@ -63,7 +63,7 @@
 
                     <div class="form-group">
                         <label asp-for="Occupation" class="control-label">Cargo <b style="color:red">(*)</b></label>
-                        <input asp-for="Occupation" class="form-control" style="text-transform: uppercase" />
+                        <select asp-for="OccupationId" asp-items="Model.Occupations" class="form-control"></select>
                         <b><span asp-validation-for="Occupation" class="text-danger"></span></b>
                     </div>
 

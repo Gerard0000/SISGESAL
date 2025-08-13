@@ -3,53 +3,52 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using SISGESAL.web.Data;
 
-namespace SISGESAL.web.Controllers
+namespace SISGESAL.web.Controllers;
+
+[Authorize(Roles = "Manager")]
+public class DepartmentsController(DataContext context) : Controller
 {
-    [Authorize(Roles = "Manager")]
-    public class DepartmentsController(DataContext context) : Controller
+    private readonly DataContext _dataContext = context;
+
+    // GET: Departments
+    public async Task<IActionResult> Index()
     {
-        private readonly DataContext _dataContext = context;
+        ViewBag.Indexcount = _dataContext.Departments.Count();
+        return View(await _dataContext.Departments
+            .Include(x => x.Municipalities)
+            .ToListAsync());
+    }
 
-        // GET: Departments
-        public async Task<IActionResult> Index()
+    // GET: Departments/Details/5
+    public async Task<IActionResult> Details(int? id)
+    {
+        if (id == null)
         {
-            ViewBag.Indexcount = _dataContext.Departments.Count();
-            return View(await _dataContext.Departments
-                .Include(x => x.Municipalities)
-                .ToListAsync());
+            return NotFound();
         }
 
-        // GET: Departments/Details/5
-        public async Task<IActionResult> Details(int? id)
+        var department = await _dataContext.Departments
+            .Include(x => x.Municipalities!)
+            .ThenInclude(c => c.Courts)
+            .FirstOrDefaultAsync(m => m.Id == id);
+        if (department == null)
         {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var department = await _dataContext.Departments
-                .Include(x => x.Municipalities!)
-                .ThenInclude(c => c.Courts)
-                .FirstOrDefaultAsync(m => m.Id == id);
-            if (department == null)
-            {
-                return NotFound();
-            }
-
-            return View(department);
+            return NotFound();
         }
 
-        //*******************************************INTENTAR DROPDOWNLIST EN CASCADA****************************
-        //[HttpGet("combo")]
-        //public async Task<ActionResult> GetCombo()
-        //{
-        //    return Ok(await _dataContext.Departments.ToListAsync());
-        //}
-        //********************************************************************************************************
+        return View(department);
+    }
 
-        private bool DepartmentExists(int id)
-        {
-            return _dataContext.Departments.Any(e => e.Id == id);
-        }
+    //*******************************************INTENTAR DROPDOWNLIST EN CASCADA****************************
+    //[HttpGet("combo")]
+    //public async Task<ActionResult> GetCombo()
+    //{
+    //    return Ok(await _dataContext.Departments.ToListAsync());
+    //}
+    //********************************************************************************************************
+
+    private bool DepartmentExists(int id)
+    {
+        return _dataContext.Departments.Any(e => e.Id == id);
     }
 }
