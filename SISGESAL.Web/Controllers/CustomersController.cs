@@ -280,44 +280,6 @@ namespace SISGESAL.web.Controllers
         // GET: Customers/Create
         public IActionResult Create()
         {
-            //var departments = _dataContext.Departments.ToList();
-            //var municipalities = new List<Municipality>();
-            //var courts = new List<Court>();
-            //var depots = new List<Depot>();
-
-            //departments.Add(new Department()
-            //{
-            //    Id = 0,
-            //    Name = "--Seleccione una Opción"
-            //});
-
-            //municipalities.Add(new Municipality()
-            //{
-            //    Id = 0,
-            //    Name = "--Seleccione una Opción"
-            //});
-
-            //courts.Add(new Court()
-            //{
-            //    Id = 0,
-            //    Name = "--Seleccione una Opción"
-            //});
-
-            //depots.Add(new Depot()
-            //{
-            //    Id = 0,
-            //    Name = "--Seleccione una Opción"
-            //});
-
-            //ViewBag.Departments = new SelectList(departments, "Id", "Name");
-            //ViewBag.Municipalities = new SelectList(municipalities, "Id", "Name");
-            //ViewBag.Courts = new SelectList(courts, "Id", "Name");
-            //ViewBag.Depots = new SelectList(depots, "Id", "Name");
-            ViewBag.Departments = _combosHelper.GetComboDepartments();
-            ViewBag.Municipalities = _combosHelper.GetComboMunicipalities(0);
-            ViewBag.Courts = _combosHelper.GetComboCourts(0);
-            ViewBag.Depots = _combosHelper.GetComboDepots(0);
-
             var model = new AddUserViewModel
             {
                 Departments = _combosHelper.GetComboDepartments(),
@@ -364,10 +326,6 @@ namespace SISGESAL.web.Controllers
             {
                 ViewBag.DuplicateMessage3 = $"El Correo Electrónico ya esta asignado a otro usuario";
             }
-            //if (_dataContext.Users.Any(x => x.Depot!.Id == model.DepotId))
-            //{
-            //    ViewBag.DuplicateMessage4 = $"El Almacén ya esta asignado a otro usuario";
-            //}
             else if (ModelState.IsValid)
             {
                 var user = new User

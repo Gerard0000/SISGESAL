@@ -173,8 +173,7 @@ namespace SISGESAL.web.Helpers
             list.Insert(0, new SelectListItem
             {
                 Text = "--Seleccione una Opción",
-                //Value = "0"
-                Value = null
+                Value = "0"
             });
 
             return list;

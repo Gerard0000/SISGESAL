@@ -58,7 +58,7 @@ namespace SISGESAL.web.Data.Entities
         [ForeignKey("Depot")]
         public int? DepotId { get; set; }
 
-        [ForeignKey("Occupatrion")]
+        [ForeignKey("Occupation")]
         public int? OccupationId { get; set; }
     }
 }

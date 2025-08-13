@@ -33,13 +33,13 @@
 
                     <div class="form-group">
                         <label asp-for="DepartmentId" class="control-label">Departamento al que Pertenece</label>
-                        <select asp-for="DepartmentId" asp-items="@ViewBag.Departments" class="form-control" id="DepartmentId"><option disabled selected>--Seleccione una Opción</option></select>
+                        <select asp-for="DepartmentId" asp-items="Model.Departments" class="form-control"></select>
                         <b><span asp-validation-for="DepartmentId" class="text-danger"></span></b>
                     </div>
 
                     <div class="form-group">
                         <label asp-for="MunicipalityId" class="control-label">Municipio al que Pertenece</label>
-                        <select asp-for="MunicipalityId" asp-items="@ViewBag.Municipalities" class="form-control" id="MunicipalityId"></select>
+                        <select asp-for="MunicipalityId" asp-items="Model.Municipalities" class="form-control"></select>
                         <b><span asp-validation-for="MunicipalityId" class="text-danger"></span></b>
                     </div>
 

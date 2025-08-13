@@ -31,26 +31,24 @@ namespace SISGESAL.web.Data
 
             await CheckKindofPeopleAsync();
 
-            //TODO:OCCUPATION
-            //await CheckOccupationAsync();
+            await CheckOccupationAsync();
         }
 
-        //TODO:OCCUPATION
-        //private async Task CheckOccupationAsync()
-        //{
-        //    if (!_dataContext.Occupations.Any())
-        //    {
-        //        _dataContext.Occupations.Add(new Occupation
-        //        {
-        //            Name = "ADMINISTRADOR GENERAL",
-        //        });
-        //        _dataContext.Occupations.Add(new Occupation
-        //        {
-        //            Name = "ARCHIVERO",
-        //        });
-        //        await _dataContext.SaveChangesAsync();
-        //    }
-        //}
+        private async Task CheckOccupationAsync()
+        {
+            if (!_dataContext.Occupations.Any())
+            {
+                _dataContext.Occupations.Add(new Occupation
+                {
+                    Name = "ADMINISTRADOR GENERAL",
+                });
+                _dataContext.Occupations.Add(new Occupation
+                {
+                    Name = "ARCHIVERO",
+                });
+                await _dataContext.SaveChangesAsync();
+            }
+        }
 
         private async Task<User> CheckUserAsync(string fullName, string email, string username, UserType userType)
         {
